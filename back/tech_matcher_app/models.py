@@ -45,7 +45,56 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         else: 
             return f"admin - {self.email}"
         
-        
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
+
+class Smartphone(models.Model):
+    launch_year = models.TextField()
+    os_version = models.TextField()
+    screen_size = models.TextField()
+    screen_res = models.TextField()
+    screen_type = models.TextField()
+    screen_fps = models.TextField()
+    ram_size = models.TextField()
+    ram_type = models.TextField()
+    rom_size = models.TextField()
+    rom_type = models.TextField()
+    camera_count = models.TextField()
+    main_camera_mp = models.TextField()
+    camera_type = models.TextField()
+    camera_block = models.TextField()
+    max_video_resolution = models.TextField()
+    front_camera_mp = models.TextField()
+    front_camera_aperture = models.TextField()
+    cpu = models.TextField()
+    tech_process = models.TextField()
+    gpu = models.TextField()
+    edges_material = models.TextField()
+    back_material = models.TextField()
+    back_color = models.TextField()
+    protection = models.TextField()
+    length = models.TextField()
+    width = models.TextField()
+    thickness = models.TextField()
+    weight = models.TextField()
+    screen_ratio = models.TextField()
+    screen_protector = models.TextField()
+    color_count = models.TextField()
+    ppi = models.TextField()
+    accum_type = models.TextField()
+    accum_volume = models.TextField()
+    charging_power = models.TextField()
+    wireless_charging = models.TextField()
+    bluetooth = models.TextField()
+    audio_port = models.TextField()
+    charge_port = models.TextField()
+    wifi = models.TextField()
+    nfc = models.TextField()
+    _5g = models.TextField() 
+    sim_count = models.TextField()
+    sim_type = models.TextField()
+
+    def __str__(self):
+        return f"{self.launch_year} - {self.os_version}"
