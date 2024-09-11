@@ -28,6 +28,11 @@
     font-size: 36px;
 }
 
+.input-label{
+    color: #F18805;
+}
+
+
 .login-form-inputs{
     padding: 20px;
 }

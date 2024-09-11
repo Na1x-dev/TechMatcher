@@ -7,6 +7,10 @@ import { postReq, getReq } from '../Api';
 
 
 const LoginForm = () => {
+    const [isHovered, setIsHovered] = useState({
+        email: false,
+        password: false,
+    });
     const { login } = useAuth()
     const [credentials, setCredentials] = useState({
         email: '',
@@ -18,10 +22,18 @@ const LoginForm = () => {
         navigate("/register");
     }
 
+    const handleMouseEnter = (field) => {
+        setIsHovered(prev => ({ ...prev, [field]: true }));
+    };
+
+    const handleMouseLeave = (field) => {
+        setIsHovered(prev => ({ ...prev, [field]: false }));
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCredentials({ ...credentials, [name]: value });
+
     };
 
     const handleSubmit = async (e) => {
@@ -66,8 +78,15 @@ const LoginForm = () => {
                     <h2 className='main-login-text'>Welcome!</h2>
                     <div className='login-form-inputs'>
                         <div className='input-container'>
-                            <label for="email-input" className='input-label email-label'>e-мейл</label>
+                            <label id='email-label'
+                                style={{
+                                    color: isHovered.email || credentials.email ? '#985277' : '#F18805',
+                                }}
+
+                                className='input-label email-label'>e-мейл</label>
                             <input
+                                onMouseEnter={() => handleMouseEnter('email')}
+                                onMouseLeave={() => handleMouseLeave('email')}
                                 id='email-input'
                                 placeholder='e-мейл'
                                 required='required'
@@ -79,8 +98,15 @@ const LoginForm = () => {
                             />
                         </div>
                         <div className='input-container'>
-                            <label for="password-input" className='input-label password-label'>пароль</label>
+                            <label
+                                style={{
+                                    color: isHovered.password || credentials.password ? '#985277' : '#F18805',
+                                }}
+
+                                className='input-label password-label'>пароль</label>
                             <input
+                                onMouseEnter={() => handleMouseEnter('password')}
+                                onMouseLeave={() => handleMouseLeave('password')}
                                 id='password-input'
                                 placeholder='пароль'
                                 className='form-input'
@@ -96,7 +122,7 @@ const LoginForm = () => {
                 </div>
                 <div className='to-register-part-container'>
                     <div className='to-register-part'>
-                        <div className='to-register-text'>Или нажмите сюда для <span style={{color: "#F18805"}}>регистрации</span></div>
+                        <div className='to-register-text'>Или нажмите сюда для <span style={{ color: "#F18805" }}>регистрации</span></div>
                         {/* <div onClick={toRegistrationForm} className='to-register'>register</div> */}
                     </div>
                 </div>

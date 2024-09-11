@@ -66,13 +66,11 @@ h6 {
 }
 
 .input-label {
-    color: #F18805;
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 5px;
+    transition: color 0.3s ease; 
 }
-
-
 
 .form-input {
     padding: 15px;
@@ -93,16 +91,15 @@ h6 {
 .form-input:hover{
     background-color: #985277;
     border-bottom: 10px solid #5c374c;
+    color: #F0A202;
 }
 
-.form-input:hover + .input-label{
-/* .form-input:not(:placeholder-shown) + .input-label{ */
-    color: #985277;
-}
+
 
 .form-input::placeholder{
     color: #985277;
     font-weight: 700;
+    
 }
 
 /* .vert-line{
