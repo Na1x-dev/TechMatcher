@@ -1,0 +1,134 @@
+body {
+    margin: 0;
+    background-color: #ffefe7;
+    color: #5c374c;
+    min-height: 100vh;
+
+}
+
+.app {
+    height: 100vh;
+    width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    font-weight: bold;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn {
+    background-color: #985277;
+    color: #F0A202;
+    font-weight: 700;
+    border-radius: 0;
+    padding: 15px 50px;
+    font-size: 18px;
+}
+
+.btn:hover {
+    background-color: #5c374c;
+    color: #F0A202;
+}
+
+.btn-sec {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-sec:hover {
+    background-color: #5a6268;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.input-label {
+    color: #F18805;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+
+
+.form-input {
+    padding: 15px;
+    border: 0;
+    border-radius: 0;
+    background-color: #ce6a85;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 20px;
+    font-size: 18px;
+    border-bottom: 10px solid #985277;
+    /* border-right: 6px solid #985277; */
+    color: #5c374c;
+    transition-duration: 0.25s;
+    
+}
+
+.form-input:hover{
+    background-color: #985277;
+    border-bottom: 10px solid #5c374c;
+}
+
+.form-input:hover + .input-label{
+/* .form-input:not(:placeholder-shown) + .input-label{ */
+    color: #985277;
+}
+
+.form-input::placeholder{
+    color: #985277;
+    font-weight: 700;
+}
+
+/* .vert-line{
+    background-color: #eeaace;
+    width: 2px;
+    height: 100%;
+    margin: 0 20px;
+} */
+
+.form-input:focus {
+    outline: none;
+}
+
+.card {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {}
+
+.container {}
