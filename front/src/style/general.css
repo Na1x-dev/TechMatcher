@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: #ffefe7;
+    background-color: #ffdece;
     color: #5c374c;
     min-height: 100vh;
 
@@ -85,6 +85,7 @@ h6 {
     /* border-right: 6px solid #985277; */
     color: #5c374c;
     transition-duration: 0.25s;
+    font-weight: 700;
     
 }
 
