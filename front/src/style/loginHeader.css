@@ -1,5 +1,5 @@
 body{
-    background-image: url('../images/login4-removebg.png');
+    /* background-image: url('../images/login4-removebg.png'); */
     background-size: 80%; 
     background-position: left bottom; 
     background-repeat: no-repeat;
@@ -19,16 +19,31 @@ body{
     background-color: antiquewhite;
     display: flex;
     flex-direction: row;
+    
 }
 
 .left-logo{
     padding: 20px;
     background-color: #985277;
     color: #F0A202;
+    transition-duration: 0.25s;
 }
 
 .right-logo{
     padding: 20px;
     background-color: #F18805;
     color: #5C374C;
+    transition-duration: 0.25s;
+}
+
+.header-logo:hover .right-logo{
+    background-color: #985277;
+    color: #F0A202;
+    cursor: pointer;
+}
+
+.header-logo:hover .left-logo{
+    background-color: #F18805;
+    color: #5C374C;
+    cursor: pointer;
 }

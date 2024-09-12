@@ -23,15 +23,9 @@ h6 {
 
 .btn {
     display: inline-block;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    border: 0;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-.btn {
     background-color: #985277;
     color: #F0A202;
     font-weight: 700;
@@ -40,7 +34,7 @@ h6 {
     font-size: 18px;
 }
 
-.btn:hover {
+.btn:hover, .btn:active, .btn:focus, .btn:hover:focus {
     background-color: #5c374c;
     color: #F0A202;
 }
@@ -66,14 +60,14 @@ h6 {
 }
 
 .input-label {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     margin-bottom: 5px;
     transition: color 0.3s ease; 
 }
 
 .form-input {
-    padding: 15px;
+    padding: 12px;
     border: 0;
     border-radius: 0;
     background-color: #ce6a85;

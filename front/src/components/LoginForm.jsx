@@ -19,7 +19,7 @@ const LoginForm = () => {
     const navigate = useNavigate();
 
     const toRegistrationForm = () => {
-        navigate("/register");
+        // navigate("/register");
     }
 
     const handleMouseEnter = (field) => {
@@ -83,12 +83,12 @@ const LoginForm = () => {
                                     color: isHovered.email || credentials.email ? '#985277' : '#F18805',
                                 }}
 
-                                className='input-label email-label'>e-мейл</label>
+                                className='input-label email-label'>E-мейл</label>
                             <input
                                 onMouseEnter={() => handleMouseEnter('email')}
                                 onMouseLeave={() => handleMouseLeave('email')}
                                 id='email-input'
-                                placeholder='e-мейл'
+                                placeholder='E-мейл'
                                 required='required'
                                 className='form-input'
                                 type="email"
@@ -103,12 +103,12 @@ const LoginForm = () => {
                                     color: isHovered.password || credentials.password ? '#985277' : '#F18805',
                                 }}
 
-                                className='input-label password-label'>пароль</label>
+                                className='input-label password-label'>Пароль</label>
                             <input
                                 onMouseEnter={() => handleMouseEnter('password')}
                                 onMouseLeave={() => handleMouseLeave('password')}
                                 id='password-input'
-                                placeholder='пароль'
+                                placeholder='Пароль'
                                 className='form-input'
                                 type="password"
                                 name="password"
@@ -121,9 +121,8 @@ const LoginForm = () => {
                     <button className='btn btn-primary login-button' onClick={handleSubmit} type="button">Войти</button>
                 </div>
                 <div className='to-register-part-container'>
-                    <div className='to-register-part'>
+                    <div className='to-register-part' onClick={toRegistrationForm} >
                         <div className='to-register-text'>Или нажмите сюда для <span style={{ color: "#F18805" }}>регистрации</span></div>
-                        {/* <div onClick={toRegistrationForm} className='to-register'>register</div> */}
                     </div>
                 </div>
             </form>
