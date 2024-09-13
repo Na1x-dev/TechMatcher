@@ -2,12 +2,12 @@
     position: relative;
     width: 70vw;
     bottom: 75vh;
-    left: 30vw;
+    left: 100vw;
     height: 50vh;
     background-color: #985277;
     display: flex;
     flex-direction: row;
-
+    transition-duration: 0.5s;
 }
 
 .active-form {
@@ -33,7 +33,7 @@
 }
 
 .register-header-text {
-    background-color: #5C374C;
+    background-color: #833c64;
     color: #F18805;
     font-weight: 700;
     font-size: 28px;

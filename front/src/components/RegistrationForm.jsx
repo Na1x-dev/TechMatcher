@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import '../style/registration.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { setActive } from '../redux/activeSlice';
 
 
 const RegistrationForm = () => {
+    const dispatch = useDispatch();
+    const isActive = useSelector((state) => state.active.isActive)
     const [credentials, setCredentials] = useState({
         firstName: '',
         lastName: '',
@@ -18,11 +22,16 @@ const RegistrationForm = () => {
         setCredentials({ ...credentials, [name]: value });
     };
 
+    const handleHideReg = () => {
+        dispatch(setActive(false))
+        console.log('hi')
+    };
+
     return (
-        <div className='registration-form-container'>
+        <div className={`registration-form-container ${isActive ? 'active-form' : ''}`}>
             <div className='left-fields'>
                 <div className='register-header-text'>Регистрация</div>
-                <div className='close-registration'>
+                <div className='close-registration' onClick={handleHideReg}>
                     На страницу <span style={{ color: "#985277" }}>входа</span>
                 </div>
             </div>
@@ -78,7 +87,7 @@ const RegistrationForm = () => {
             <div className='right-fields'><div>
                 <label className='input-label'>E-мейл</label>
                 <input
-                placeholder='E-мейл'
+                    placeholder='E-мейл'
                     className='form-input'
                     type="email"
                     name="email"
@@ -102,7 +111,7 @@ const RegistrationForm = () => {
                 <div>
                     <label className='input-label'>Повторите пароль</label>
                     <input
-                    placeholder='Повторите пароль'
+                        placeholder='Повторите пароль'
                         className='form-input'
                         type="password"
                         name="confirmPassword"

@@ -4,9 +4,11 @@ import '../style/general.css'
 import React, { useState } from 'react';
 import { useAuth } from '../components/AuthContext';
 import { postReq, getReq } from '../Api';
-
+import { useDispatch } from 'react-redux';
+import { setActive } from '../redux/activeSlice';
 
 const LoginForm = () => {
+    const dispatch = useDispatch();
     const [isHovered, setIsHovered] = useState({
         email: false,
         password: false,
@@ -17,10 +19,6 @@ const LoginForm = () => {
         password: '',
     });
     const navigate = useNavigate();
-
-    const toRegistrationForm = () => {
-        // navigate("/register");
-    }
 
     const handleMouseEnter = (field) => {
         setIsHovered(prev => ({ ...prev, [field]: true }));
@@ -55,6 +53,10 @@ const LoginForm = () => {
             }
         }
     };
+
+    const handleShowReg = () => {
+        dispatch(setActive(true))
+    }
 
     const checkIsEmptyFields = () => {
         let flag = false;
@@ -120,8 +122,8 @@ const LoginForm = () => {
                     </div>
                     <button className='btn btn-primary login-button' onClick={handleSubmit} type="button">Войти</button>
                 </div>
-                <div className='to-register-part-container'>
-                    <div className='to-register-part' onClick={toRegistrationForm} >
+                <div className='to-register-part-container' onClick={handleShowReg}>
+                    <div className='to-register-part'  >
                         <div className='to-register-text'>Или нажмите сюда для <span style={{ color: "#F18805" }}>регистрации</span></div>
                     </div>
                 </div>
