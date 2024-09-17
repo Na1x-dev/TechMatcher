@@ -1,10 +1,7 @@
 import '../style/loginHeader.css'
-import { useDispatch, useSelector } from 'react-redux';
-
-import { showLoginForm } from '../redux/store';
+import { useSelector } from 'react-redux';
 
 const LoginHeader = () => {
-    const dispatch = useDispatch();
     const isVisible = useSelector((state) => state.loginForm.isVisible);
 
     return (

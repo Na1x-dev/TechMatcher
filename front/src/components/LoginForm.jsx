@@ -23,9 +23,7 @@ const LoginForm = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(showLoginForm()); 
-        console.log(isVisible);
-        
+        dispatch(showLoginForm());      
     }, [dispatch]);
 
     const handleMouseEnter = (field) => {
@@ -39,12 +37,10 @@ const LoginForm = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCredentials({ ...credentials, [name]: value });
-
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!checkIsEmptyFields()) {
             const credentialsData = {
                 email: credentials.email,
@@ -52,7 +48,10 @@ const LoginForm = () => {
             };
 
             try {
+                
                 const response = await postReq('/token/', credentialsData);
+                
+                
                 login(response.access, response.refresh);
                 navigate('/');
             } catch (error) {
@@ -68,18 +67,23 @@ const LoginForm = () => {
 
     const checkIsEmptyFields = () => {
         let flag = false;
-        const fields = document.getElementsByClassName('form-input');
+        const form = document.querySelector('.login-form');
+        const fields = form.getElementsByClassName('form-input');
+        
         for (let field of fields) {
-            if (field.value == '') {
+            if (field.value === '') {
                 field.classList.add('error-field');
                 flag = true;
+            } else {
+                field.classList.remove('error-field');
             }
-            else field.classList.remove('error-field');
         }
-        if (flag)
-            alert("Не все поля заполенены");
+        if (flag) {
+            alert("Не все поля заполнены");
+        }
         return flag;
     }
+    
 
     return (
         <div className='component-container'>

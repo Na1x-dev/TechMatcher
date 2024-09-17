@@ -75,7 +75,7 @@ h6 {
     width: 100%;
     margin: 0 20px;
     font-size: 18px;
-    border-bottom: 10px solid #985277;
+    border-left: 20px solid #985277;
     /* border-right: 6px solid #985277; */
     color: #5c374c;
     transition-duration: 0.25s;
@@ -85,7 +85,7 @@ h6 {
 
 .form-input:hover{
     background-color: #985277;
-    border-bottom: 10px solid #5c374c;
+    border-left: 10px solid #5c374c;
     color: #F0A202;
 }
 

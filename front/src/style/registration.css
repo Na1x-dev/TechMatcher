@@ -22,14 +22,22 @@
 }
 
 .center-fields {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 40%;
     padding: 40px;
+    padding-bottom: 70px;
 }
 
 .right-fields {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: #F18805;
     padding: 40px;
     width: 40%;
+    padding-bottom: 70px;
 }
 
 .register-header-text {
@@ -64,11 +72,31 @@
 
 .registration-form-input {
     background-color: #F0A202;
-    border-bottom: 10px solid #F18805;
+    border-left: 20px solid #F18805;
     width: 90%;
     box-sizing: border-box; 
 }
 
+.registration-form-input:hover::placeholder{
+    color: #F18805;
+}
+
+.registration-form-input:hover {
+    background-color: #F18805;
+    color: #5c374c;
+}
+
+.registration-form-right-input{
+    width: 90%;
+}
+
 .registration-form-label {
     color: #985277;
+}
+
+.register-button {
+    margin: 30px 5% 0 5%;
+    padding: 12px 50px;
+    align-self: flex-end;
+    
 }

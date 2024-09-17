@@ -1,4 +1,4 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore, createSlice, applyMiddleware } from '@reduxjs/toolkit';
 import activeReducer from './activeSlice';
 
 const loginFormSlice = createSlice({

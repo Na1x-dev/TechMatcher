@@ -1,16 +1,16 @@
-body{
+body {
     overflow: hidden;
 }
 
-.component-container{
+.component-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items:flex-end;
+    align-items: flex-end;
     height: 100%;
 }
 
-.login-form{
+.login-form {
     position: relative;
     width: 50vw;
     height: 50vh;
@@ -23,11 +23,11 @@ body{
     transition-duration: 0.5s;
 }
 
-.login-form-active{
+.login-form-active {
     left: 0;
 }
 
-.login-part-container{
+.login-part-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -35,26 +35,25 @@ body{
     padding: 40px;
 }
 
-.main-login-text{
+.main-login-text {
     font-size: 36px;
 }
 
-.input-label{
+.input-label {
     color: #F18805;
 }
 
-
-.login-form-inputs{
+.login-form-inputs {
     padding: 20px;
 }
 
-.login-button{
+.login-button {
     justify-self: end;
     align-self: flex-end;
     margin-bottom: 20px;
 }
 
-.to-register-part-container{
+.to-register-part-container {
     display: flex;
     flex-direction: column;
     margin-left: 40px;
@@ -66,14 +65,14 @@ body{
     transition-duration: 0.5s;
 }
 
-.to-register-text{
+.to-register-text {
     width: 70%;
     color: #F0A202;
     font-weight: 700;
     font-size: 20px;
 }
 
-.to-register-part-container:hover{
+.to-register-part-container:hover {
     width: 40%;
     background-color: #5C374C;
     cursor: pointer;
