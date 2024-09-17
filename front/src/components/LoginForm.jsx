@@ -1,24 +1,32 @@
 import { useNavigate } from 'react-router-dom';
 import '../style/login.css';
 import '../style/general.css'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../components/AuthContext';
 import { postReq, getReq } from '../Api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setActive } from '../redux/activeSlice';
+import { showLoginForm } from '../redux/store';
 
 const LoginForm = () => {
     const dispatch = useDispatch();
+    const isVisible = useSelector((state) => state.loginForm.isVisible);
     const [isHovered, setIsHovered] = useState({
         email: false,
         password: false,
     });
-    const { login } = useAuth()
     const [credentials, setCredentials] = useState({
         email: '',
         password: '',
     });
+    const { login } = useAuth()
     const navigate = useNavigate();
+
+    useEffect(() => {
+        dispatch(showLoginForm()); 
+        console.log(isVisible);
+        
+    }, [dispatch]);
 
     const handleMouseEnter = (field) => {
         setIsHovered(prev => ({ ...prev, [field]: true }));
@@ -75,7 +83,7 @@ const LoginForm = () => {
 
     return (
         <div className='component-container'>
-            <form className='login-form' onSubmit={handleSubmit}>
+            <form className={`login-form ${isVisible ? 'login-form-active' : ''}`}  onSubmit={handleSubmit}>
                 <div className='login-part-container'>
                     <h2 className='main-login-text'>Welcome!</h2>
                     <div className='login-form-inputs'>

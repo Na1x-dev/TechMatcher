@@ -23,8 +23,7 @@ const RegistrationForm = () => {
     };
 
     const handleHideReg = () => {
-        dispatch(setActive(false))
-        console.log('hi')
+        dispatch(setActive(false))    
     };
 
     return (

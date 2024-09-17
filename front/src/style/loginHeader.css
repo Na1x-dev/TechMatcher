@@ -11,6 +11,12 @@ body{
     display: flex;
     flex-direction: row;
     top: 50px;
+    transition-duration: 0.5s;
+    left: -30vw;
+}
+
+.login-header-active{
+    left: 0;
 }
 
 .header-logo{

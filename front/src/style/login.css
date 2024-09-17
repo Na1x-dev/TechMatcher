@@ -11,13 +11,20 @@ body{
 }
 
 .login-form{
+    position: relative;
     width: 50vw;
     height: 50vh;
+    left: 50vw;
     /* background-color: #ce6a85; */
     background-color: #F18805;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    transition-duration: 0.5s;
+}
+
+.login-form-active{
+    left: 0;
 }
 
 .login-part-container{
