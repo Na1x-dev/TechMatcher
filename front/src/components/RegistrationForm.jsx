@@ -98,7 +98,8 @@ const RegistrationForm = () => {
     
     const checkIsEmptyFields = () => {
         let flag = false;
-        const fields = document.getElementsByClassName('form-input');
+        const form = document.querySelector('.registration-form-container');
+        const fields = form.getElementsByClassName('form-input');
         for (let field of fields) {
           if (field.value == '') {
             field.classList.add('error-field');

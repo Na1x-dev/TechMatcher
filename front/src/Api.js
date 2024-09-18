@@ -8,20 +8,15 @@ const apiClient = axios.create({
     }
 });
 
-// Общий метод для выполнения POST-запросов
 const postReq = async (endpoint, data) => {
     try {
-        
         const response = await apiClient.post(endpoint, data);
-        
         return response.data;
     } catch (error) {
-        console.log(error);
-        throw error; // выбрасываем ошибку для обработки в вызывающем коде
+        throw error;
     }
 };
 
-// Общий метод для выполнения GET-запросов
 const getReq = async (endpoint, config = {}) => {
     try {
         const response = await apiClient.get(endpoint, config);
@@ -31,8 +26,6 @@ const getReq = async (endpoint, config = {}) => {
     }
 };
 
-
-// Общий метод для выполнения PUT-запросов (обновление)
 const putReq = async (endpoint, data) => {
     try {
         const response = await apiClient.put(endpoint, data);
@@ -42,7 +35,6 @@ const putReq = async (endpoint, data) => {
     }
 };
 
-// Общий метод для выполнения DELETE-запросов
 const deleteReq = async (endpoint) => {
     try {
         const response = await apiClient.delete(endpoint);
@@ -52,5 +44,4 @@ const deleteReq = async (endpoint) => {
     }
 };
 
-// Экспортируем методы
 export { postReq, getReq, putReq, deleteReq };
