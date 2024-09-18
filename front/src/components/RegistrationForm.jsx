@@ -5,10 +5,11 @@ import { setActive } from '../redux/activeSlice';
 import { useNavigate } from 'react-router-dom';
 import { postReq } from '../Api';
 import { useAuth } from './AuthContext';
-
+import { useSnackbar } from 'notistack';
 
 
 const RegistrationForm = () => {
+    const { enqueueSnackbar } = useSnackbar();
     const dispatch = useDispatch();
     const isActive = useSelector((state) => state.active.isActive)
     const navigate = useNavigate();
@@ -56,7 +57,7 @@ const RegistrationForm = () => {
             return;
         }
         if (!arePasswordsMatching()) {
-            alert("Пароли не совпадают!");
+            enqueueSnackbar('Пароли не совпадают', { variant: 'error' });
             return;
         }
         try {
@@ -93,7 +94,7 @@ const RegistrationForm = () => {
     
     const handleError = (error) => {
         console.error('Произошла ошибка!', error);
-        alert('Регистрация не удалась!');
+        enqueueSnackbar('E-мейл уже используется или неверный формат', { variant: 'error' });
     };
     
     const checkIsEmptyFields = () => {
@@ -108,7 +109,7 @@ const RegistrationForm = () => {
           else field.classList.remove('error-field');
         }
         if (flag)
-          alert("Не все поля заполенены");
+            enqueueSnackbar('Не все поля заполнены', { variant: 'error' });
         return flag;
       }
 

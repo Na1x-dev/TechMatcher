@@ -1,0 +1,15 @@
+.notistack-SnackbarContainer {
+    right: 0;
+}
+
+.notistack-MuiContent {
+    box-shadow: none;
+    border-radius: 0;
+    font-weight: 700;
+    padding: 10px 30px;
+
+}
+
+.notistack-MuiContent-error {
+    background-color: #e0004b;
+}

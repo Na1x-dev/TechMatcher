@@ -10,20 +10,28 @@ import NotFound from './pages/NotFound'
 import { AuthProvider } from './components/AuthContext.jsx';
 import { Provider } from 'react-redux';
 import store from './redux/store.js';
+import { SnackbarProvider } from 'notistack';
+import './style/notistack.css'
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthProvider>
-        <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route exact path="/" element={<Home />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
+        <SnackbarProvider anchorOrigin={{
+          vertical: 'bottom', 
+          horizontal: 'right', 
+        }} maxSnack={3}>
+          <Router>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route exact path="/" element={<Home />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+        </SnackbarProvider>
       </AuthProvider>
     </Provider>
   </React.StrictMode>

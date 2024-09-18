@@ -7,8 +7,10 @@ import { postReq, getReq } from '../Api';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActive } from '../redux/activeSlice';
 import { showLoginForm } from '../redux/store';
+import { useSnackbar } from 'notistack';
 
 const LoginForm = () => {
+    const { enqueueSnackbar } = useSnackbar();
     const dispatch = useDispatch();
     const isVisible = useSelector((state) => state.loginForm.isVisible);
     const [isHovered, setIsHovered] = useState({
@@ -46,17 +48,13 @@ const LoginForm = () => {
                 email: credentials.email,
                 password: credentials.password,
             };
-
             try {
-                
                 const response = await postReq('/token/', credentialsData);
-                
-                
                 login(response.access, response.refresh);
                 navigate('/');
             } catch (error) {
                 console.error('Ошибка входа:', error);
-                alert("Не верные логин и(или) пароль");
+                enqueueSnackbar('Не верные логин и(или) пароль', { variant: 'error' });
             }
         }
     };
@@ -79,7 +77,7 @@ const LoginForm = () => {
             }
         }
         if (flag) {
-            alert("Не все поля заполнены");
+            enqueueSnackbar('Не все поля заполнены', { variant: 'error' });
         }
         return flag;
     }
