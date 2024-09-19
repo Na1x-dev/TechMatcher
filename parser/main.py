@@ -15,7 +15,7 @@ INSERT_QUERY = """
         weight, screen_ratio, screen_protector, color_count,
         ppi, accum_type, accum_volume, charging_power,
         wireless_charging, bluetooth, audio_port, charge_port,
-        wifi, nfc, _5g, sim_count, sim_type
+        wifi, nfc, _5g, sim_count, sim_type, title, image_url, price
     ) VALUES (%s) RETURNING id;
     """
 COLUMN_MAPPING = {
@@ -62,7 +62,10 @@ COLUMN_MAPPING = {
             "NFC": "nfc",
             "5G": "_5g",
             "Количество физических SIM-карт": "sim_count",
-            "Формат SIM-карты": "sim_type"
+            "Формат SIM-карты": "sim_type",
+            "Название":"title",
+            "Картинка":"image_url",
+            "Стоимость":"price"
         }
 
 
@@ -80,7 +83,6 @@ def create_connect():
 def insert_data(data):
     conn = create_connect()
     cursor = conn.cursor()
-
     try:
         cursor.execute(INSERT_QUERY.replace('%s', ', '.join(['%s'] * len(data))), data)
         conn.commit()
@@ -98,9 +100,7 @@ def insert_data(data):
 def parse_mobile_page(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-
     offers_list = soup.select('.catalog-form__offers-list .catalog-form__link_base-additional')
-
     for item in offers_list:
         link = item['href']
         print(f"Парсинг объекта: {link}")
@@ -108,24 +108,35 @@ def parse_mobile_page(url):
 
 
 def parse_object(url):
+    data = {column: "-" for column in COLUMN_MAPPING.values()}
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
+    data['title'] = soup.select_one('h1.catalog-masthead__title.js-nav-header').text.strip() if soup.select_one('h1.catalog-masthead__title.js-nav-header') else "-"
+    
+    data['image_url'] = soup.select_one('div.fotorama__stage__frame img')['src'] if soup.select_one('div.fotorama__stage__frame img') else "-"
+    
+    data['price'] = soup.select_one('div.offers-description__price a').text.strip() if soup.select_one('div.offers-description__price a') else "-"
+    
+    data['nfc'] = bool(soup.select_one('td:contains("NFC") + td span.i-tip'))  # True если есть i-tip
+    data['_5g'] = bool(soup.select_one('td:contains("5G") + td span.i-tip'))  # True если есть i-tip
+    
     table = soup.find('table')
+    
     if table:
         rows = table.find_all('tr')
-        data = {}
         for row in rows:
             cells = row.find_all('td')
             if len(cells) >= 2:
-                key = cells[0].contents[0].strip()  # Получаем текст только из первого <td>
-                value = cells[1].text.strip()  # Получаем текст только из второго <td>
+                key = cells[0].contents[0].strip()  
+                value = cells[1].text.strip()  
                 if key in COLUMN_MAPPING:
-                    data[COLUMN_MAPPING[key]] = value
-        if len(data) == len(COLUMN_MAPPING):  # Проверьте количество извлекаемых данных
-            insert_data(tuple(data[col] if data[col] else "-" for col in COLUMN_MAPPING.values()))
-            print("Данные сохранены в базе данных.")
-        else:
-            print("Недостаточно данных для сохранения.")
+                    data[COLUMN_MAPPING[key]] = value if value else "-"
+
+        for col in COLUMN_MAPPING.values():
+            if col not in data or data[col] == "":
+                data[col] = False 
+        insert_data(tuple(data[col] for col in COLUMN_MAPPING.values()))
+        print("Данные сохранены в базе данных.")
     else:
         print("Таблица не найдена на странице.")
 
@@ -137,7 +148,6 @@ def main():
         if response.status_code != 200:
             print("Нет больше страниц для парсинга.")
             break
-
         parse_mobile_page(URL + str(page))
         page += 1
 

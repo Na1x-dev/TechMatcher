@@ -95,6 +95,9 @@ class Smartphone(models.Model):
     _5g = models.TextField() 
     sim_count = models.TextField()
     sim_type = models.TextField()
+    title = models.TextField()
+    image_url = models.URLField(null=True, blank=True)
+    price = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.launch_year} - {self.os_version}"
