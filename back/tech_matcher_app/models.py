@@ -91,12 +91,12 @@ class Smartphone(models.Model):
     audio_port = models.TextField()
     charge_port = models.TextField()
     wifi = models.TextField()
-    nfc = models.TextField()
-    _5g = models.TextField() 
+    nfc = models.BooleanField()
+    _5g = models.BooleanField() 
     sim_count = models.TextField()
     sim_type = models.TextField()
     title = models.TextField()
-    image_url = models.URLField(null=True, blank=True)
+    image_url = models.TextField()
     price = models.TextField(null=True, blank=True)
 
     def __str__(self):

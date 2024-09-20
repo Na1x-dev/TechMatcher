@@ -95,7 +95,6 @@ def insert_data(data):
         cursor.close()
         conn.close()
 
-
     
 def parse_mobile_page(url):
     response = requests.get(url)
@@ -113,12 +112,14 @@ def parse_object(url):
     soup = BeautifulSoup(response.text, 'html.parser')
     data['title'] = soup.select_one('h1.catalog-masthead__title.js-nav-header').text.strip() if soup.select_one('h1.catalog-masthead__title.js-nav-header') else "-"
     
-    data['image_url'] = soup.select_one('div.fotorama__stage__frame img')['src'] if soup.select_one('div.fotorama__stage__frame img') else "-"
+    data['image_url'] = soup.select_one(".js-gallery-zoom")['href'] if soup.select_one(".js-gallery-zoom") else "-"
     
     data['price'] = soup.select_one('div.offers-description__price a').text.strip() if soup.select_one('div.offers-description__price a') else "-"
     
-    data['nfc'] = bool(soup.select_one('td:contains("NFC") + td span.i-tip'))  # True если есть i-tip
-    data['_5g'] = bool(soup.select_one('td:contains("5G") + td span.i-tip'))  # True если есть i-tip
+    print('heyy', data['image_url'])
+    # file = open('soup.txt', "w")
+    # file.write(str(soup))
+    # file.close()
     
     table = soup.find('table')
     
@@ -135,6 +136,10 @@ def parse_object(url):
         for col in COLUMN_MAPPING.values():
             if col not in data or data[col] == "":
                 data[col] = False 
+                
+        data['nfc'] = bool(soup.select_one('td:contains("NFC") + td span.i-tip'))  # True если есть i-tip
+        data['_5g'] = bool(soup.select_one('td:contains("5G") + td span.i-tip'))  # True если есть i-tip
+                
         insert_data(tuple(data[col] for col in COLUMN_MAPPING.values()))
         print("Данные сохранены в базе данных.")
     else:
