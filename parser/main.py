@@ -117,9 +117,7 @@ def parse_object(url):
     data['price'] = soup.select_one('div.offers-description__price a').text.strip() if soup.select_one('div.offers-description__price a') else "-"
     
     print('heyy', data['image_url'])
-    # file = open('soup.txt', "w")
-    # file.write(str(soup))
-    # file.close()
+
     
     table = soup.find('table')
     
