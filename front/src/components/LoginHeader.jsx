@@ -1,12 +1,18 @@
 import '../style/loginHeader.css'
 import { useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const LoginHeader = () => {
     const isVisible = useSelector((state) => state.loginForm.isVisible);
+    const navigate = useNavigate();
+
+    const toHome = () => {
+        navigate("/");
+    }
 
     return (
         <header className={`login-header ${isVisible ? 'login-header-active' : ''}`}>
-            <div className='header-logo'>
+            <div className='header-logo' onClick={toHome}>
                 <div className='left-logo'>Tech</div>
                 <div className='right-logo'>Matcher</div>
             </div>

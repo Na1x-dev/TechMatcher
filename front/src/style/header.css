@@ -1,0 +1,102 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.header-logo {
+    font-size: 24px;
+    font-weight: 700;
+
+    background-color: #5C374C;
+    display: flex;
+    flex-direction: row;
+}
+
+.left-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #985277;
+    color: #F0A202;
+    transition-duration: 0.25s;
+}
+
+.right-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #F18805;
+    color: #5C374C;
+    transition-duration: 0.25s;
+}
+
+.header-logo:hover .right-logo {
+    background-color: #985277;
+    color: #F0A202;
+    cursor: pointer;
+}
+
+.header-logo:hover .left-logo {
+    background-color: #F18805;
+    color: #5C374C;
+    cursor: pointer;
+}
+
+
+
+.header-chapters {
+    background-color: #F18805;
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+}
+
+.header-profile {
+    background-color: #833c64;
+    width: 15%;
+}
+
+.header-chapter-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #F0A202;
+    font-size: 18px;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    font-weight: 700;
+    text-align: center;
+    color: #5C374C;
+}
+
+.active-chapter-button {
+    background-color: #5C374C;
+    /* background-color: #833c64; */
+    color: #ffdece;
+    border-bottom: 8px solid #F18805;
+    color: #F0A202;
+}
+
+
+.header-user-name{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #F0A202;
+    font-weight: 700;
+}
+
+.to-login-button{
+    width: 100%;
+    height: 100%;
+}

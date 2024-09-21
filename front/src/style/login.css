@@ -1,6 +1,16 @@
 body {
+    
     overflow: hidden;
 }
+
+.login-app{
+    background-image: url('../images/login4-removebg.png');
+    background-size: 80%; 
+    background-position: left bottom; 
+    background-repeat: no-repeat;
+}
+
+
 
 .component-container {
     display: flex;

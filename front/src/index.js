@@ -4,7 +4,6 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login.js'
-import Register from './pages/Register.js'
 import Home from './pages/Home.js'
 import NotFound from './pages/NotFound'
 import { AuthProvider } from './components/AuthContext.jsx';
@@ -26,7 +25,6 @@ root.render(
           <Router>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
               <Route exact path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
