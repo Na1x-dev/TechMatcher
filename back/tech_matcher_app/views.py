@@ -6,8 +6,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 
-from .models import  CustomUser
-from .serializers import  CustomUserSerializer, CustomUserCreateSerializer
+from .models import  CustomUser, Smartphone
+from .serializers import  CustomUserSerializer, CustomUserCreateSerializer, SmartphoneSerializer
+
+
 
 class RegistrationAPIView(APIView):
 
@@ -48,5 +50,11 @@ class UserProfileAPIView(APIView):
             return Response(user_data)
         except CustomUser.DoesNotExist:
             return Response({'detail': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
     
-    
+class SmartphoneList(APIView):
+    def get(self, request):
+        smartphones = Smartphone.objects.all()
+        serializer = SmartphoneSerializer(smartphones, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        

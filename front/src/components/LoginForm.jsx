@@ -1,18 +1,19 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation  } from 'react-router-dom';
 import '../style/login.css';
 import '../style/general.css'
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../components/AuthContext';
 import { postReq, getReq } from '../Api';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { setActive } from '../redux/activeSlice';
-import { showLoginForm } from '../redux/store';
+import { showLoginForm, hideLoginForm } from '../redux/store';
 import { useSnackbar } from 'notistack';
 
 const LoginForm = () => {
     const { enqueueSnackbar } = useSnackbar();
     const dispatch = useDispatch();
     const isVisible = useSelector((state) => state.loginForm.isVisible);
+    const location = useLocation();
     const [isHovered, setIsHovered] = useState({
         email: false,
         password: false,
@@ -24,9 +25,16 @@ const LoginForm = () => {
     const { login } = useAuth()
     const navigate = useNavigate();
 
+
     useEffect(() => {
-        dispatch(showLoginForm());      
-    }, [dispatch]);
+        if (location.pathname === '/login') {
+            dispatch(showLoginForm());
+        } else {
+            dispatch(hideLoginForm());    
+        }
+    }, [location.pathname, dispatch]);
+
+
 
     const handleMouseEnter = (field) => {
         setIsHovered(prev => ({ ...prev, [field]: true }));
@@ -51,6 +59,9 @@ const LoginForm = () => {
             try {
                 const response = await postReq('/token/', credentialsData);
                 login(response.access, response.refresh);
+                hideLoginForm();
+                console.log(isVisible);
+                
                 navigate('/');
             } catch (error) {
                 console.error('Ошибка входа:', error);

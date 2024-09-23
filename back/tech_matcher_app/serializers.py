@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import CustomUser
+from .models import CustomUser, Smartphone
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -24,5 +24,8 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
         user.save()
         
         return user
-        
-        
+    
+class SmartphoneSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Smartphone
+        fields = "__all__"

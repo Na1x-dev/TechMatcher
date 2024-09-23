@@ -2,18 +2,22 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: 15vh;
 }
 
 .header-logo {
     font-size: 24px;
     font-weight: 700;
-
+    width: 15vw;
     background-color: #5C374C;
     display: flex;
     flex-direction: row;
+    margin-top: 4vh;
+    margin-bottom: 3vh;
 }
 
 .left-logo {
+    width: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,6 +28,7 @@
 }
 
 .right-logo {
+    width: 60%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,16 +54,17 @@
 
 .header-chapters {
     background-color: #F18805;
-    width: 60%;
+    width: 60vw;
     display: flex;
     flex-direction: row;
     align-items: center;
-    
+    margin-bottom: 8vh;
 }
 
 .header-profile {
     background-color: #833c64;
-    width: 15%;
+    width: 15vw;
+    margin-bottom: 6vh;
 }
 
 .header-chapter-button {

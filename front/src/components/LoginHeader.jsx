@@ -1,9 +1,10 @@
 import '../style/loginHeader.css'
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { showLoginForm, hideLoginForm } from '../redux/store';
 
 const LoginHeader = () => {
-    const isVisible = useSelector((state) => state.loginForm.isVisible);
+    let isVisible = useSelector((state) => state.loginForm.isVisible);
     const navigate = useNavigate();
 
     const toHome = () => {

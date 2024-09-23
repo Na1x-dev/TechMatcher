@@ -1,0 +1,57 @@
+.main-content {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.main-filters {
+    margin-top: 10vh;
+    width: 15%;
+    height: 60vh;
+    background-color: #985277;
+}
+
+.center-container {
+    width: 60%;
+
+    height: 600px;
+}
+
+.search-product {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-product-input {
+    max-width: none;
+    margin: 0;
+}
+
+
+.products-list {
+    margin-top: 5vh;
+    height: 75vh; /* Фиксированная высота */
+    overflow-y: auto; /* Вертикальная прокрутка */
+    overflow-x: hidden; /* Скрыть горизонтальную прокрутку */
+    scrollbar-width: none; 
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+/* Для WebKit-браузеров (Chrome, Safari) */
+.products-list::-webkit-scrollbar {
+    /* display: none; */
+}
+
+.right-panel {
+    background-color: #985277;
+    /* margin-top: 10vh; */
+    width: 15%;
+    height: 70vh;
+    opacity: 0.5;
+}
