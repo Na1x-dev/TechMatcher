@@ -3,11 +3,25 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import { getReq } from '../Api';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Menu, MenuItem, Button } from '@mui/material';
 
 const Header = () => {
     const navigate = useNavigate();
     const { user, logout, isAuthenticated } = useAuth()
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = (action) => {
+      setAnchorEl(null);
+      if (action) {
+        // console.log(Выбрано действие: ${action});
+        // Логика перехода
+      }
+    };
 
     const toHome = () => {
         navigate("/");
@@ -35,10 +49,10 @@ const Header = () => {
                     },
                 });
                 if (response.first_name != "" && response.last_name != "" && response.patronymic != "")
-                    document.querySelector('.header-user-name').textContent = 
-                capFrstLttr(response.last_name) + " " + 
-                capFrstLttr(response.first_name[0]) + ". " + 
-                capFrstLttr(response.patronymic[0]) + ".";
+                    document.querySelector('.header-user-name').textContent =
+                        capFrstLttr(response.last_name) + " " +
+                        capFrstLttr(response.first_name[0]) + ". " +
+                        capFrstLttr(response.patronymic[0]) + ".";
             }
         } catch (error) {
             console.error('Ошибка при получении пользователя:', error);
@@ -47,7 +61,8 @@ const Header = () => {
 
     useEffect(() => {
         showUser();
-      }, [user, isAuthenticated]);
+    }, [user, isAuthenticated]);
+
 
     return (
         <header className='header'>
@@ -65,8 +80,23 @@ const Header = () => {
             <div className='header-profile'>
                 {user ?
                     (
-                        <button className='header-user-name btn' onClick={logoutFunction}>admin a.a.</button>
-             
+
+                        // <button className='header-user-name btn' onClick={logoutFunction}>admin a.a.</button>
+                        <div><Button aria-controls="simple-menu" aria-haspopup="true" className='header-user-name btn' onClick={handleClick}>
+                            admin a.a
+                        </Button>
+                            <Menu
+                                id="simple-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={Boolean(anchorEl)}
+                                onClose={() => handleClose()}
+                                TransitionProps={{ timeout: 300 }} // Задаем время анимации
+                            >
+                                <MenuItem onClick={() => handleClose('Корзина')}>Корзина</MenuItem>
+                                <MenuItem onClick={() => handleClose('Профиль')}>Профиль</MenuItem>
+                                <MenuItem onClick={() => handleClose('Выход')}>Выход</MenuItem>
+                            </Menu></div>
                     ) :
                     (
                         // (!hideLoginButtonRoutes.includes(location.pathname) && (

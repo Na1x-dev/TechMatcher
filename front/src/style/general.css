@@ -1,9 +1,18 @@
+@font-face {
+    font-family: 'Blazma';
+    src: url('../fonts/SofiaSans-VF.ttf') format('ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
 body {
     margin: 0;
     background-color: #ffdece;
     color: #5c374c;
     min-height: 100vh;
-
+    /* font-family: 'Blazma', sans-serif; */
 }
 
 .app {
@@ -126,3 +135,4 @@ a {
 a:hover {}
 
 .container {}
+

@@ -15,7 +15,7 @@ INSERT_QUERY = """
         weight, screen_ratio, screen_protector, color_count,
         ppi, accum_type, accum_volume, charging_power,
         wireless_charging, bluetooth, audio_port, charge_port,
-        wifi, nfc, _5g, sim_count, sim_type, title, image_url, price
+        wifi, nfc, _5g, sim_count, sim_type, title, image_url, price, brand
     ) VALUES (%s) RETURNING id;
     """
 COLUMN_MAPPING = {
@@ -65,7 +65,8 @@ COLUMN_MAPPING = {
             "Формат SIM-карты": "sim_type",
             "Название":"title",
             "Картинка":"image_url",
-            "Стоимость":"price"
+            "Стоимость":"price",
+            "Бренд":"brand",
         }
 
 
@@ -115,9 +116,8 @@ def parse_object(url):
     data['image_url'] = soup.select_one(".js-gallery-zoom")['href'] if soup.select_one(".js-gallery-zoom") else "-"
     
     data['price'] = soup.select_one('div.offers-description__price a').text.strip() if soup.select_one('div.offers-description__price a') else "-"
-    
-    print('heyy', data['image_url'])
 
+    data['brand'] = soup.find_all("a", class_="breadcrumbs__link")[-1].find("span").text
     
     table = soup.find('table')
     

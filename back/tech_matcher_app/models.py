@@ -98,6 +98,7 @@ class Smartphone(models.Model):
     title = models.TextField()
     image_url = models.TextField()
     price = models.TextField(null=True, blank=True)
+    brand = models.TextField()
 
     def __str__(self):
         return f"{self.launch_year} - {self.os_version}"
