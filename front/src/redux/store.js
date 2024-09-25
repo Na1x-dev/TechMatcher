@@ -1,5 +1,6 @@
 import { configureStore, createSlice, applyMiddleware } from '@reduxjs/toolkit';
 import activeReducer from './activeSlice';
+import smartphoneReducer from './smartphoneSlice';
 
     const loginFormSlice = createSlice({
         name: 'login-form',
@@ -22,6 +23,7 @@ const store = configureStore({
     reducer: {
         active: activeReducer,
         loginForm: loginFormSlice.reducer,
+        smartphone: smartphoneReducer
     },
 });
 

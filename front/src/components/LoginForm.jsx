@@ -8,6 +8,7 @@ import { useDispatch,useSelector } from 'react-redux';
 import { setActive } from '../redux/activeSlice';
 import { showLoginForm, hideLoginForm } from '../redux/store';
 import { useSnackbar } from 'notistack';
+import { Button } from '@mui/material';
 
 const LoginForm = () => {
     const { enqueueSnackbar } = useSnackbar();
@@ -141,7 +142,9 @@ const LoginForm = () => {
                             />
                         </div>
                     </div>
-                    <button className='btn btn-primary login-button' onClick={handleSubmit} type="button">Войти</button>
+                    <Button className='btn btn-primary login-button'onClick={handleSubmit} >
+                        Войти
+                    </Button>
                 </div>
                 <div className='to-register-part-container' onClick={handleShowReg}>
                     <div className='to-register-part'  >

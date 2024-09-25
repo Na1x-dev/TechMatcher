@@ -90,7 +90,7 @@
 }
 
 
-.header-user-name{
+.header-user-name {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -102,7 +102,40 @@
     font-weight: 700;
 }
 
-.to-login-button{
+.to-login-button {
     width: 100%;
     height: 100%;
+}
+
+.header-profile-btn-container {
+    height: 100%;
+}
+
+
+.MuiMenu-list {
+    width: 15vw;
+    box-shadow: none !important;
+}
+
+.MuiPaper-root.MuiMenu-paper {
+    box-shadow: none !important;
+    /* Убираем тень */
+    left: 85vw !important;
+    background-color: #833c64;
+    border-radius: 0;
+}
+
+.MuiMenuItem-root {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    color: #F0A202 !important;
+    font-weight: 700 !important;
+    padding: 10px 0 !important;
+    transition-duration: 0.2s;
+}
+
+.MuiMenuItem-root:hover{
+    background-color: #F18805 !important;
+    color: #5C374C !important;
 }

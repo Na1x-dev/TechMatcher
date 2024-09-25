@@ -5,7 +5,9 @@
     font-style: normal;
 }
 
-
+:root{
+    --variant-textBg: #985277;
+}
 
 body {
     margin: 0;
@@ -33,19 +35,20 @@ h6 {
 }
 
 .btn {
-    display: inline-block;
-    border: 0;
+    display: inline-block !important;
+    border: 0 !important;
     cursor: pointer;
     transition: background-color 0.3s ease;
     background-color: #985277;
-    color: #F0A202;
-    font-weight: 700;
-    border-radius: 0;
-    padding: 15px 50px;
-    font-size: 18px;
+    color: #F0A202 !important;
+    text-transform: none !important;
+    font-weight: 700 !important;
+    border-radius: 0 !important;
+    padding: 15px 50px !important;
+    font-size: 16px;
 }
 
-.btn:hover, .btn:active, .btn:focus, .btn:hover:focus {
+.btn:hover, .btn:active, .btn:hover:focus {
     background-color: #5c374c;
     color: #F0A202;
 }

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { postReq } from '../Api';
 import { useAuth } from './AuthContext';
 import { useSnackbar } from 'notistack';
-
+import { Button } from '@mui/material';
 
 const RegistrationForm = () => {
     const { enqueueSnackbar } = useSnackbar();
@@ -69,11 +69,11 @@ const RegistrationForm = () => {
             handleError(error);
         }
     };
-    
+
     const arePasswordsMatching = () => {
         return credentials.password === credentials.confirmPassword;
     };
-    
+
     const registerUser = async () => {
         await postReq('/register/', {
             email: credentials.email,
@@ -84,34 +84,34 @@ const RegistrationForm = () => {
             password: credentials.password,
         });
     };
-    
+
     const loginUser = async () => {
         return await postReq('/token/', {
             email: credentials.email,
             password: credentials.password,
         });
     };
-    
+
     const handleError = (error) => {
         console.error('Произошла ошибка!', error);
         enqueueSnackbar('E-мейл уже используется или неверный формат', { variant: 'error' });
     };
-    
+
     const checkIsEmptyFields = () => {
         let flag = false;
         const form = document.querySelector('.registration-form-container');
         const fields = form.getElementsByClassName('form-input');
         for (let field of fields) {
-          if (field.value == '') {
-            field.classList.add('error-field');
-            flag = true;
-          }
-          else field.classList.remove('error-field');
+            if (field.value == '') {
+                field.classList.add('error-field');
+                flag = true;
+            }
+            else field.classList.remove('error-field');
         }
         if (flag)
             enqueueSnackbar('Не все поля заполнены', { variant: 'error' });
         return flag;
-      }
+    }
 
     return (
         <div className={`registration-form-container ${isActive ? 'active-form' : ''}`}>
@@ -239,7 +239,9 @@ const RegistrationForm = () => {
                         required
                     />
                 </div>
-                <button className='btn btn-primary register-button' onClick={handleSubmit} type="button">Зарегистрироваться</button>
+                <Button className='btn btn-primary register-button' onClick={handleSubmit} >
+                    Зарегистрироваться
+                </Button>
             </div>
         </div>
     );

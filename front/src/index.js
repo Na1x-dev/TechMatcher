@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store.js';
 import { SnackbarProvider } from 'notistack';
 import './style/notistack.css'
+import Product from './pages/Product.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -19,14 +20,15 @@ root.render(
     <Provider store={store}>
       <AuthProvider>
         <SnackbarProvider anchorOrigin={{
-          vertical: 'bottom', 
-          horizontal: 'right', 
+          vertical: 'bottom',
+          horizontal: 'right',
         }} maxSnack={3}>
           <Router>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route exact path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} />
+              <Route path="/product/:id" element={<Product />} />
             </Routes>
           </Router>
         </SnackbarProvider>

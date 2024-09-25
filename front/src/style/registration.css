@@ -95,7 +95,7 @@
 }
 
 .register-button {
-    margin: 30px 5% 0 5%;
+    margin: 30px 5% 0 5% !important;
     padding: 12px 50px;
     align-self: flex-end;
     

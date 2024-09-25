@@ -12,15 +12,15 @@ const Header = () => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
+        setAnchorEl(event.currentTarget);
     };
-  
+
     const handleClose = (action) => {
-      setAnchorEl(null);
-      if (action) {
-        // console.log(Выбрано действие: ${action});
-        // Логика перехода
-      }
+        setAnchorEl(null);
+        if (action) {
+            // console.log(Выбрано действие: ${action});
+            // Логика перехода
+        }
     };
 
     const toHome = () => {
@@ -82,9 +82,10 @@ const Header = () => {
                     (
 
                         // <button className='header-user-name btn' onClick={logoutFunction}>admin a.a.</button>
-                        <div><Button aria-controls="simple-menu" aria-haspopup="true" className='header-user-name btn' onClick={handleClick}>
-                            admin a.a
-                        </Button>
+                        <div className='header-profile-btn-container'>
+                            <Button aria-controls="simple-menu" aria-haspopup="true" className='header-user-name btn' onClick={handleClick}>
+                                admin a.a
+                            </Button>
                             <Menu
                                 id="simple-menu"
                                 anchorEl={anchorEl}
@@ -93,10 +94,12 @@ const Header = () => {
                                 onClose={() => handleClose()}
                                 TransitionProps={{ timeout: 300 }} // Задаем время анимации
                             >
-                                <MenuItem onClick={() => handleClose('Корзина')}>Корзина</MenuItem>
+                                
                                 <MenuItem onClick={() => handleClose('Профиль')}>Профиль</MenuItem>
-                                <MenuItem onClick={() => handleClose('Выход')}>Выход</MenuItem>
-                            </Menu></div>
+                                <MenuItem onClick={() => handleClose('Корзина')}>Корзина</MenuItem>
+                                <MenuItem onClick={logoutFunction}>Выход</MenuItem>
+                            </Menu>
+                        </div>
                     ) :
                     (
                         // (!hideLoginButtonRoutes.includes(location.pathname) && (

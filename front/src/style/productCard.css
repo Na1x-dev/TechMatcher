@@ -18,6 +18,8 @@
     width: 30%;
 }
 
+
+
 .card-text-container{
     width: 70%;
     padding: 40px;
@@ -26,6 +28,7 @@
     justify-content: space-between;
 
 }
+
 
 .card-info-container{
     display: flex;
