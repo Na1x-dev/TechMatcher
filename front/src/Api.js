@@ -1,12 +1,23 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8000/api', // базовый URL вашего API
+    baseURL: 'http://localhost:8000/api',
     headers: {
-        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Передача токена авторизации
+        // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Передача токена авторизации
         'Content-Type': 'application/json',
     }
 });
+
+const addAuthToken = () => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+        apiClient.defaults.headers['Authorization'] = `Bearer ${token}`;
+    } else {
+        delete apiClient.defaults.headers['Authorization']; 
+    }
+};
+
+addAuthToken();
 
 const postReq = async (endpoint, data) => {
     try {

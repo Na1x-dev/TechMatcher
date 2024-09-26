@@ -8,6 +8,8 @@ const MainContent = () => {
     const [smartphones, setSmartphones] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [searchItem, setSearchItem] = useState(''); 
+
 
     useEffect(() => {
         const fetchSmartphones = async () => {
@@ -24,6 +26,10 @@ const MainContent = () => {
         fetchSmartphones();
     }, []);
 
+    const filteredSmartphones = smartphones.filter(smartphone =>
+        smartphone.title.toLowerCase().includes(searchItem.toLowerCase())
+    );
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
 
@@ -32,10 +38,16 @@ const MainContent = () => {
             <div className='main-filters'></div>
             <div className='center-container'>
                 <div className='search-product'>
-                    <input className='form-input search-product-input' placeholder='Поиск' type="text" />
+                    <input 
+                    className='form-input search-product-input' 
+                    placeholder='Поиск' 
+                    type="text"
+                    value={searchItem}
+                    onChange={(e) => setSearchItem(e.target.value)}
+                     />
                 </div>
                 <div className='products-list'>
-                    {smartphones.map(smartphone => (
+                    {filteredSmartphones.map(smartphone => (
                         <ProductCard key={smartphone.id} smartphone={smartphone} />
                     ))}
                 </div>

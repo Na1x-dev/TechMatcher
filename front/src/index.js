@@ -12,6 +12,10 @@ import store from './redux/store.js';
 import { SnackbarProvider } from 'notistack';
 import './style/notistack.css'
 import Product from './pages/Product.js';
+import Basket from './pages/Basket.js';
+import Profile from './pages/Profile.js';
+import ProtectedRoute from './ProtectedRoute.js';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -29,6 +33,8 @@ root.render(
               <Route exact path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} />
               <Route path="/product/:id" element={<Product />} />
+              <Route path="/profile" element={<ProtectedRoute element={<Profile />}/>} />
+              <Route path="/basket" element={<ProtectedRoute element={<Basket />}/> } />
             </Routes>
           </Router>
         </SnackbarProvider>

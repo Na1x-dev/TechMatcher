@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 from django.utils import timezone
 from test.support.threading_helper import start_threads
+from django.conf import settings
 
 
 class CustomUserManager(BaseUserManager):
@@ -102,3 +103,21 @@ class Smartphone(models.Model):
 
     def __str__(self):
         return f"{self.launch_year} - {self.os_version}"
+
+class CartItem(models.Model):
+    smartphone = models.ForeignKey('smartphone', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    
+    def __str__(self):
+        return f"{self.smartphone.name} - {self.quantity}"
+
+
+class Cart(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    items = models.ManyToManyField(CartItem, blank=True)
+
+    def __str__(self):
+        return f"Корзина пользователя: {self.user.email}"
+
+    def total_price(self):
+        return sum(item.smartphone.price * item.quantity for item in self.items.all())

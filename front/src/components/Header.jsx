@@ -73,7 +73,7 @@ const Header = () => {
             </div>
             <div className='header-chapters'>
                 <div className='header-chapter-button active-chapter-button' >Смартфоны</div>
-                <div className='header-chapter-button' onClick={toLoginForm}>Наушники</div>
+                <div className='header-chapter-button'>Наушники</div>
                 <div className='header-chapter-button'>Фитнес браслеты</div>
                 <div className='header-chapter-button'>Зарядные устройства</div>
             </div>
@@ -95,8 +95,8 @@ const Header = () => {
                                 TransitionProps={{ timeout: 300 }} // Задаем время анимации
                             >
                                 
-                                <MenuItem onClick={() => handleClose('Профиль')}>Профиль</MenuItem>
-                                <MenuItem onClick={() => handleClose('Корзина')}>Корзина</MenuItem>
+                                <MenuItem onClick={() => navigate('/profile')}>Профиль</MenuItem>
+                                <MenuItem onClick={() => navigate('/basket')}>Корзина</MenuItem>
                                 <MenuItem onClick={logoutFunction}>Выход</MenuItem>
                             </Menu>
                         </div>
