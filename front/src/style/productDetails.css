@@ -1,0 +1,120 @@
+.pd-container{
+    overflow-y: auto;
+    overflow-x: hidden; 
+    scrollbar-width: none; 
+    gap: 40px;
+    display: flex;
+    flex-direction: column;
+    height: 85%;
+    padding-bottom: 20vh;
+}
+
+.dt-section{
+    display: flex;
+    flex-direction: row;
+    /* min-height: 50vh; */
+
+    width: 70vw;
+    margin: 0 15vw 0 15vw;
+}
+
+.image-part{
+    width: 40%;
+    height: 100%;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F0A202;
+}
+
+.text-part{
+    width: 60%;
+    height: 100%;
+    padding: 40px;
+    background-color: #833c64;
+    color: #F18805;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* main info */
+.section-name{
+    color: #F0A202;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.main-info{
+    display: flex;
+    min-height: 50vh;
+}
+
+.main-info .image-part{
+    background-color: #fff;
+}
+
+.main-info-text-cont{
+    margin-top: 40px;
+    padding: 20px;
+}
+
+.main-info-parts{
+    display: flex;
+    flex-direction: row;
+}
+
+.left-info{
+    padding-left: 20px;
+}
+
+.right-info{
+    padding-left: 20px;
+}
+
+.main-sec-btn{
+    /* position: relative; */
+    right: 20px;
+    bottom: 80px;
+    align-self: flex-end;
+    justify-content: end;
+    background-color: #F18805 !important;
+    color: #5C374C !important;
+}
+
+.main-sec-btn:hover{
+    background-color: #cf7405 !important;
+}
+
+/* display */
+.display-sc .text-part, .camera-sc .text-part, .soc-sc .text-part{
+    background-color: #985277;
+    align-items: end;
+    display: flex;
+    flex-direction: column;
+}
+
+.display-sc .section-name, .camera-sc .section-name, .soc-sc .section-name{
+    font-size: 28px;
+    margin-bottom: 40px;
+}
+
+.display-sc p, .camera-sc p, .soc-sc p{
+    font-weight: 700;
+    font-size: 20px;
+}
+
+/* camera */
+.camera-sc .text-part{
+    background-color: #833c64;
+    align-items: start;
+    color: #F0A202;
+}
+
+.camera-sc .section-name{
+    color: #cf7405;
+}
+
+/* soc */

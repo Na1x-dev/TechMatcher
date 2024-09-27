@@ -34,19 +34,15 @@
 
 .products-list {
     margin-top: 10vh;
-    height: 70vh; /* Фиксированная высота */
-    overflow-y: auto; /* Вертикальная прокрутка */
-    overflow-x: hidden; /* Скрыть горизонтальную прокрутку */
+    height: 70vh; 
+    overflow-y: auto;
+    overflow-x: hidden; 
     scrollbar-width: none; 
     display: flex;
     flex-direction: column;
     gap: 2vh;
 }
 
-/* Для WebKit-браузеров (Chrome, Safari) */
-.products-list::-webkit-scrollbar {
-    /* display: none; */
-}
 
 .right-panel {
     /* background-color: #985277; */

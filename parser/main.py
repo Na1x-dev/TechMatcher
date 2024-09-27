@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import psycopg2
+import time
 
 DB_NAME = "tech_matcher"
 URL = "https://catalog.onliner.by/mobile?mobile_type%5B0%5D=smartphone&mobile_type%5Boperation%5D=union&page="
@@ -137,9 +138,15 @@ def parse_object(url):
                 
         data['nfc'] = bool(soup.select_one('td:contains("NFC") + td span.i-tip'))  # True если есть i-tip
         data['_5g'] = bool(soup.select_one('td:contains("5G") + td span.i-tip'))  # True если есть i-tip
-                
-        insert_data(tuple(data[col] for col in COLUMN_MAPPING.values()))
-        print("Данные сохранены в базе данных.")
+        
+        try:
+            if 2019 <= int(data['launch_year'][:4]) <= 2024:
+                insert_data(tuple(data[col] for col in COLUMN_MAPPING.values()))
+                print("Данные сохранены в базе данных.")
+            else:
+                print(data['launch_year'])
+        except ValueError:
+            print("error: " + data["launch_year"])
     else:
         print("Таблица не найдена на странице.")
 
@@ -147,11 +154,15 @@ def parse_object(url):
 def main():
     page = 1
     while True:
+        print('1')
         response = requests.get(URL + str(page))
+        print('2')
         if response.status_code != 200:
             print("Нет больше страниц для парсинга.")
             break
+        print('3')
         parse_mobile_page(URL + str(page))
+        print('4' + ' страница номер ' +str(page))
         page += 1
 
 
