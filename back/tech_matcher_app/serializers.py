@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import CustomUser, Smartphone, Cart, CartItem
+from .models import CustomUser, Smartphone, Basket, BasketItem
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -30,14 +30,13 @@ class SmartphoneSerializer(serializers.ModelSerializer):
         model = Smartphone
         fields = "__all__"
         
-class CartItemSerializer(serializers.ModelSerializer):
+class BasketItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CartItem
+        model = BasketItem
         fields = '__all__'
 
-class CartSerializer(serializers.ModelSerializer):
-    items = CartItemSerializer(many=True)
-
+class BasketSerializer(serializers.ModelSerializer):
+    items = BasketItemSerializer(many=True)
     class Meta:
-        model = Cart
+        model = Basket
         fields = '__all__'

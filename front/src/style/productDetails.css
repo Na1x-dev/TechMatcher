@@ -89,32 +89,31 @@
 }
 
 /* display */
-.display-sc .text-part, .camera-sc .text-part, .soc-sc .text-part{
+.display-sc .text-part, .camera-sc .text-part, .soc-sc .text-part, .body-sc .text-part, .accum-sc .text-part, .interfaces-sc .text-part{
     background-color: #985277;
     align-items: end;
     display: flex;
     flex-direction: column;
 }
 
-.display-sc .section-name, .camera-sc .section-name, .soc-sc .section-name{
+.display-sc .section-name, .camera-sc .section-name, .soc-sc .section-name, .body-sc .section-name, .accum-sc .section-name, .interfaces-sc .section-name{
     font-size: 28px;
     margin-bottom: 40px;
 }
 
-.display-sc p, .camera-sc p, .soc-sc p{
+.display-sc p, .camera-sc p, .soc-sc p, .body-sc p, .accum-sc p, .interfaces-sc p{
     font-weight: 700;
     font-size: 20px;
 }
 
 /* camera */
-.camera-sc .text-part{
+.camera-sc .text-part, .body-sc .text-part, .interfaces-sc .text-part{
     background-color: #833c64;
     align-items: start;
     color: #F0A202;
 }
 
-.camera-sc .section-name{
+.camera-sc .section-name, .body-sc .section-name, .interfaces-sc .section-name{
     color: #cf7405;
 }
 
-/* soc */

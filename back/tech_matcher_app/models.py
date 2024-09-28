@@ -35,8 +35,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
 
-    USERNAME_FIELD = 'email'  # Поле для аутентификации
-    REQUIRED_FIELDS = []  # Поля, которые обязательны при создании суперпользователя
+    USERNAME_FIELD = 'email' 
+    REQUIRED_FIELDS = [] 
 
     objects = CustomUserManager()
 
@@ -104,7 +104,7 @@ class Smartphone(models.Model):
     def __str__(self):
         return f"{self.launch_year} - {self.os_version}"
 
-class CartItem(models.Model):
+class BasketItem(models.Model):
     smartphone = models.ForeignKey('smartphone', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     
@@ -112,9 +112,9 @@ class CartItem(models.Model):
         return f"{self.smartphone.name} - {self.quantity}"
 
 
-class Cart(models.Model):
+class Basket(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    items = models.ManyToManyField(CartItem, blank=True)
+    items = models.ManyToManyField(BasketItem, blank=True)
 
     def __str__(self):
         return f"Корзина пользователя: {self.user.email}"

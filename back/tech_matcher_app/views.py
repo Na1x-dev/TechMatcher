@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view
 
 from .models import  CustomUser, Smartphone
 from .serializers import  CustomUserSerializer, CustomUserCreateSerializer, SmartphoneSerializer
+from pip._vendor.requests.api import request
 
 
 
@@ -57,4 +58,15 @@ class SmartphoneList(APIView):
         smartphones = Smartphone.objects.all()
         serializer = SmartphoneSerializer(smartphones, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class SmartphoneById(APIView):
+    def get(self, request, smartphone_id):
+        try:
+            smartphone = Smartphone.objects.get(id=smartphone_id)
+            serializer_data = SmartphoneSerializer(smartphone)
+            return Response(serializer_data.data)
+        except Smartphone.DoesNotExist:
+            return Response({'detail': 'Smartphone not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        # smartphones.objects.get(pk=)
         

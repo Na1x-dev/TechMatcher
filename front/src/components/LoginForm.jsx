@@ -61,7 +61,6 @@ const LoginForm = () => {
                 const response = await postReq('/token/', credentialsData);
                 login(response.access, response.refresh);
                 hideLoginForm();
-                console.log(isVisible);
                 
                 navigate('/');
             } catch (error) {
