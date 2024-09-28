@@ -1,0 +1,31 @@
+.not-found{
+    height: 40vh;
+    width: 40vw;
+    background-color: #F0A202;
+    margin: 20vh 0 40vh 60vw;
+    display: flex;
+    flex-direction: row;
+    font-weight: 700;
+    font-size: 64px;
+}
+
+.nf-left-part{
+width: 30%;
+padding: 40px;
+background-color: #833c64;
+color: #F18805;
+
+display: flex;
+justify-content: center;
+align-items: start;
+}
+
+.nf-right-part{
+    padding: 40px;
+    width: 70%;
+    
+}
+
+.login-header{
+    left: 0;
+}

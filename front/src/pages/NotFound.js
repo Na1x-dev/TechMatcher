@@ -1,13 +1,13 @@
+import Footer from "../components/Footer";
+import LoginHeader from "../components/LoginHeader";
+import NotFound from "../components/NotFound";
 
-const NotFound = () => (
-    <div>not found
-      {/* <header> */}
-      {/* <Link to="/login">Login</Link> {/* Ссылка для перехода на страницу входа */}
-      {/* <Link to="/register">Register</Link> Ссылка для перехода на страницу регистрации */}
-      {/* </header> */}
-      {/* <ApartmentSearchForm /> */}
-      {/* <ApartmentList apartments={apartments} /> */}
-    </div>
-  );
+const NotFoundPage = () => (
+  <div className="app">
+    <LoginHeader></LoginHeader>
+    <NotFound></NotFound>
+    <Footer></Footer>
+  </div>
+);
 
-  export default NotFound
+export default NotFoundPage

@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login.js'
 import Home from './pages/Home.js'
-import NotFound from './pages/NotFound'
+import NotFoundPage from './pages/NotFound.js'
 import { AuthProvider } from './components/AuthContext.jsx';
 import { Provider } from 'react-redux';
 import store from './redux/store.js';
@@ -31,7 +31,7 @@ root.render(
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route exact path="/" element={<Home />} />
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={<NotFoundPage />} />
               <Route path="/product/:id" element={<Product />} />
               <Route path="/profile" element={<ProtectedRoute element={<Profile />}/>} />
               <Route path="/basket" element={<ProtectedRoute element={<Basket />}/> } />
