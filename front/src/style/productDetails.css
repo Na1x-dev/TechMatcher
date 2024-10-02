@@ -1,7 +1,7 @@
-.pd-container{
+.pd-container {
     overflow-y: auto;
-    overflow-x: hidden; 
-    scrollbar-width: none; 
+    overflow-x: hidden;
+    scrollbar-width: none;
     gap: 40px;
     display: flex;
     flex-direction: column;
@@ -9,7 +9,7 @@
     padding-bottom: 20vh;
 }
 
-.dt-section{
+.dt-section {
     display: flex;
     flex-direction: row;
     /* min-height: 50vh; */
@@ -18,7 +18,7 @@
     margin: 0 15vw 0 15vw;
 }
 
-.image-part{
+.image-part {
     width: 40%;
     height: 100%;
     padding: 40px;
@@ -28,7 +28,7 @@
     background-color: #F0A202;
 }
 
-.text-part{
+.text-part {
     width: 60%;
     height: 100%;
     padding: 40px;
@@ -41,40 +41,40 @@
 
 
 /* main info */
-.section-name{
+.section-name {
     color: #F0A202;
     font-size: 18px;
     margin-bottom: 20px;
 }
 
-.main-info{
+.main-info {
     display: flex;
     min-height: 50vh;
 }
 
-.main-info .image-part{
+.main-info .image-part {
     background-color: #fff;
 }
 
-.main-info-text-cont{
+.main-info-text-cont {
     margin-top: 40px;
     padding: 20px;
 }
 
-.main-info-parts{
+.main-info-parts {
     display: flex;
     flex-direction: row;
 }
 
-.left-info{
+.left-info {
     padding-left: 20px;
 }
 
-.right-info{
+.right-info {
     padding-left: 20px;
 }
 
-.main-sec-btn{
+.main-sec-btn {
     /* position: relative; */
     right: 20px;
     bottom: 80px;
@@ -84,36 +84,65 @@
     color: #5C374C !important;
 }
 
-.main-sec-btn:hover{
+.main-sec-btn:hover {
     background-color: #cf7405 !important;
 }
 
 /* display */
-.display-sc .text-part, .camera-sc .text-part, .soc-sc .text-part, .body-sc .text-part, .accum-sc .text-part, .interfaces-sc .text-part{
+.display-sc .text-part,
+.camera-sc .text-part,
+.soc-sc .text-part,
+.body-sc .text-part,
+.accum-sc .text-part,
+.interfaces-sc .text-part {
     background-color: #985277;
     align-items: end;
     display: flex;
     flex-direction: column;
 }
 
-.display-sc .section-name, .camera-sc .section-name, .soc-sc .section-name, .body-sc .section-name, .accum-sc .section-name, .interfaces-sc .section-name{
+.display-sc .section-name,
+.camera-sc .section-name,
+.soc-sc .section-name,
+.body-sc .section-name,
+.accum-sc .section-name,
+.interfaces-sc .section-name {
     font-size: 28px;
     margin-bottom: 40px;
 }
 
-.display-sc p, .camera-sc p, .soc-sc p, .body-sc p, .accum-sc p, .interfaces-sc p{
+.display-sc p,
+.camera-sc p,
+.soc-sc p,
+.body-sc p,
+.accum-sc p,
+.interfaces-sc p {
     font-weight: 700;
     font-size: 20px;
 }
 
 /* camera */
-.camera-sc .text-part, .body-sc .text-part, .interfaces-sc .text-part{
+.camera-sc .text-part,
+.body-sc .text-part,
+.interfaces-sc .text-part {
     background-color: #833c64;
     align-items: start;
     color: #F0A202;
 }
 
-.camera-sc .section-name, .body-sc .section-name, .interfaces-sc .section-name{
+.camera-sc .section-name,
+.body-sc .section-name,
+.interfaces-sc .section-name {
     color: #cf7405;
 }
 
+.image-part svg path,
+.image-part svg rect,
+.image-part svg line,
+.image-part svg circle {
+    stroke: #5C374C;
+}
+
+.soc-sc .image-part svg path{
+    fill: #5C374C;
+}

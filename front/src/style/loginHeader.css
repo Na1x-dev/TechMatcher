@@ -17,8 +17,7 @@
     font-weight: 700;
     background-color: antiquewhite;
     display: flex;
-    flex-direction: row;
-    
+    flex-direction: row;    
 }
 
 .left-logo{
