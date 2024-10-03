@@ -79,16 +79,32 @@
     font-weight: 700;
     text-align: center;
     color: #5C374C;
+    border-bottom: 8px solid #F18805;
+    border-top: 8px solid #F18805;
+    transition-duration: 0.3s;
+}
+
+.header-chapter-button:hover {
+    background-color: #985277;
+    color: #F0A202;
+    border-top: 8px solid #985277;
+    border-bottom: 8px solid #985277;
+    cursor: pointer;
 }
 
 .active-chapter-button {
     background-color: #5C374C;
-    /* background-color: #833c64; */
     color: #ffdece;
-    border-bottom: 8px solid #F18805;
     color: #F0A202;
+    border-top: 8px solid #5C374C;
 }
 
+.active-chapter-button:hover {
+    background-color: #5C374C;
+    border-top: 8px solid #5C374C;
+    cursor: default;
+    border-bottom: 8px solid #F18805;
+}
 
 .header-user-name {
     display: flex;
@@ -135,7 +151,7 @@
     transition-duration: 0.2s;
 }
 
-.MuiMenuItem-root:hover{
+.MuiMenuItem-root:hover {
     background-color: #F18805 !important;
     color: #5C374C !important;
 }
