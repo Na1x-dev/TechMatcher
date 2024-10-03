@@ -143,6 +143,6 @@
     stroke: #5C374C;
 }
 
-.soc-sc .image-part svg path{
+.soc-sc .image-part svg path, .accum-sc .image-part svg path{
     fill: #5C374C;
 }
