@@ -6,12 +6,14 @@ import { Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { getReq } from '../Api';
 import { setSmartphone } from '../redux/smartphoneSlice';
+import { useNavigate } from 'react-router-dom';
 
 const ProductDetails = () => {
     const { id } = useParams();
     const { smartphone } = useSelector((state) => state.smartphone);
     const [imgSrc, setImgSrc] = useState(defaultImage);;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleError = () => {
         setImgSrc(defaultImage);
@@ -26,7 +28,7 @@ const ProductDetails = () => {
                 }
             }
             catch (error) {
-                console.log(error);
+                navigate(`*`);
             }
         }
         if (!smartphone) {
