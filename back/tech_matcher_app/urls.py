@@ -2,6 +2,9 @@ from django.urls import include, path
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import RegisterView, UserProfileAPIView, SmartphoneList, SmartphoneById
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 router = routers.DefaultRouter()
 
@@ -14,3 +17,6 @@ urlpatterns = [
     path('smartphones/', SmartphoneList.as_view(), name='smartphone-list'), 
     path('smartphones/<int:smartphone_id>/', SmartphoneById.as_view(), name='smartphone-by-id')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -31,6 +31,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     patronymic = models.CharField(max_length=30, verbose_name='Отчество', blank=True)
     email = models.EmailField(unique=True, verbose_name='Электронная почта')
     phone_number = models.CharField(max_length=15, verbose_name='Номер телефона', blank=True)
+    image = models.ImageField(upload_to='images/') 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
