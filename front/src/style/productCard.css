@@ -1,6 +1,7 @@
 .product-card{
-    height: 25vh;
-    min-height: 25vh;
+    position: relative;
+    height: 30vh;
+    min-height: 30vh;
     background-color: #F0A202;
     width: 100%;
     display: flex;
@@ -34,6 +35,9 @@
     display: flex;
     flex-direction: column;
     /* align-self: flex-end; */
+    height: 100%;
+    justify-content: end;
+    padding: 20px;
 }
 
 .card-btn{
@@ -41,6 +45,9 @@
 }
 
 .card-btn-container{
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
     display: flex;
     flex-direction: row;
     justify-content: end;
@@ -52,10 +59,12 @@
 }
 
 .card-p{
+    
     display: flex;
     flex-direction: column;
-    margin: 10px  0 0 0;
+    margin: 10px  0 0 20px;
     /* font-weight: 700; */
+    width: 10vw;
     justify-content: flex-end;
     
 }

@@ -37,8 +37,9 @@ const ProductCard = ({ smartphone }) => {
             <div className='card-text-container'>
                 <h3 className='card-header-text'>{smartphone.title}</h3>
                 <div className='card-info-container'>
-                    <p className='card-p'>{smartphone.launch_year} - Диагональ: {smartphone.screen_size} - Камера: {smartphone.main_camera_mp}</p>
-                    <p>Стоимость - {smartphone.price === '-' ? 'нет в наличии' : smartphone.price}</p>
+                    <p className='card-p'>Диагональ  {smartphone.screen_size}</p>
+                    <p className='card-p'>Камера {smartphone.main_camera_mp}</p>
+                    <p className='card-p'>{smartphone.price === '-' ? 'Нет в наличии' : smartphone.price}</p>
                 </div>
                 <div className='card-btn-container'>
                     <Button className='btn card-btn' onClick={handleDetailsClick}>
