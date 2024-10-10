@@ -1,0 +1,41 @@
+.profile {
+    /* background-color: brown; */
+    width: 60vw;
+    height: 60vh;
+    margin: 0 20vw;
+    display: flex;
+    gap: 30px;
+}
+
+.img-container {
+    width: 40%;
+    height: 80%;
+    background-color: #fff;
+}
+
+.user-info-container {
+    width: 60%;
+    height: 100%;
+    background-color: #F0A202;
+    padding: 40px;
+}
+
+.user-info-container h2{
+    margin-bottom: 40px;
+}
+
+.user-info {
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.user-info-question {
+    color: #833c64;
+    font-size: 18px;
+}
+
+.user-info-answer {
+    font-size: 18px;
+}

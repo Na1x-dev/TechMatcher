@@ -52,6 +52,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = 'Пользователи'
 
 
+  
+
 class Smartphone(models.Model):
     launch_year = models.TextField()
     os_version = models.TextField()
@@ -101,6 +103,8 @@ class Smartphone(models.Model):
     image_url = models.TextField()
     price = models.TextField(null=True, blank=True)
     brand = models.TextField()
+
+    
 
     def __str__(self):
         return f"{self.launch_year} - {self.os_version}"

@@ -16,6 +16,8 @@
 .center-container {
     width: 60%;
     background-color: #fff3f3;
+    
+    padding: 20px;
     /* height: 600px; */
 }
 
@@ -34,7 +36,7 @@
 
 .products-list {
     margin-top: 5vh;
-    height: 75vh; 
+    height: 70vh; 
     overflow-y: auto;
     overflow-x: hidden; 
     scrollbar-width: none; 
@@ -50,4 +52,10 @@
     width: 15%;
     height: 70vh;
     opacity: 0.5;
+}
+
+.pagination-buttons{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 100px;
 }

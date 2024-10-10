@@ -11,6 +11,7 @@ const Header = () => {
     const { user, logout, isAuthenticated } = useAuth()
     const [anchorEl, setAnchorEl] = useState(null);
 
+    
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -50,9 +51,7 @@ const Header = () => {
                 });
                 if (response.first_name != "" && response.last_name != "" && response.patronymic != "")
                     document.querySelector('.header-user-name').textContent =
-                        capFrstLttr(response.last_name) + " " +
-                        capFrstLttr(response.first_name[0]) + ". " +
-                        capFrstLttr(response.patronymic[0]) + ".";
+                        capFrstLttr(response.first_name)
             }
         } catch (error) {
             console.error('Ошибка при получении пользователя:', error);
