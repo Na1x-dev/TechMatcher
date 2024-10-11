@@ -47,6 +47,7 @@ class UserProfileAPIView(APIView):
                 'last_name': user.last_name,
                 'patronymic': user.patronymic,
                 'phone_number': user.phone_number,
+                'image':user.image,
             }
             return Response(user_data)
         except CustomUser.DoesNotExist:

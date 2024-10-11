@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import '../style/profile.css'
 import { useAuth } from './AuthContext';
 import { getReq } from '../Api';
+import defaultImage from '../images/123.svg';
 
 
 const Profile = () => {
     const { user } = useAuth();
     const [userInfo, setUserInfo] = useState(null)
+    const [imgSrc, setImgSrc] = useState(defaultImage);
+
 
     const getUserInfo = async () => {
         try {
@@ -24,19 +27,43 @@ const Profile = () => {
     };
 
     const capFrstLttr = (string) => {
+        if (!string) return '';
         return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
+    const handleError = () => {
+        setImgSrc(defaultImage);
     };
 
     useEffect(() => {
         getUserInfo();
-        console.log(userInfo);
-        
     }, [user]);
 
 
     return (
         <div className='profile'>
-            <div className='img-container'></div>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+                className='img-container'
+            >
+
+
+                <img
+                    src={imgSrc}
+                    alt={`Изображение ${user.first_name}`}
+                    onError={handleError}
+                    style={{
+                        height: '100%',
+                        maxWidth: '20vw',
+                    }}
+                />
+            </div>
+
             <div className='user-info-container'>
                 <h2>Профиль</h2>
                 <div className='user-info'>
