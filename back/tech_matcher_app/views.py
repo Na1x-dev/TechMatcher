@@ -36,20 +36,12 @@ class RegisterView(generics.CreateAPIView):
 
 class UserProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request, user_id):
         try:
             user = CustomUser.objects.get(id=user_id)
-            user_data = {
-                'id': user.id,
-                'email': user.email,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'patronymic': user.patronymic,
-                'phone_number': user.phone_number,
-                'image':user.image,
-            }
-            return Response(user_data)
+            serializer = CustomUserSerializer(user)  # Используем сериализатор для преобразования данных
+            return Response(serializer.data)  # Возвращаем сериализованные данные
         except CustomUser.DoesNotExist:
             return Response({'detail': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
     

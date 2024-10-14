@@ -53,8 +53,9 @@ const ProductDetails = () => {
                         alt={`Изображение ${smartphone.title}`}
                         onError={handleError}
                         style={{
-                            height: '100%',
-                            maxWidth: '27vw',
+                            maxWidth: '100%',
+                            maxHeight: '100%',
+                            display: 'block',
                         }}
                     />
                 </div>

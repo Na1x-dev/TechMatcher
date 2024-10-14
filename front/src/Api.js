@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const baseURL = 'http://localhost:8000/api';
+
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: baseURL,
     headers: {
         // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Передача токена авторизации
         'Content-Type': 'application/json',
@@ -55,4 +57,4 @@ const deleteReq = async (endpoint) => {
     }
 };
 
-export { postReq, getReq, putReq, deleteReq };
+export { postReq, getReq, putReq, deleteReq, baseURL };

@@ -17,7 +17,4 @@ urlpatterns = [
     path('smartphones/', SmartphonePaginatedList.as_view(), name='smartphone-paginated-list'),
     path('smartphones/all', SmartphoneList.as_view(), name='smartphone-list'), 
     path('smartphones/<int:smartphone_id>/', SmartphoneById.as_view(), name='smartphone-by-id')
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

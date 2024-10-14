@@ -29,8 +29,9 @@ const ProductCard = ({ smartphone }) => {
                     alt={`Изображение ${smartphone.title}`}
                     onError={handleError}
                     style={{
-                        height: '100%',
-                        maxWidth: '12vw',
+                        maxWidth: '100%',
+                        maxHeight: '100%',
+                        display: 'block',
                     }}
                 />
             </div>

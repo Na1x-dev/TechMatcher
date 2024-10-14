@@ -1,6 +1,6 @@
 import '../style/header.css'
 import { useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import { getReq } from '../Api';
 import { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ const Header = () => {
     const { user, logout, isAuthenticated } = useAuth()
     const [anchorEl, setAnchorEl] = useState(null);
 
-    
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -71,10 +71,11 @@ const Header = () => {
                 <div className='right-logo'>Matcher</div>
             </div>
             <div className='header-chapters'>
-                <div className='header-chapter-button active-chapter-button' >Смартфоны</div>
-                <div className='header-chapter-button'>Наушники</div>
-                <div className='header-chapter-button'>Фитнес браслеты</div>
-                <div className='header-chapter-button'>Зарядные устройства</div>
+                {/*  active-chapter-button */}
+                <NavLink to='/' className={({ isActive }) => "header-chapter-button" + (isActive ? " active-chapter-button" : "")}>Смартфоны</NavLink>
+                <NavLink to='/headphones' className={({ isActive }) => "header-chapter-button" + (isActive ? " active-chapter-button" : "")}>Наушники</NavLink>
+                <NavLink to='/fitness-bracelets' className={({ isActive }) => "header-chapter-button" + (isActive ? " active-chapter-button" : "")}>Фитнес браслеты</NavLink>
+                <NavLink to='/chargers' className={({ isActive }) => "header-chapter-button" + (isActive ? " active-chapter-button" : "")}>Зарядные устройства</NavLink>
             </div>
             <div className='header-profile'>
                 {user ?
@@ -93,7 +94,6 @@ const Header = () => {
                                 onClose={() => handleClose()}
                                 TransitionProps={{ timeout: 300 }} // Задаем время анимации
                             >
-                                
                                 <MenuItem onClick={() => navigate('/profile')}>Профиль</MenuItem>
                                 <MenuItem onClick={() => navigate('/basket')}>Корзина</MenuItem>
                                 <MenuItem onClick={logoutFunction}>Выход</MenuItem>

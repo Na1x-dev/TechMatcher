@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import '../style/profile.css'
 import { useAuth } from './AuthContext';
-import { getReq } from '../Api';
+import { getReq, baseURL } from '../Api';
 import defaultImage from '../images/123.svg';
-
 
 const Profile = () => {
     const { user } = useAuth();
-    const [userInfo, setUserInfo] = useState(null)
+    const [userInfo, setUserInfo] = useState(null);
     const [imgSrc, setImgSrc] = useState(defaultImage);
-
+    
 
     const getUserInfo = async () => {
         try {
@@ -19,7 +18,7 @@ const Profile = () => {
                         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     },
                 });
-                setUserInfo(response)
+                setUserInfo(response);
             }
         } catch (error) {
             console.error('Ошибка при получении пользователя:', error);
@@ -35,10 +34,16 @@ const Profile = () => {
         setImgSrc(defaultImage);
     };
 
+
     useEffect(() => {
         getUserInfo();
     }, [user]);
-
+  
+    useEffect(() => {
+        if (userInfo) {
+            setImgSrc(baseURL + userInfo.image);
+        }
+    }, [userInfo]);
 
     return (
         <div className='profile'>
@@ -49,17 +54,15 @@ const Profile = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}
-                className='img-container'
-            >
-
-
+                className='img-container'>
                 <img
                     src={imgSrc}
-                    alt={`Изображение ${user.first_name}`}
+                    alt={`Изображение ${capFrstLttr(userInfo?.first_name)}`}
                     onError={handleError}
                     style={{
                         height: '100%',
-                        maxWidth: '20vw',
+                        maxWidth: '100%',
+                        objectFit: 'cover',
                     }}
                 />
             </div>
