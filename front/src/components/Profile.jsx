@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../style/profile.css'
 import { useAuth } from './AuthContext';
-import { getReq, baseURL } from '../Api';
+import { getReq, baseURL, putReq } from '../Api';
 import defaultImage from '../images/123.svg';
 
 const Profile = () => {
@@ -13,11 +13,7 @@ const Profile = () => {
     const getUserInfo = async () => {
         try {
             if (user != null && userInfo == null) {
-                const response = await getReq(`users/${user.user_id}/`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-                    },
-                });
+                const response = await getReq(`users/${user.user_id}/`);
                 setUserInfo(response);
             }
         } catch (error) {
@@ -34,6 +30,35 @@ const Profile = () => {
         setImgSrc(defaultImage);
     };
 
+    const handleImageChange = (event) => {
+        // const file = event.target.files[0];
+        // if (file) {
+            // const formData = new FormData();
+            // formData.append('image', file);
+            
+            try {
+                if (user != null && userInfo == null) {
+                    const response = putReq(`users/${user.user_id}/`, userInfo);
+                }
+            } catch (error) {
+                console.error('Ошибка при получении пользователя:', error);
+            }
+        //     postReq(users/${user.user_id}/upload-image/, formData, {
+        //         headers: {
+        //             'Authorization': Bearer ${localStorage.getItem('accessToken')},
+        //             'Content-Type': 'multipart/form-data',
+        //         },
+        //     })
+        //     .then(response => {
+        //         // Обновите состояние с новым изображением
+        //         setImgSrc(baseURL + response.data.image);
+        //         setUserInfo(prev => ({ ...prev, image: response.data.image }));
+        //     })
+        //     .catch(error => {
+        //         console.error('Ошибка при загрузке изображения:', error);
+        //     });
+        // }
+    };
 
     useEffect(() => {
         getUserInfo();
@@ -90,6 +115,8 @@ const Profile = () => {
                     <div className='user-info-answer'>{userInfo?.phone_number}</div>
                 </div>
             </div>
+
+            <input className='btn' onClick={handleImageChange}>Сохранить</input>
         </div>
     );
 };

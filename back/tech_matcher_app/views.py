@@ -40,10 +40,21 @@ class UserProfileAPIView(APIView):
     def get(self, request, user_id):
         try:
             user = CustomUser.objects.get(id=user_id)
-            serializer = CustomUserSerializer(user)  # Используем сериализатор для преобразования данных
-            return Response(serializer.data)  # Возвращаем сериализованные данные
+            serializer = CustomUserSerializer(user)  
+            return Response(serializer.data) 
         except CustomUser.DoesNotExist:
             return Response({'detail': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
+    def put(self, request, user_id):
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            serializer = CustomUserSerializer(user, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except CustomUser.DoesNotExist:
+            return Response({'detail':'User not found'}, status=status.HTTP_404_NOT_FOUND)    
     
     
 class SmartphonePagination(PageNumberPagination):
