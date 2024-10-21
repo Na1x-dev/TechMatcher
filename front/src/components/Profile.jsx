@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../style/profile.css'
 import { useAuth } from './AuthContext';
 import { getReq, baseURL, putReq } from '../Api';
 import defaultImage from '../images/123.svg';
+import { useSnackbar } from 'notistack';
 
 const Profile = () => {
     const { user } = useAuth();
     const [userInfo, setUserInfo] = useState(null);
     const [imgSrc, setImgSrc] = useState(defaultImage);
-    
+    const { enqueueSnackbar } = useSnackbar();
+
+    const fileInputRef = React.createRef();
+
 
     const getUserInfo = async () => {
         try {
@@ -30,44 +34,61 @@ const Profile = () => {
         setImgSrc(defaultImage);
     };
 
-    const handleImageChange = (event) => {
-        // const file = event.target.files[0];
-        // if (file) {
-            // const formData = new FormData();
-            // formData.append('image', file);
-            
-            try {
-                if (user != null && userInfo == null) {
-                    const response = putReq(`users/${user.user_id}/`, userInfo);
-                }
-            } catch (error) {
-                console.error('Ошибка при получении пользователя:', error);
+    const handleButtonClick = () => {
+        fileInputRef.current.click();
+    }
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        console.log('Selected file:', file);
+        if (file) {
+            const validFormats = ['image/jpeg', 'image/png', 'image/svg+xml'];
+            if (validFormats.includes(file.type)) {
+                setUserInfo((prev) => {
+                    console.log('Previous userInfo:', prev);
+                    return {
+                        ...prev,
+                        imageFile: file,
+                    };
+                });
+                const imageUrl = URL.createObjectURL(file);
+                setUserInfo((prev) => ({
+                    ...prev,
+                    image: imageUrl,
+                }));
+            } else {
+                enqueueSnackbar('Пожалуйста, выберите файл в формате JPG, PNG или SVG.', { variant: 'error' });
             }
-        //     postReq(users/${user.user_id}/upload-image/, formData, {
-        //         headers: {
-        //             'Authorization': Bearer ${localStorage.getItem('accessToken')},
-        //             'Content-Type': 'multipart/form-data',
-        //         },
-        //     })
-        //     .then(response => {
-        //         // Обновите состояние с новым изображением
-        //         setImgSrc(baseURL + response.data.image);
-        //         setUserInfo(prev => ({ ...prev, image: response.data.image }));
-        //     })
-        //     .catch(error => {
-        //         console.error('Ошибка при загрузке изображения:', error);
-        //     });
-        // }
+        }
     };
+
+    const handleInfoChange = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('image', userInfo.imageFile);
+            for (const key in userInfo) {
+                if (key !== 'image' && key !== 'imageFile') {
+                    formData.append(key, userInfo[key]);
+                }
+            }
+            const response = await putReq(`users/${user.user_id}/`, formData);
+            console.log('Profile updated:', response.data);
+        } catch (error) {
+            console.error('Error updating profile:', error);
+        }
+    };
+
+
 
     useEffect(() => {
         getUserInfo();
     }, [user]);
-  
+
     useEffect(() => {
         if (userInfo) {
             setImgSrc(baseURL + userInfo.image);
         }
+        console.log(imgSrc);
     }, [userInfo]);
 
     return (
@@ -114,9 +135,20 @@ const Profile = () => {
                     <div className='user-info-question'>Номер телефона</div>
                     <div className='user-info-answer'>{userInfo?.phone_number}</div>
                 </div>
+                <div className='profile-controls'>
+                    <div>
+                        <input
+                            type="file"
+                            accept=".jpg,.jpeg,.png,.svg"
+                            onChange={handleFileChange}
+                            style={{ display: 'none' }}
+                            ref={fileInputRef}
+                        />
+                        <button onClick={handleButtonClick} className='btn'>Выбрать файл</button>
+                    </div>
+                    <button className='btn' onClick={handleInfoChange}>Сохранить</button>
+                </div>
             </div>
-
-            <input className='btn' onClick={handleImageChange}>Сохранить</input>
         </div>
     );
 };

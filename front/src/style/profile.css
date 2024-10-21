@@ -9,7 +9,7 @@
 
 .img-container {
     width: 40%;
-    height: 80%;
+    height: 23vw;
     background-color: #fff;
 }
 
@@ -18,10 +18,13 @@
     height: 100%;
     background-color: #F0A202;
     padding: 40px;
+    display: flex;
+    flex-direction: column;
 }
 
 .user-info-container h2{
     margin-bottom: 40px;
+
 }
 
 .user-info {
@@ -38,4 +41,11 @@
 
 .user-info-answer {
     font-size: 18px;
+}
+
+.profile-controls{
+    display: flex;
+    gap: 20px;
+    margin-top: auto;
+    align-self: flex-end;
 }
