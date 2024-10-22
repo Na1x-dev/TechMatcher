@@ -71,7 +71,9 @@ const Profile = () => {
                     formData.append(key, userInfo[key]);
                 }
             }
-            const response = await putReq(`users/${user.user_id}/`, formData);
+            const response = await putReq(`users/${user.user_id}/`, formData
+                // ,content-type: 'multypart/form-data',
+            );
             console.log('Profile updated:', response.data);
         } catch (error) {
             console.error('Error updating profile:', error);

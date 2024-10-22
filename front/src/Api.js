@@ -7,7 +7,7 @@ const apiClient = axios.create({
     headers: {
         // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Передача токена авторизации
         'Content-Type': 'application/json',
-        'content-type': 'multypart/form-data',
+        // 'content-type': 'multypart/form-data',
     }
 });
 
