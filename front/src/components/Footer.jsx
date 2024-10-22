@@ -13,7 +13,9 @@ const Footer = () => {
             <div onClick={toggleFooter} className='footer-button'>
                 <p>Footer</p>
             </div>
-            <div onClick={toggleFooter} className={`footer-curtains ${isVisible ? 'curtains-visible' : ''}`} ></div>
+            <div 
+            onClick={toggleFooter}
+             className={`footer-curtains ${isVisible ? 'curtains-visible' : ''}`} ></div>
         </footer>
     );
 };
