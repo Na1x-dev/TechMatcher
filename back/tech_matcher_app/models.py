@@ -104,10 +104,10 @@ class Smartphone(models.Model):
     price = models.TextField(null=True, blank=True)
     brand = models.TextField()
 
+    def __str__(self):
+        return f"{self.title} - {self.launch_year}"
     
 
-    def __str__(self):
-        return f"{self.launch_year} - {self.os_version}"
 
 class BasketItem(models.Model):
     smartphone = models.ForeignKey('smartphone', on_delete=models.CASCADE)
