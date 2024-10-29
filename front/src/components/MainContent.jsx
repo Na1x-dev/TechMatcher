@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import '../style/mainContent.css'
 import ProductCard from './ProductCard';
 import axios from 'axios';
+import { baseURL } from '../Api';
 
 
 const MainContent = () => {
@@ -13,6 +14,7 @@ const MainContent = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchItem, setSearchItem] = useState('');
+    const [debounceTimeout, setDebounceTimeout] = useState(null);
 
 
     const scrollableDivRef = useRef(null);
@@ -53,17 +55,28 @@ const MainContent = () => {
     };
 
     useEffect(() => {
-        fetchSmartphones('http://127.0.0.1:8000/api/smartphones/');
-
+        fetchSmartphones(baseURL+'/smartphones/');
+        fetchAllSmartphones(baseURL+'/smartphones/all')
     }, []);
 
     const search = (elem) => {
-        fetchAllSmartphones('http://127.0.0.1:8000/api/smartphones/all')
-        setSearchItem(elem.target.value)
-        setFilteredSmartphones(allSmartphones.filter(smartphone =>
-            smartphone.title.toLowerCase().includes(searchItem.toLowerCase())
-        ))
+        if (debounceTimeout) {
+            clearTimeout(debounceTimeout);
+        }
+
+
+        setSearchItem(elem.target.value);
+
+        setDebounceTimeout(setTimeout(() => {
+            const filtered = allSmartphones
+                .filter(smartphone =>
+                    smartphone.title.toLowerCase().includes(searchItem.toLowerCase())
+                )
+                .sort((a, b) => a.title.localeCompare(b.title));
+            setFilteredSmartphones(filtered);
+        }, 1000));
     }
+
 
 
 
