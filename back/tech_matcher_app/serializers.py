@@ -5,7 +5,6 @@ from .models import CustomUser, Smartphone, Basket, BasketItem
 
 class CustomUserSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(max_length=None, allow_empty_file=True)
-
     class Meta:
         model = CustomUser
         fields = ['id', 'email', 'first_name', 'last_name', 'patronymic', 'phone_number', 'image']

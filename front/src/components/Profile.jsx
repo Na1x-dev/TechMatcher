@@ -7,18 +7,20 @@ import { useSnackbar } from 'notistack';
 
 const Profile = () => {
     const { user } = useAuth();
-    const [userInfo, setUserInfo] = useState(null);
     const [imgSrc, setImgSrc] = useState(defaultImage);
+    const [userInfo, setUserInfo] = useState({ image: '', });
     const { enqueueSnackbar } = useSnackbar();
 
     const fileInputRef = React.createRef();
 
-
     const getUserInfo = async () => {
         try {
-            if (user != null && userInfo == null) {
+            if (user && !userInfo.first_name) {
                 const response = await getReq(`users/${user.user_id}/`);
                 setUserInfo(response);
+                if(response.image){
+                    setImgSrc(baseURL+response.image)
+                }
             }
         } catch (error) {
             console.error('Ошибка при получении пользователя:', error);
@@ -40,22 +42,19 @@ const Profile = () => {
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        console.log('Selected file:', file);
         if (file) {
             const validFormats = ['image/jpeg', 'image/png', 'image/svg+xml'];
             if (validFormats.includes(file.type)) {
-                setUserInfo((prev) => {
-                    console.log('Previous userInfo:', prev);
-                    return {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64data = reader.result;
+                    setUserInfo((prev) => ({
                         ...prev,
-                        imageFile: file,
-                    };
-                });
-                const imageUrl = URL.createObjectURL(file);
-                setUserInfo((prev) => ({
-                    ...prev,
-                    image: imageUrl,
-                }));
+                        image: base64data,
+                    }));
+                    setImgSrc(base64data)
+                };
+                reader.readAsDataURL(file);
             } else {
                 enqueueSnackbar('Пожалуйста, выберите файл в формате JPG, PNG или SVG.', { variant: 'error' });
             }
@@ -64,34 +63,20 @@ const Profile = () => {
 
     const handleInfoChange = async () => {
         try {
-            const formData = new FormData();
-            formData.append('image', userInfo.imageFile);
-            for (const key in userInfo) {
-                if (key !== 'image' && key !== 'imageFile') {
-                    formData.append(key, userInfo[key]);
-                }
-            }
-            const response = await putReq(`users/${user.user_id}/`, formData
-                // ,content-type: 'multypart/form-data',
-            );
-            console.log('Profile updated:', response.data);
+            const response = await putReq(`users/${user.user_id}/`, userInfo);
         } catch (error) {
             console.error('Error updating profile:', error);
         }
     };
-
-
 
     useEffect(() => {
         getUserInfo();
     }, [user]);
 
     useEffect(() => {
-        if (userInfo) {
-            setImgSrc(baseURL + userInfo.image);
-        }
-        console.log(imgSrc);
-    }, [userInfo]);
+        if ( userInfo.image && imgSrc != baseURL+userInfo.image)
+            handleInfoChange()
+    }, [userInfo.image]);
 
     return (
         <div className='profile'>
@@ -148,7 +133,7 @@ const Profile = () => {
                         />
                         <button onClick={handleButtonClick} className='btn'>Выбрать файл</button>
                     </div>
-                    <button className='btn' onClick={handleInfoChange}>Сохранить</button>
+                    {/* <button ref={infoSendRef} style={{ display: 'none' }} className='btn' onClick={handleInfoChange}>Сохранить</button> */}
                 </div>
             </div>
         </div>

@@ -6,6 +6,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
+from django.core.files.base import ContentFile
+import base64
+
+
 
 from .models import  CustomUser, Smartphone
 from .serializers import  CustomUserSerializer, CustomUserCreateSerializer, SmartphoneSerializer
@@ -49,9 +53,18 @@ class UserProfileAPIView(APIView):
         try:
             user = CustomUser.objects.get(id=user_id)
             serializer = CustomUserSerializer(user, data=request.data, partial=True)
-            print(serializer.initial_data)
-            if serializer.is_valid():
+            file = open("log", "w")
+            file.write(str(serializer.initial_data))
+            file.close()
+            if 'image' in request.data:
+                image_data = request.data['image']
+                format, imgstr = image_data.split(';base64,')
+                ext = format.split('/')[-1]
+                image_file = ContentFile(base64.b64decode(imgstr), name=f"{user_id}.{ext}")
+                user.image.save(f"{user_id}.{ext}", image_file)
             
+            # print(serializer.initial_data)
+            if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
