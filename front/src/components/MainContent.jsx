@@ -64,7 +64,6 @@ const MainContent = () => {
             clearTimeout(debounceTimeout);
         }
 
-
         setSearchItem(elem.target.value);
 
         setDebounceTimeout(setTimeout(() => {

@@ -19,8 +19,6 @@ const Header = () => {
     const handleClose = (action) => {
         setAnchorEl(null);
         if (action) {
-            // console.log(Выбрано действие: ${action});
-            // Логика перехода
         }
     };
 
