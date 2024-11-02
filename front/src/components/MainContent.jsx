@@ -3,6 +3,7 @@ import '../style/mainContent.css'
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import { baseURL } from '../Api';
+import Loading from './Loading';
 
 
 const MainContent = () => {
@@ -79,7 +80,7 @@ const MainContent = () => {
 
 
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Loading></Loading>;
     if (error) return <div>Error: {error.message}</div>;
 
     return (
