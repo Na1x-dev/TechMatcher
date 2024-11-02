@@ -53,17 +53,12 @@ class UserProfileAPIView(APIView):
         try:
             user = CustomUser.objects.get(id=user_id)
             serializer = CustomUserSerializer(user, data=request.data, partial=True)
-            file = open("log", "w")
-            file.write(str(serializer.initial_data))
-            file.close()
             if 'image' in request.data:
                 image_data = request.data['image']
                 format, imgstr = image_data.split(';base64,')
                 ext = format.split('/')[-1]
                 image_file = ContentFile(base64.b64decode(imgstr), name=f"{user_id}.{ext}")
                 user.image.save(f"{user_id}.{ext}", image_file)
-            
-            # print(serializer.initial_data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
