@@ -1,75 +1,105 @@
-<h1 align="center">Hi there, I'm <a href="https://github.com/Na1x-dev" target="_blank">Andrey</a> 
-<img src="https://github.com/blackcater/blackcater/raw/main/images/Hi.gif" height="32"/></h1>
-<h3 align="center">Backend developer from Belarus</h3>
+# 📱 TechMatcher — Smartphone Selection Service
 
-<p>Here is my project which is written using Django Rest Framework and React.  This project was created as a service specializing in assistance in choosing a smartphone.</p>
+An intuitive web service designed to help users select smartphones based on technical specifications. The project is a Fullstack application featuring a decoupled architecture with an independent REST API (Backend) and an interactive user interface (Frontend).
 
-## 📖 Description
+## 📖 Key Features
 
-TechMatcher offers an intuitive interface where users can:
+* 🔍 **Smart Search & Filtering:** Quick device selection based on core specifications and technologies.
+* 📋 **Detailed Specifications:** Visual and structured display of technical parameters for each smartphone.
+* 🛒 **Order Placement:** Ability to submit a purchase request for the selected device.
+* 🤖 **Automated Parsing:** Built-in module (`parser/`) to gather up-to-date data about smartphones.
 
-- Select the appropriate equipment from the list using search and filters.
-- Get a list of technologies and characteristics used in the devices.
-- Place an order for the selected device.
+---
 
-<img src="md_imgs/3.png"/>
+## 📸 Interface (Screenshots)
 
-## 🛠 Technologies
+<div align="center">
+   <img src="md_imgs/1.png" alt="TechMatcher Login Screen" width="800" style="border-radius: 8px;">
+  <p><i>Login screen of the application</i></p>
+   
+  <img src="md_imgs/3.png" alt="TechMatcher Main Screen" width="800" style="border-radius: 8px;">
+  <p><i>Main screen of the application and the device catalog</i></p>
+   
+   <img src="md_imgs/4.png" alt="TechMatcher Smartphone Screen" width="800" style="border-radius: 8px;">
+  <p><i>Smartphone more details screen</i></p>
+</div>
 
-- **Backend:** Django is a powerful framework for developing web applications in Python.
-- **Frontend:** React is a library for creating user interfaces.
-- **Database:** PostgreSQL (or any other supported database).
+---
 
-## 📦 Installation
+## 🛠️ Tech Stack
+
+* **Backend:** Python, Django Rest Framework (DRF) — building the REST API architecture.
+* **Frontend:** JavaScript, React — creating a dynamic and responsive user interface.
+* **Database:** PostgreSQL (or any other compatible relational database).
+* **Parser:** Python scripts for automated database population.
+
+---
+
+## 📦 Local Installation Guide
 
 ### Prerequisites
+* Python 3.10+
+* Node.js (v18+)
+* PostgreSQL DBMS
 
-- Python 3.x
-- Node.js
-- PostgreSQL (or other database)
-
-### Installation steps
-
-1. Clone the repository:
-```
-bash:
-   git clone https://github.com/Na1x-dev/TechMatcher
-   cd TechMatcher
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/Na1x-dev/TechMatcher
+cd TechMatcher
 ```
 
-2. Install Django dependencies:
-```
-bash:
-    cd backend
-    pip install -r requirements.txt
-```
+### Step 2: Backend Setup (Django DRF)
+1. Navigate to the backend directory:
+   ```bash
+   cd back
+   ```
+2. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   # For Windows:
+   .\venv\Scripts\activate
+   # For macOS/Linux:
+   source venv/bin/activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Configure the database connection in `settings.py` (or via `.env`) and run migrations:
+   ```bash
+   python manage.py migrate
+   ```
+5. Start the local server:
+   ```bash
+   python manage.py runserver
+   ```
+   *The backend API will be available at `http://127.0.0`*
 
-3. Set up the database in settings.py and run migrations:
-```
-bash:
-    python manage.py migrate
-```
-4. Run the Django server:
-```
-bash:
-    python manage.py runserver
-```
+### Step 3: Frontend Setup (React)
+1. Open a new terminal tab and navigate to the frontend folder from the project root:
+   ```bash
+   cd front
+   ```
+2. Install NPM packages:
+   ```bash
+   npm install
+   ```
+3. Start the client application:
+   ```bash
+   npm start
+   # Or npm run dev (depending on your build tool)
+   ```
+   *The app will open at `http://localhost:3000/`*
 
-5. In a new terminal, install the dependencies for React:
-```
-bash:
-    cd frontend
-    npm install
-```
-6. Run the React app:
-```
-bash:
-    npm start
-```
-You can now open your browser and navigate to http://localhost:3000 to see the app in action!
+---
+
+## 📂 Project Structure
+* `/back` — Server-side source code (Django applications, API endpoints, serializers).
+* `/front` — Client-side code in React (components, styles, request logic).
+* `/parser` — Parsing module for smartphone data gathering.
+* `/md_imgs` — Static images for documentation.
+
+---
 
 ## 📫 Contact
-
-If you have any questions or suggestions, you can contact us by email: na1x.1024@gmail.com.
-
-Thank you for your interest in TechMatcher! We hope you find our app useful.
+If you have any questions or suggestions for improving the project, feel free to contact me at: **na1x.1024@gmail.com**
