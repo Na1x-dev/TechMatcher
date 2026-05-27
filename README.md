@@ -19,8 +19,9 @@ An intuitive web service designed to help users select smartphones based on tech
    
   <img src="md_imgs/3.png" alt="TechMatcher Main Screen" width="800" style="border-radius: 8px;">
   <p><i>Main screen of the application and the device catalog</i></p>
-   
-   <img src="md_imgs/4.gif" alt="TechMatcher Smartphone Screen" width="800" style="border-radius: 8px;">
+
+   <img src="md_imgs/5.png" alt="TechMatcher Smartphone Screen" width="800" style="border-radius: 8px;">
+   <img src="md_imgs/4.png" alt="TechMatcher Smartphone Screen" width="800" style="border-radius: 8px;">
   <p><i>Smartphone more details screen</i></p>
 </div>
 
