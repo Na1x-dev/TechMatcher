@@ -9,7 +9,7 @@ An intuitive web service designed to help users select smartphones based on tech
 * 🛒 **Order Placement:** Ability to submit a purchase request for the selected device.
 * 🤖 **Automated Parsing:** Built-in module (`parser/`) to gather up-to-date data about smartphones.
 
----
+--- 
 
 ## 📸 Interface (Screenshots)
 

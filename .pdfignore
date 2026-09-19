@@ -1,0 +1,15 @@
+.idea
+.venv
+media
+myproject
+__pycache__
+migrations
+db.sqlite3
+favicon.png
+logo192.png
+logo512.png
+fonts
+images
+logo.svg
+md_imgs
+.git

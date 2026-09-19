@@ -1,106 +1,117 @@
-from django.shortcuts import render
-from rest_framework import viewsets, permissions, generics, status
+from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.pagination import PageNumberPagination
-from django.core.files.base import ContentFile
-import base64
+from rest_framework.parsers import MultiPartParser, FormParser
 
+from .models import CustomUser, Smartphone, Basket, BasketItem
+from .serializers import (
+    CustomUserSerializer, 
+    CustomUserCreateSerializer, 
+    SmartphoneSerializer,
+    BasketSerializer
+)
 
-
-from .models import  CustomUser, Smartphone
-from .serializers import  CustomUserSerializer, CustomUserCreateSerializer, SmartphoneSerializer
-from pip._vendor.requests.api import request
-
-
-class RegistrationAPIView(APIView):
-
-    def post(self, request):
-        serializer = CustomUserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            refresh = RefreshToken.for_user(user)
-            refresh.payload.update({ 
-                'user_id': user.id,
-                'email': user.email
-            })
-
-            return Response({
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),  # Отправка на клиент
-            }, status=status.HTTP_201_CREATED)
-
-
-class RegisterView(generics.CreateAPIView):
-    serializer_class = CustomUserCreateSerializer
-
-
-class UserProfileAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, user_id):
-        try:
-            user = CustomUser.objects.get(id=user_id)
-            serializer = CustomUserSerializer(user)  
-            return Response(serializer.data) 
-        except CustomUser.DoesNotExist:
-            return Response({'detail': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
-        
-    def put(self, request, user_id):
-        try:
-            user = CustomUser.objects.get(id=user_id)
-            serializer = CustomUserSerializer(user, data=request.data, partial=True)
-            if 'image' in request.data:
-                image_data = request.data['image']
-                format, imgstr = image_data.split(';base64,')
-                ext = format.split('/')[-1]
-                image_file = ContentFile(base64.b64decode(imgstr), name=f"{user_id}.{ext}")
-                user.image.save(f"{user_id}.{ext}", image_file)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except CustomUser.DoesNotExist:
-            return Response({'detail':'User not found'}, status=status.HTTP_404_NOT_FOUND)    
-    
-    
+# --- ПАГИНАЦИЯ ---
 class SmartphonePagination(PageNumberPagination):
-    page_size = 30
+    page_size = 24
     page_size_query_param = 'page_size'
     max_page_size = 100
-    
-    
-class SmartphonePaginatedList(APIView):
+
+
+# --- ВЬЮШКИ СМАРТФОНОВ ---
+class SmartphoneListView(generics.ListAPIView):
+    """
+    Получение списка всех смартфонов с поддержкой пагинации.
+    Сюда же позже очень легко добавятся фильтры.
+    """
+    queryset = Smartphone.objects.all().order_size('-launch_year')
+    serializer_class = SmartphoneSerializer
     pagination_class = SmartphonePagination
-    
-    def get(self, request):
-        smartphones = Smartphone.objects.all()
-        paginator = self.pagination_class()
-        page = paginator.paginate_queryset(smartphones, request)
-        serializer = SmartphoneSerializer(page, many=True)
-        return paginator.get_paginated_response(serializer.data)
+    permission_classes = [AllowAny]
 
-    
-class SmartphoneList(APIView):
-    
+
+class SmartphoneDetailView(generics.RetrieveAPIView):
+    """
+    Получение детальной информации об одном смартфоне по ID.
+    """
+    queryset = Smartphone.objects.all()
+    serializer_class = SmartphoneSerializer
+    permission_classes = [AllowAny]
+    lookup_field = 'id'
+
+
+# --- ВЬЮШКИ ПОЛЬЗОВАТЕЛЕЙ И АВТОРИЗАЦИИ ---
+class RegisterView(generics.CreateAPIView):
+    """
+    Регистрация нового пользователя.
+    """
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserCreateSerializer
+    permission_classes = [AllowAny]
+
+
+class UserProfileAPIView(generics.RetrieveUpdateAPIView):
+    """
+    Просмотр и обновление профиля текущего пользователя.
+    Использует MultiPartParser для чистой и безопасной загрузки картинок.
+    """
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+    lookup_field = 'id'
+
+    def get_object(self):
+        # Гарантируем, что пользователь может редактировать ТОЛЬКО свой профиль
+        return self.request.user
+
+
+# --- ВЬЮШКА КОРЗИНЫ ---
+class BasketView(APIView):
+    """
+    Управление корзиной пользователя (Получение, добавление, удаление элементов).
+    """
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
-        smartphones = Smartphone.objects.all()
-        serializer = SmartphoneSerializer(smartphones, many=True)
+        basket, _ = Basket.objects.get_or_create(user=request.user)
+        serializer = BasketSerializer(basket)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    
-class SmartphoneById(APIView):
 
-    def get(self, request, smartphone_id):
+    def post(self, request):
+        basket, _ = Basket.objects.get_or_create(user=request.user)
+        smartphone_id = request.data.get('smartphone_id')
+        quantity = int(request.data.get('quantity', 1))
+
+        if not smartphone_id:
+            return Response({"detail": "smartphone_id обязателен"}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             smartphone = Smartphone.objects.get(id=smartphone_id)
-            serializer_data = SmartphoneSerializer(smartphone)
-            return Response(serializer_data.data)
         except Smartphone.DoesNotExist:
-            return Response({'detail': 'Smartphone not found.'}, status=status.HTTP_404_NOT_FOUND)
-        
-        # smartphones.objects.get(pk=)
-        
+            return Response({"detail": "Смартфон не найден"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Ищем, есть ли уже такой товар в корзине
+        basket_item = basket.items.filter(smartphone=smartphone).first()
+        if basket_item:
+            basket_item.quantity += quantity
+            basket_item.save()
+        else:
+            basket_item = BasketItem.objects.create(smartphone=smartphone, quantity=quantity)
+            basket.items.add(basket_item)
+
+        return Response(BasketSerializer(basket).data, status=status.HTTP_201_CREATED)
+
+    def delete(self, request):
+        basket, _ = Basket.objects.get_or_create(user=request.user)
+        smartphone_id = request.data.get('smartphone_id')
+
+        try:
+            item = basket.items.get(smartphone_id=smartphone_id)
+            basket.items.remove(item)
+            item.delete()
+            return Response(BasketSerializer(basket).data, status=status.HTTP_200_OK)
+        except BasketItem.DoesNotExist:
+            return Response({"detail": "Товар в корзине не найден"}, status=status.HTTP_404_NOT_FOUND)
