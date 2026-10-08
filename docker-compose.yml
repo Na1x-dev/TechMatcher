@@ -1,11 +1,8 @@
-version: '3.8'
-
 services:
-  # База данных PostgreSQL
   db:
     image: postgres:15-alpine
     container_name: tech_matcher_db
-    restart: always
+    restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
@@ -13,46 +10,84 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5431:5431"
+      - "5431:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d tech_matcher"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  # Бэкенд на Django REST Framework
+  redis:
+    image: redis:7-alpine
+    container_name: tech_matcher_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   backend:
     build: ./back
     container_name: tech_matcher_backend
-    restart: always
+    restart: unless-stopped
     command: >
-      sh -c "python manage.py makemigrations &&
-             python manage.py migrate &&
-             python manage.py init &&
+      sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./back:/app
     ports:
       - "8000:8000"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/tech_matcher
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DEBUG: "True"
+      SECRET_KEY: django-insecure-techmatcher-dev-key
+      ALLOWED_HOSTS: localhost,127.0.0.1,backend
+      CORS_ALLOWED_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
 
-  # Фронтенд на React
+  celery_worker:
+    build: ./back
+    container_name: tech_matcher_celery
+    restart: unless-stopped
+    command: celery -A tech_matcher worker --loglevel=info
+    volumes:
+      - ./back:/app
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/tech_matcher
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      DEBUG: "True"
+      SECRET_KEY: django-insecure-techmatcher-dev-key
+      ALLOWED_HOSTS: localhost,127.0.0.1,backend
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
   frontend:
     build: ./front
     container_name: tech_matcher_frontend
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./front:/app
       - /app/node_modules
     ports:
       - "3000:3000"
     environment:
-      - CHOKIDAR_USEPOLLING=true # Обеспечивает hot-reload внутри контейнера Docker
+      CHOKIDAR_USEPOLLING: "true"
     depends_on:
       - backend
-    stdin_open: true # Исправляет баг, когда контейнер React сразу завершает работу
+    stdin_open: true
     tty: true
 
 volumes:
