@@ -26,7 +26,7 @@ class SmartphoneListView(generics.ListAPIView):
     Получение списка всех смартфонов с поддержкой пагинации.
     Сюда же позже очень легко добавятся фильтры.
     """
-    queryset = Smartphone.objects.all().order_size('-launch_year')
+    queryset = Smartphone.objects.all().order_by('-launch_year')
     serializer_class = SmartphoneSerializer
     pagination_class = SmartphonePagination
     permission_classes = [AllowAny]

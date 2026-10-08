@@ -1,18 +1,6 @@
-
-import Footer from "../components/Footer";
+import React from "react";
 import Header from "../components/Header";
-import ProfileComp from "../components/Profile";
-
-const Profile = () => {
-
-
-    return (
-        <div className='app'>
-            <Header></Header>
-            <ProfileComp></ProfileComp>
-            <Footer></Footer>
-        </div>
-    );
-};
-
-export default Profile;
+import Footer from "../components/Footer";
+import Profile from "../components/Profile";
+const ProfilePage = () => <div className="app-shell"><Header /><Profile /><Footer /></div>;
+export default ProfilePage;

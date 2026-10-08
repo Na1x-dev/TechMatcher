@@ -1,20 +1,6 @@
-// import React, { useState } from 'react'; // Импортируйте React и useState
-
-import Footer from "../components/Footer";
+import React from "react";
 import Header from "../components/Header";
 import MainContent from "../components/MainContent";
-
-
-const Home = () => {
-  
-
-  return (
-    <div className='app'>
-     <Header></Header>
-      <MainContent></MainContent>
-     <Footer></Footer>
-    </div>
-  );
-};
-
+import Footer from "../components/Footer";
+const Home = () => <div className="app-shell"><Header /><MainContent /><Footer /></div>;
 export default Home;

@@ -1,0 +1,5 @@
+SECRET_KEY=d1ddc36da27f46abf74bdd7e2c1e68d2defb1abb98b74dd50f41a3c2923762ef
+POSTGRES_DB=ai_content_db
+POSTGRES_USER=ai_user
+POSTGRES_PASSWORD=ai_password
+DATABASE_URL=postgres://ai_user:ai_password@db:5431/ai_content_db

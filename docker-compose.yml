@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # База данных PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: tech_matcher_db
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: tech_matcher
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5431:5431"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tech_matcher"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Бэкенд на Django REST Framework
+  backend:
+    build: ./back
+    container_name: tech_matcher_backend
+    restart: always
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py init &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./back:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Фронтенд на React
+  frontend:
+    build: ./front
+    container_name: tech_matcher_frontend
+    restart: always
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Обеспечивает hot-reload внутри контейнера Docker
+    depends_on:
+      - backend
+    stdin_open: true # Исправляет баг, когда контейнер React сразу завершает работу
+    tty: true
+
+volumes:
+  postgres_data:

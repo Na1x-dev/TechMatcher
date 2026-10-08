@@ -1,19 +1,6 @@
-
-import Footer from "../components/Footer";
+import React from "react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import ProductDetails from "../components/ProductDetails";
-
-
-const Product = () => {
-
-
-    return (
-        <div className='app'>
-            <Header></Header>
-            <ProductDetails></ProductDetails>
-            <Footer></Footer>
-        </div>
-    );
-};
-
+const Product = () => <div className="app-shell"><Header /><ProductDetails /><Footer /></div>;
 export default Product;

@@ -1,126 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
-import '../style/mainContent.css'
-import ProductCard from './ProductCard';
-import axios from 'axios';
-import { baseURL } from '../Api';
-import Loading from './Loading';
-
+import React, { useCallback, useEffect, useState } from "react";
+import { getReq, getApiError } from "../Api";
+import { useSnackbar } from "notistack";
+import ProductCard from "./ProductCard";
+import Loading from "./Loading";
 
 const MainContent = () => {
-    const [smartphones, setSmartphones] = useState([]);
-    const [filteredSmartphones, setFilteredSmartphones] = useState([]);
-    const [allSmartphones, setAllSmartphones] = useState([]);
-    const [nextPageUrl, setNextPageUrl] = useState(null);
-    const [prevPageUrl, setPrevPageUrl] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [searchItem, setSearchItem] = useState('');
-    const [debounceTimeout, setDebounceTimeout] = useState(null);
-
-
-    const scrollableDivRef = useRef(null);
-
-    const scrollToTop = () => {
-        if (scrollableDivRef.current) {
-            scrollableDivRef.current.scrollTop = 0;
-        }
-    };
-
-    const fetchSmartphones = async (url) => {
-        try {
-            const response = await axios.get(url);
-            setSmartphones(response.data.results);
-            setNextPageUrl(response.data.next);
-            setPrevPageUrl(response.data.previous);
-            scrollToTop();
-        } catch (err) {
-            setError(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchAllSmartphones = async (url) => {
-        if (allSmartphones.length == 0) {
-            try {
-                const response = await axios.get(url);
-                setAllSmartphones(response.data);
-                scrollToTop();
-            } catch (err) {
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-            console.log(allSmartphones)
-        }
-    };
-
-    useEffect(() => {
-        fetchSmartphones(baseURL+'/smartphones/');
-        fetchAllSmartphones(baseURL+'/smartphones/all')
-    }, []);
-
-    const search = (elem) => {
-        if (debounceTimeout) {
-            clearTimeout(debounceTimeout);
-        }
-
-        setSearchItem(elem.target.value);
-
-        setDebounceTimeout(setTimeout(() => {
-            const filtered = allSmartphones
-                .filter(smartphone =>
-                    smartphone.title.toLowerCase().includes(searchItem.toLowerCase())
-                )
-                .sort((a, b) => a.title.localeCompare(b.title));
-            setFilteredSmartphones(filtered);
-        }, 1000));
-    }
-
-
-
-
-    if (loading) return <Loading></Loading>;
-    if (error) return <div>Error: {error.message}</div>;
-
-    return (
-        <div className='main-content'>
-            <div className='main-filters'></div>
-            <div className='center-container'>
-                <div className='search-product'>
-                    <input
-                        className='form-input search-product-input'
-                        placeholder='Поиск'
-                        type="text"
-                        value={searchItem}
-                        onChange={(e) => search(e)}
-                    />
-                </div>
-
-                {searchItem ?
-                    (<div ref={scrollableDivRef} className='products-list'>
-                        {filteredSmartphones.map(smartphone => (
-                            <ProductCard key={smartphone.id} smartphone={smartphone} />
-                        ))}
-                    </div>) :
-                    (<div ref={scrollableDivRef} className='products-list'>
-                        {smartphones.map(smartphone => (
-                            <ProductCard key={smartphone.id} smartphone={smartphone} />
-                        ))}
-                        <div className='pagination-buttons'>
-                            <button disabled={!prevPageUrl} className='btn prev-button' onClick={() => fetchSmartphones(prevPageUrl)}>Предыдущая страница</button>
-                            <button disabled={!nextPageUrl} className='btn next-button' onClick={() => fetchSmartphones(nextPageUrl)}>Следующая страница</button>
-                        </div>
-                    </div>)}
-
-
-
-
-            </div>
-            <div className='right-panel'></div>
-        </div>
-    );
+  const { enqueueSnackbar } = useSnackbar();
+  const [products, setProducts] = useState([]); const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState(""); const [query, setQuery] = useState(""); const [page, setPage] = useState(1); const [totalPages, setTotalPages] = useState(1);
+  useEffect(() => { const t = setTimeout(() => { setQuery(search.trim()); setPage(1); }, 450); return () => clearTimeout(t); }, [search]);
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({ page: String(page) }); if (query) params.set("search", query);
+      const data = await getReq(`smartphones/?${params}`); const list = Array.isArray(data) ? data : (data.results || []);
+      setProducts(list); setTotalPages(data.count ? Math.max(1, Math.ceil(data.count / 24)) : (data.next || data.previous ? page + (data.next ? 1 : 0) : 1));
+    } catch (error) { enqueueSnackbar(getApiError(error, "Не удалось загрузить каталог"), { variant: "error" }); }
+    finally { setLoading(false); }
+  }, [page, query, enqueueSnackbar]);
+  useEffect(() => { load(); }, [load]);
+  return <main>
+    <section className="hero"><div><div className="hero-kicker">TECHMATCHER / CATALOG</div><h1>Техника, которую<br /><em>легко выбрать.</em></h1><p>Сравнивайте характеристики смартфонов и собирайте корзину без лишних шагов.</p></div><div className="hero-orb"><span>01</span><small>SMART<br />CHOICE</small></div></section>
+    <section className="catalog-section" id="categories">
+      <div className="section-head"><div><span className="section-kicker">КАТАЛОГ</span><h2>Смартфоны</h2></div><div className="search-box"><span>⌕</span><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Поиск по модели или бренду…" /></div></div>
+      {loading ? <Loading /> : products.length ? <><div className="product-grid">{products.map((p) => <ProductCard key={p.id} product={p} />)}</div>{totalPages > 1 && <div className="pagination"><button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>← Назад</button><span>{page} / {totalPages}</span><button disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Вперёд →</button></div>}</> : <div className="empty-state"><div>⌕</div><h3>Ничего не нашли</h3><p>Попробуйте изменить поисковый запрос.</p></div>}
+    </section>
+  </main>;
 };
-
-
 export default MainContent;

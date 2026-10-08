@@ -1,59 +1,32 @@
-import { useState } from 'react';
-import '../style/productCard.css'
-import defaultImage from '../images/defaultImg.jpg';
-import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setSmartphone } from '../redux/smartphoneSlice';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import { useCart } from "../context/CartContext";
 
+const money = (value) => value == null || value === "" ? "Цена не указана" : `${Number(value).toLocaleString("ru-RU")} ₽`;
 
-const ProductCard = ({ smartphone }) => {
-    const [imgSrc, setImgSrc] = useState(smartphone.image_url);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    const handleError = () => {
-        setImgSrc(defaultImage);
-    };
-
-    const handleDetailsClick = () => {
-        dispatch(setSmartphone(smartphone));
-        navigate(`/product/${smartphone.id}`);
-    };
-
-    return (
-        <div className='product-card'>
-            <div className='card-image-container'>
-                <img
-                    src={imgSrc}
-                    alt={`Изображение ${smartphone.title}`}
-                    onError={handleError}
-                    style={{
-                        maxWidth: '100%',
-                        maxHeight: '100%',
-                        display: 'block',
-                    }}
-                />
-            </div>
-            <div className='card-text-container'>
-                <h3 className='card-header-text'>{smartphone.title}</h3>
-                <div className='card-info-container'>
-                    <p className='card-p'>Диагональ  {smartphone.screen_size}</p>
-                    <p className='card-p'>Камера {smartphone.main_camera_mp}</p>
-                    <p className='card-p'>{smartphone.price === '-' ? 'Нет в наличии' : smartphone.price}</p>
-                </div>
-                <div className='card-btn-container'>
-                    <Button className='btn card-btn' onClick={handleDetailsClick}>
-                        Подробнее
-                    </Button>
-                    <Button className='btn card-btn' >
-                        В корзину
-                    </Button>
-                </div>
-            </div>
-        </div>
-    );
+const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+  const { addToCart } = useCart();
+  const [adding, setAdding] = useState(false);
+  const add = async (e) => {
+    e.stopPropagation(); setAdding(true);
+    try { await addToCart(product); enqueueSnackbar("Товар добавлен в корзину", { variant: "success" }); }
+    catch { enqueueSnackbar("Не удалось добавить товар", { variant: "error" }); }
+    finally { setAdding(false); }
+  };
+  return <article className="product-card" onClick={() => navigate(`/smartphones/${product.id}`)}>
+    <div className="product-image-wrap"><img src={product.image_url || "/default-phone.png"} alt={product.title} loading="lazy" /></div>
+    <div className="product-card-body">
+      <div className="eyebrow">{product.brand || "Смартфон"}</div>
+      <h3>{product.title}</h3>
+      <div className="product-tags">
+        {product.launch_year && <span>{product.launch_year} г.</span>}
+        {product.ram_size && product.rom_size && <span>{product.ram_size}/{product.rom_size} ГБ</span>}
+      </div>
+      <div className="product-card-bottom"><strong>{money(product.price)}</strong><button className="button button-primary" onClick={add} disabled={adding}>{adding ? "…" : "В корзину"}</button></div>
+    </div>
+  </article>;
 };
-
-
 export default ProductCard;

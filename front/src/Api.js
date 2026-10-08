@@ -1,61 +1,33 @@
-import axios from 'axios';
+import axios from "axios";
 
-const baseURL = 'http://localhost:8000/api';
+export const baseURL = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
 
 const apiClient = axios.create({
-    baseURL: baseURL,
-    headers: {
-        // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Передача токена авторизации
-        'Content-Type': 'application/json',
-        // 'content-type': 'multypart/form-data',
-    }
+  baseURL: baseURL.replace(/\/$/, ""),
+  headers: { "Content-Type": "application/json" },
 });
 
-const addAuthToken = () => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-        apiClient.defaults.headers['Authorization'] = `Bearer ${token}`;
-    } else {
-        delete apiClient.defaults.headers['Authorization']; 
-    }
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  else delete config.headers.Authorization;
+  return config;
+});
+
+export const getReq = async (endpoint, config = {}) => (await apiClient.get(endpoint, config)).data;
+export const postReq = async (endpoint, data, config = {}) => (await apiClient.post(endpoint, data, config)).data;
+export const putReq = async (endpoint, data, config = {}) => (await apiClient.put(endpoint, data, config)).data;
+export const deleteReq = async (endpoint, config = {}) => (await apiClient.delete(endpoint, config)).data;
+
+export const getApiError = (error, fallback = "Произошла ошибка. Попробуйте ещё раз.") => {
+  const data = error?.response?.data;
+  if (typeof data === "string" && data) return data;
+  if (data?.detail) return data.detail;
+  if (data && typeof data === "object") {
+    const first = Object.values(data).flat?.()[0];
+    if (first) return String(first);
+  }
+  return fallback;
 };
 
-addAuthToken();
-
-const postReq = async (endpoint, data) => {
-    try {
-        const response = await apiClient.post(endpoint, data);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
-
-const getReq = async (endpoint, config = {}) => {
-    try {
-        const response = await apiClient.get(endpoint, config);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
-
-const putReq = async (endpoint, data) => {
-    try {
-        const response = await apiClient.put(endpoint, data);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
-
-const deleteReq = async (endpoint) => {
-    try {
-        const response = await apiClient.delete(endpoint);
-        return response;
-    } catch (error) {
-        throw error;
-    }
-};
-
-export { postReq, getReq, putReq, deleteReq, baseURL };
+export default apiClient;

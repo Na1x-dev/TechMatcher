@@ -1,14 +1,9 @@
-import "../style/loading.css"
+import React from "react";
 
-const Loading = () => {
-
-
-    return (
-        <div className="loading">
-            <div className="loading-rect"></div>
-        </div>
-        
-    )
-};
-
+const Loading = ({ label = "Загрузка…" }) => (
+  <div className="state-screen" role="status">
+    <div className="spinner" />
+    <span>{label}</span>
+  </div>
+);
 export default Loading;

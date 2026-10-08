@@ -1,111 +1,60 @@
-import '../style/header.css'
-import { useSelector } from 'react-redux';
-import { useNavigate, useLocation, NavLink } from 'react-router-dom';
-import { useAuth } from '../components/AuthContext';
-import { getReq } from '../Api';
-import { useEffect, useState } from 'react';
-import { Menu, MenuItem, Button } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { getReq } from "../Api";
+import { useAuth } from "./AuthContext";
+import { useCart } from "../context/CartContext";
 
 const Header = () => {
-    const navigate = useNavigate();
-    const { user, logout, isAuthenticated } = useAuth()
-    const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const { itemCount } = useCart();
+  const [profile, setProfile] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => {
+    if (!user?.user_id) { setProfile(null); return; }
+    getReq(`users/${user.user_id}/`).then(setProfile).catch(() => setProfile(null));
+  }, [user]);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const displayName = profile?.first_name
+    ? `${profile.first_name}${profile.last_name ? ` ${profile.last_name[0]}.` : ""}`
+    : user?.email || "Пользователь";
 
-    const handleClose = (action) => {
-        setAnchorEl(null);
-        if (action) {
-        }
-    };
+  const doLogout = () => { setMenuOpen(false); logout(); navigate("/"); };
 
-    const toHome = () => {
-        navigate("/");
-    }
-
-    const toLoginForm = () => {
-        navigate("/login");
-    }
-
-    const logoutFunction = () => {
-        logout();
-        navigate('/login');
-    }
-
-    const capFrstLttr = (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-
-    const showUser = async () => {
-        try {
-            if (user != null) {
-                const response = await getReq(`users/${user.user_id}/`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-                    },
-                });
-                if (response.first_name != "" && response.last_name != "" && response.patronymic != "")
-                    document.querySelector('.header-user-name').textContent =
-                        capFrstLttr(response.first_name)
-            }
-        } catch (error) {
-            console.error('Ошибка при получении пользователя:', error);
-        }
-    };
-
-    useEffect(() => {
-        showUser();
-    }, [user, isAuthenticated]);
-
-
-    return (
-        <header className='header'>
-
-            <div className='header-logo' onClick={toHome} >
-                <div className='left-logo'>Tech</div>
-                <div className='right-logo'>Matcher</div>
+  return (
+    <header className="site-header">
+      <div className="header-inner">
+        <button className="brand" onClick={() => navigate("/")} aria-label="TechMatcher">
+          <span className="brand-mark">T</span><span>TechMatcher</span>
+        </button>
+        <nav className="main-nav">
+          <NavLink to="/" end>Смартфоны</NavLink>
+          <a href="#categories" onClick={(e) => { e.preventDefault(); document.getElementById("categories")?.scrollIntoView({ behavior: "smooth" }); }}>Категории</a>
+        </nav>
+        <div className="header-actions">
+          <button className="icon-button cart-button" onClick={() => navigate("/basket")} aria-label="Корзина">
+            <span>🛒</span>{itemCount > 0 && <b>{itemCount}</b>}
+          </button>
+          {user ? (
+            <div className="profile-menu-wrap">
+              <button className="profile-trigger" onClick={() => setMenuOpen((v) => !v)}>
+                <span className="avatar">{displayName[0]?.toUpperCase()}</span>
+                <span className="profile-name">{displayName}</span><span>⌄</span>
+              </button>
+              {menuOpen && <>
+                <button className="menu-backdrop" aria-label="Закрыть меню" onClick={() => setMenuOpen(false)} />
+                <div className="profile-menu">
+                  <button onClick={() => { navigate("/profile"); setMenuOpen(false); }}>Профиль</button>
+                  <button onClick={() => { navigate("/basket"); setMenuOpen(false); }}>Корзина</button>
+                  <button onClick={doLogout}>Выйти</button>
+                </div>
+              </>}
             </div>
-            <div className='header-chapters'>
-                {/*  active-chapter-button */}
-                <NavLink to='/' className={({ isActive }) => "header-chapter-button" + (isActive ? " active-chapter-button" : "")}>Смартфоны</NavLink>
-                <NavLink to='/headphones' className={({ isActive }) => "header-chapter-button" + (isActive ? " active-chapter-button" : "")}>Наушники</NavLink>
-                <NavLink to='/fitness-bracelets' className={({ isActive }) => "header-chapter-button" + (isActive ? " active-chapter-button" : "")}>Фитнес браслеты</NavLink>
-                <NavLink to='/chargers' className={({ isActive }) => "header-chapter-button" + (isActive ? " active-chapter-button" : "")}>Зарядные устройства</NavLink>
-            </div>
-            <div className='header-profile'>
-                {user ?
-                    (
-
-                        // <button className='header-user-name btn' onClick={logoutFunction}>admin a.a.</button>
-                        <div className='header-profile-btn-container'>
-                            <Button aria-controls="simple-menu" aria-haspopup="true" className='header-user-name btn' onClick={handleClick}>
-                                admin a.a
-                            </Button>
-                            <Menu
-                                id="simple-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={() => handleClose()}
-                                TransitionProps={{ timeout: 300 }} // Задаем время анимации
-                            >
-                                <MenuItem onClick={() => navigate('/profile')}>Профиль</MenuItem>
-                                <MenuItem onClick={() => navigate('/basket')}>Корзина</MenuItem>
-                                <MenuItem onClick={logoutFunction}>Выход</MenuItem>
-                            </Menu>
-                        </div>
-                    ) :
-                    (
-                        // (!hideLoginButtonRoutes.includes(location.pathname) && (
-                        <button className='to-login-button btn btn-primary' onClick={toLoginForm}>Вход</button>
-                    )}
-            </div>
-        </header>
-    );
+          ) : <button className="button button-dark" onClick={() => navigate("/login")}>Войти</button>}
+        </div>
+      </div>
+    </header>
+  );
 };
-
-
 export default Header;

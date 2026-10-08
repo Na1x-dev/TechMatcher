@@ -1,144 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import '../style/profile.css'
-import { useAuth } from './AuthContext';
-import { getReq, baseURL, putReq } from '../Api';
-import defaultImage from '../images/123.svg';
-import { useSnackbar } from 'notistack';
+import React, { useEffect, useState } from "react";
+import { getApiError, getReq, putReq } from "../Api";
+import { useAuth } from "./AuthContext";
+import { useSnackbar } from "notistack";
+import Loading from "./Loading";
 
 const Profile = () => {
-    const { user } = useAuth();
-    const [imgSrc, setImgSrc] = useState(defaultImage);
-    const [userInfo, setUserInfo] = useState({ image: '', });
-    const { enqueueSnackbar } = useSnackbar();
-
-    const fileInputRef = React.createRef();
-
-    const getUserInfo = async () => {
-        try {
-            if (user && !userInfo.first_name) {
-                const response = await getReq(`users/${user.user_id}/`);
-                setUserInfo(response);
-                if(response.image){
-                    setImgSrc(baseURL+response.image)
-                }
-            }
-        } catch (error) {
-            console.error('Ошибка при получении пользователя:', error);
-        }
-    };
-
-    const capFrstLttr = (string) => {
-        if (!string) return '';
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-
-    const handleError = () => {
-        setImgSrc(defaultImage);
-    };
-
-    const handleButtonClick = () => {
-        fileInputRef.current.click();
-    }
-
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const validFormats = ['image/jpeg', 'image/png', 'image/svg+xml'];
-            if (validFormats.includes(file.type)) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    const base64data = reader.result;
-                    setUserInfo((prev) => ({
-                        ...prev,
-                        image: base64data,
-                    }));
-                    setImgSrc(base64data)
-                };
-                reader.readAsDataURL(file);
-            } else {
-                enqueueSnackbar('Пожалуйста, выберите файл в формате JPG, PNG или SVG.', { variant: 'error' });
-            }
-        }
-    };
-
-    const handleInfoChange = async () => {
-        try {
-            const response = await putReq(`users/${user.user_id}/`, userInfo);
-        } catch (error) {
-            console.error('Error updating profile:', error);
-        }
-    };
-
-    useEffect(() => {
-        getUserInfo();
-    }, [user]);
-
-    useEffect(() => {
-        if ( userInfo.image && imgSrc != baseURL+userInfo.image)
-            handleInfoChange()
-    }, [userInfo.image]);
-
-    return (
-        <div className='profile'>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-                className='img-container'>
-                <img
-                    src={imgSrc}
-                    alt={`Изображение ${capFrstLttr(userInfo?.first_name)}`}
-                    onError={handleError}
-                    style={{
-                        height: '100%',
-                        maxWidth: '100%',
-                        objectFit: 'cover',
-                    }}
-                />
-            </div>
-
-            <div className='user-info-container'>
-                <h2>Профиль</h2>
-                <div className='user-info'>
-                    <div className='user-info-question'>Имя</div>
-                    <div className='user-info-answer'>{capFrstLttr(userInfo?.first_name)}</div>
-                </div>
-                <div className='user-info'>
-                    <div className='user-info-question'>Фамилия</div>
-                    <div className='user-info-answer'>{capFrstLttr(userInfo?.last_name)}</div>
-                </div>
-                <div className='user-info'>
-                    <div className='user-info-question'>Отчество</div>
-                    <div className='user-info-answer'>{capFrstLttr(userInfo?.patronymic)}</div>
-                </div>
-                <div className='user-info'>
-                    <div className='user-info-question'>Е-мейл</div>
-                    <div className='user-info-answer'>{userInfo?.email}</div>
-                </div>
-                <div className='user-info'>
-                    <div className='user-info-question'>Номер телефона</div>
-                    <div className='user-info-answer'>{userInfo?.phone_number}</div>
-                </div>
-                <div className='profile-controls'>
-                    <div>
-                        <input
-                            type="file"
-                            accept=".jpg,.jpeg,.png,.svg"
-                            onChange={handleFileChange}
-                            style={{ display: 'none' }}
-                            ref={fileInputRef}
-                        />
-                        <button onClick={handleButtonClick} className='btn'>Выбрать файл</button>
-                    </div>
-                    {/* <button ref={infoSendRef} style={{ display: 'none' }} className='btn' onClick={handleInfoChange}>Сохранить</button> */}
-                </div>
-            </div>
-        </div>
-    );
+  const { user, logout } = useAuth(); const { enqueueSnackbar } = useSnackbar();
+  const [profile, setProfile] = useState({ first_name: "", last_name: "", patronymic: "", phone_number: "", image: null }); const [preview, setPreview] = useState(""); const [loading, setLoading] = useState(true); const [saving, setSaving] = useState(false);
+  useEffect(() => { if (!user?.user_id) return; getReq(`users/${user.user_id}/`).then((d) => { setProfile({ first_name: d.first_name || "", last_name: d.last_name || "", patronymic: d.patronymic || "", phone_number: d.phone_number || "", image: null }); setPreview(d.image || ""); }).catch((e) => enqueueSnackbar(getApiError(e, "Не удалось загрузить профиль"), { variant: "error" })).finally(() => setLoading(false)); }, [user, enqueueSnackbar]);
+  if (loading) return <Loading />;
+  const submit = async (e) => { e.preventDefault(); setSaving(true); const data = new FormData(); Object.entries(profile).forEach(([key, value]) => { if (key !== "image") data.append(key, value); }); if (profile.image) data.append("image", profile.image); try { const updated = await putReq(`users/${user.user_id}/`, data, { headers: { "Content-Type": "multipart/form-data" } }); if (updated.image) setPreview(updated.image); enqueueSnackbar("Профиль сохранён", { variant: "success" }); } catch (err) { enqueueSnackbar(getApiError(err, "Не удалось сохранить профиль"), { variant: "error" }); } finally { setSaving(false); } };
+  return <main className="account-page"><div className="account-head"><div><div className="section-kicker">ACCOUNT</div><h1>Личный кабинет</h1></div><button className="button button-ghost" onClick={logout}>Выйти</button></div><form className="profile-card" onSubmit={submit}><div className="profile-aside"><div className="big-avatar">{preview ? <img src={preview} alt="Аватар" /> : (profile.first_name?.[0] || user.email?.[0] || "U").toUpperCase()}</div><label className="button button-outline">Изменить фото<input type="file" accept="image/*" hidden onChange={(e) => { const file = e.target.files?.[0]; if (file) { setProfile((p) => ({ ...p, image: file })); setPreview(URL.createObjectURL(file)); } }} /></label><span className="muted">JPG, PNG или WEBP</span></div><div className="form-grid">{[["last_name","Фамилия",true],["first_name","Имя",true],["patronymic","Отчество",false],["phone_number","Телефон",false]].map(([name,label,required]) => <label className="field" key={name}><span>{label}</span><input name={name} value={profile[name]} required={required} onChange={(e) => setProfile((p) => ({ ...p, [name]: e.target.value }))} /></label>)}<div className="form-actions"><button className="button button-primary" disabled={saving}>{saving ? "Сохраняем…" : "Сохранить изменения"}</button></div></div></form></main>;
 };
-
-
 export default Profile;

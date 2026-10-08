@@ -1,13 +1,16 @@
 from datetime import timedelta
 from pathlib import Path
 from decouple import config, Csv
+import environ
 import os
 
 # Корневая директория проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+
 # Загрузка секретов из .env файла
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=Csv())
@@ -18,6 +21,7 @@ CORS_ALLOWED_ORIGINS = config(
     default='http://localhost:3000', 
     cast=Csv()
 )
+
 
 # Приложения
 INSTALLED_APPS = [
@@ -75,15 +79,9 @@ ASGI_APPLICATION = 'tech_matcher.asgi.application'
 
 # База данных (Конфигурируется через .env)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='tech_matcher'),
-        'USER': config('DB_USER', default='postgres'),
-        'PASSWORD': config('DB_PASSWORD', default='postgres'),
-        'HOST': config('DB_HOST', default='127.0.0.1'),
-        'PORT': config('DB_PORT', default='5432'),
-    }
+    'default': env.db('DATABASE_URL')
 }
+
 
 # Кастомная модель пользователя
 AUTH_USER_MODEL = 'tech_matcher_app.CustomUser'

@@ -1,40 +1,40 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useMemo, useState } from "react";
 
-//todo: registration
+const AuthContext = createContext(null);
 
-const AuthContext = createContext();
+const parseJwt = (token) => {
+  if (!token) return null;
+  try {
+    const part = token.split(".")[1];
+    if (!part) return null;
+    const base64 = part.replace(/-/g, "+").replace(/_/g, "/");
+    return JSON.parse(decodeURIComponent(atob(base64).split("").map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join("")));
+  } catch {
+    return null;
+  }
+};
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(() => {
-        const accessToken = localStorage.getItem('accessToken');
-        return accessToken ? JSON.parse(atob(accessToken.split('.')[1])) : null; // Декодируем access-токен для получения информации о пользователе
-    });
-   
+  const [user, setUser] = useState(() => parseJwt(localStorage.getItem("accessToken")));
 
+  const login = (accessToken, refreshToken) => {
+    localStorage.setItem("accessToken", accessToken);
+    if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
+    setUser(parseJwt(accessToken));
+  };
 
-    const login = (accessToken, refreshToken) => {
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        setUser(JSON.parse(atob(accessToken.split('.')[1]))); // Обновляем состояние пользователя
-    };
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    setUser(null);
+  };
 
-    const logout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        setUser(null);
-    };
-
-    const isAuthenticated = () => {
-        return user !== null;
-    };
-
-    return (
-        <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const value = useMemo(() => ({ user, login, logout, isAuthenticated: () => Boolean(user) }), [user]);
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
-    return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth должен использоваться внутри AuthProvider");
+  return context;
 };
