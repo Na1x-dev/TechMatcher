@@ -152,6 +152,25 @@ def extract_spec_rows(soup):
             if label and value:
                 found[label] = value
 
+    # Handle key/value markup variations used by product detail pages, including
+    # rows whose label/value are represented through data attributes.
+    for node in soup.select("[data-specification-name][data-specification-value], [data-spec-name][data-spec-value]"):
+        label = clean_text(node.get("data-specification-name") or node.get("data-spec-name"))
+        value = clean_text(node.get("data-specification-value") or node.get("data-spec-value"))
+        if label and value:
+            found[label] = value
+
+    for row in soup.select("[class*='offers-description'] li, [class*='spec'] li, [class*='characteristic'] li"):
+        if row.select_one("a, button, script, style"):
+            continue
+        label_node = row.select_one("[class*='title'], [class*='name'], [class*='label'], dt")
+        value_node = row.select_one("[class*='value'], [class*='description'], dd")
+        if label_node and value_node:
+            label = clean_text(label_node.get_text(" ", strip=True)).rstrip(":")
+            value = clean_text(value_node.get_text(" ", strip=True))
+            if label and value and label != value:
+                found.setdefault(label, value)
+
     # Some pages expose extra product properties in JSON-LD instead of HTML rows.
     import json
     def collect_properties(obj):
@@ -238,17 +257,26 @@ def _image_is_likely_product(url, alt=""):
     return bool(re.search(r"\.(?:jpe?g|png|webp)(?:$)", path, re.I)) or "image" in label or "photo" in label or "смартфон" in label or "телефон" in label
 
 
-def _extract_product_image(soup, page_url):
-    # The current Onliner product page has its actual gallery inside this figure.
-    # The first img is the primary product photo; ignore later gallery/video thumbnails.
-    primary = soup.select_one("figure.offers-description__figure img")
-    if primary:
-        raw_url = primary.get("src") or primary.get("data-src") or primary.get("data-original")
-        if raw_url:
-            return urljoin(page_url, raw_url)[:500]
+def _image_url_from_node(node, page_url):
+    """Resolve eager and lazy-loaded image URLs, including srcset and proxy URLs."""
+    if node.name == "meta":
+        raw = node.get("content")
+    else:
+        raw = node.get("data-src") or node.get("data-original") or node.get("data-lazy-src") or node.get("src")
+        srcset = node.get("data-srcset") or node.get("srcset")
+        if srcset:
+            # The final srcset candidate is normally the largest available image.
+            raw = srcset.split(",")[-1].strip().split()[0] or raw
+    if not raw or raw.startswith("data:"):
+        return None
+    return urljoin(page_url, raw)
 
-    candidates = []
+
+def _extract_product_image(soup, page_url):
+    # Prioritize the primary photo shown in the product description, but do not
+    # return a lazy-loading placeholder if a real URL is available.
     selectors = [
+        "figure.offers-description__figure img",
         ".catalog-masthead__image img",
         ".catalog-masthead__image",
         ".product-gallery img",
@@ -259,21 +287,24 @@ def _extract_product_image(soup, page_url):
         "meta[property='og:image']",
         "meta[name='twitter:image']",
     ]
-    for selector in selectors:
+    candidates = []
+    for priority, selector in enumerate(selectors):
         for node in soup.select(selector):
-            url = node.get("content") or node.get("data-src") or node.get("data-original") or node.get("src") or node.get("href")
-            alt = node.get("alt", "") or node.get("title", "")
-            if not url:
+            absolute = _image_url_from_node(node, page_url)
+            if not absolute:
                 continue
-            absolute = urljoin(page_url, url)
-            if _image_is_likely_product(absolute, alt):
-                score = 0
-                cls = " ".join(node.get("class", [])) if isinstance(node.get("class"), list) else str(node.get("class", ""))
-                if "gallery" in cls or "masthead" in cls:
-                    score += 5
-                if "itemprop" in node.attrs or node.get("property") == "og:image":
-                    score += 3
-                candidates.append((score, absolute))
+            alt = node.get("alt", "") or node.get("title", "")
+            # The primary Onliner figure can use image-proxy URLs without file extensions.
+            is_primary_figure = node in soup.select("figure.offers-description__figure img")
+            if not is_primary_figure and not _image_is_likely_product(absolute, alt):
+                continue
+            score = 100 - priority * 5
+            cls = " ".join(node.get("class", [])) if isinstance(node.get("class"), list) else str(node.get("class", ""))
+            if "gallery" in cls or "masthead" in cls or is_primary_figure:
+                score += 10
+            if "itemprop" in node.attrs or node.get("property") == "og:image":
+                score += 3
+            candidates.append((score, absolute))
     return max(candidates, key=lambda item: item[0])[1][:500] if candidates else None
 
 
@@ -494,7 +525,15 @@ def run_catalog_parser():
                         if was_created:
                             product = Smartphone.objects.create(source_url=source_key, **data)
                         else:
+                            incoming_specs = data.get("specifications") or {}
+                            if incoming_specs:
+                                merged_specs = dict(product.specifications or {})
+                                merged_specs.update({key: value for key, value in incoming_specs.items() if value not in (None, "")})
+                                data["specifications"] = merged_specs
                             for field, value in data.items():
+                                # Do not replace good values with blank text from a partial page.
+                                if isinstance(value, str) and not value.strip() and field not in {"specifications"}:
+                                    continue
                                 setattr(product, field, value)
                             # Remove a previously imported site logo rather than keeping it
                             # forever when a valid product photo cannot be found.
