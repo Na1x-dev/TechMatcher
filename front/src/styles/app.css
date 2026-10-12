@@ -66,3 +66,7 @@
   text-align: center;
   margin: 8px 0;
 }
+
+.spec-card-full { grid-column: 1 / -1; }
+.spec-card-full .spec-row { align-items: flex-start; }
+.spec-card-full .spec-row strong { max-width: 58%; text-align: right; white-space: normal; overflow-wrap: anywhere; }
