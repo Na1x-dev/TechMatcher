@@ -238,6 +238,38 @@ def _extract_price(soup):
     return None
 
 
+def _listing_card_data(listing_soup, product_url, listing_url):
+    """Fallback for catalog cards, which often expose prices/images more reliably."""
+    target = canonical_url(product_url)
+    anchor = None
+    for candidate in listing_soup.select("a[href]"):
+        if canonical_url(urljoin(listing_url, candidate.get("href", ""))) == target:
+            anchor = candidate
+            break
+    if anchor is None:
+        return {}
+
+    node = anchor
+    for _ in range(5):
+        if node is None:
+            break
+        text = clean_text(node.get_text(" ", strip=True))
+        # Require a currency marker; arbitrary model/spec numbers are not prices.
+        match = re.search(r"([0-9][0-9\\s\\u00a0]*(?:[,.][0-9]{1,2})?)\\s*(?:р\\.?|руб(?:лей|ля)?|BYN|₽)", text, re.I)
+        if match:
+            price = clean_decimal(match.group(1))
+            if price is not None and price > 0:
+                result = {"price": price}
+                for image in node.select("img"):
+                    src = image.get("data-src") or image.get("data-original") or image.get("src")
+                    alt = image.get("alt", "")
+                    if src and _image_is_likely_product(src, alt):
+                        result["image_url"] = urljoin(listing_url, src)[:500]
+                        break
+                return result
+        node = node.parent
+    return {}
+
 def parse_product_page(session, url, timeout):
     soup = _get(session, url, timeout)
     title = _first_text(soup, [
@@ -345,6 +377,11 @@ def run_catalog_parser():
                     data = parse_product_page(session, product_url, timeout)
                     if not data:
                         continue
+                    card_data = _listing_card_data(listing, product_url, current_url)
+                    if data.get("price") is None and card_data.get("price") is not None:
+                        data["price"] = card_data["price"]
+                    if not data.get("image_url") and card_data.get("image_url"):
+                        data["image_url"] = card_data["image_url"]
                     source_key = data.pop("source_url")
                     with transaction.atomic():
                         product = Smartphone.objects.filter(source_url=source_key).first()
@@ -369,6 +406,12 @@ def run_catalog_parser():
                         else:
                             for field, value in data.items():
                                 setattr(product, field, value)
+                            # Remove a previously imported site logo rather than keeping it
+                            # forever when a valid product photo cannot be found.
+                            if not data.get("image_url") and product.image_url:
+                                old_image = product.image_url.lower()
+                                if any(token in old_image for token in ("logo", "onliner", "sprite", "favicon", "placeholder")):
+                                    product.image_url = None
                             product.source_url = source_key
                             product.save()
                     created += int(was_created)
