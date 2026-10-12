@@ -154,20 +154,27 @@ def _first_text(soup, selectors):
 def _image_is_likely_product(url, alt=""):
     if not url or url.startswith("data:"):
         return False
-    # Onliner hosts its real product photos on its own domain, so inspect the
-    # path and alt text rather than rejecting every URL containing "onliner".
     path = urlsplit(url).path.lower()
     label = str(alt).lower()
     if any(token in path or token in label for token in ("logo", "sprite", "icon", "favicon", "avatar", "banner", "placeholder")):
         return False
-    return bool(re.search(r"\\.(?:jpe?g|png|webp)(?:$)", path, re.I)) or "image" in label or "photo" in label
+    # Image-proxy URLs can end with encoded source data rather than an extension.
+    return bool(re.search(r"\.(?:jpe?g|png|webp)(?:$)", path, re.I)) or "image" in label or "photo" in label or "смартфон" in label or "телефон" in label
 
 
 def _extract_product_image(soup, page_url):
+    # The current Onliner product page has its actual gallery inside this figure.
+    # The first img is the primary product photo; ignore later gallery/video thumbnails.
+    primary = soup.select_one("figure.offers-description__figure img")
+    if primary:
+        raw_url = primary.get("src") or primary.get("data-src") or primary.get("data-original")
+        if raw_url:
+            return urljoin(page_url, raw_url)[:500]
+
     candidates = []
     selectors = [
-        ".catalog-masthead__image",
         ".catalog-masthead__image img",
+        ".catalog-masthead__image",
         ".product-gallery img",
         ".product-gallery__image",
         ".js-gallery img",
@@ -190,14 +197,8 @@ def _extract_product_image(soup, page_url):
                     score += 5
                 if "itemprop" in node.attrs or node.get("property") == "og:image":
                     score += 3
-                if alt and any(word in alt.lower() for word in ("iphone", "samsung", "xiaomi", "смартфон", "телефон")):
-                    score += 2
                 candidates.append((score, absolute))
-        if candidates and selector.startswith(".catalog-masthead"):
-            break
-    if not candidates:
-        return None
-    return max(candidates, key=lambda item: item[0])[1][:500]
+    return max(candidates, key=lambda item: item[0])[1][:500] if candidates else None
 
 
 def _extract_price(soup):
@@ -258,7 +259,7 @@ def _listing_card_data(listing_soup, product_url, listing_url):
             break
         text = clean_text(node.get_text(" ", strip=True))
         # Require a currency marker; arbitrary model/spec numbers are not prices.
-        match = re.search(r"([0-9][0-9\\s\\u00a0]*(?:[,.][0-9]{1,2})?)\\s*(?:р\\.?|руб(?:лей|ля)?|BYN|₽)", text, re.I)
+        match = re.search(r"([0-9][0-9\s\u00a0]*(?:[,.][0-9]{1,2})?)\s*(?:р\.?|руб(?:лей|ля)?|BYN|₽)", text, re.I)
         if match:
             price = clean_decimal(match.group(1))
             if price is not None and price > 0:
