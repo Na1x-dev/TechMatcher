@@ -36,6 +36,7 @@ services:
     command: >
       sh -c "python manage.py migrate &&
              python manage.py ensure_superuser &&
+             python manage.py enqueue_catalog_parser_if_needed &&
              python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./back:/app
@@ -86,6 +87,35 @@ services:
       DEBUG: ${DEBUG:-True}
       SECRET_KEY: ${SECRET_KEY:-django-insecure-techmatcher-dev-key}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,backend}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_beat:
+    build: ./back
+    container_name: tech_matcher_celery_beat
+    restart: unless-stopped
+    command: celery -A tech_matcher beat --loglevel=info
+    volumes:
+      - ./back:/app
+    environment:
+      DATABASE_URL: postgres://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@db:5432/${DB_NAME:-tech_matcher}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/1}
+      DEBUG: ${DEBUG:-True}
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-techmatcher-dev-key}
+      PARSER_ENABLED: ${PARSER_ENABLED:-True}
+      PARSER_MIN_PRODUCTS: ${PARSER_MIN_PRODUCTS:-100}
+      PARSER_MAX_PAGES: ${PARSER_MAX_PAGES:-10}
+      PARSER_PAGE_SIZE: ${PARSER_PAGE_SIZE:-30}
+      PARSER_REQUEST_TIMEOUT: ${PARSER_REQUEST_TIMEOUT:-25}
+      PARSER_DELAY_MIN: ${PARSER_DELAY_MIN:-0.8}
+      PARSER_DELAY_MAX: ${PARSER_DELAY_MAX:-1.8}
+      PARSER_SOURCE_URL: ${PARSER_SOURCE_URL:-https://catalog.onliner.by/mobile?mobile_type%5B0%5D=smartphone&mobile_type%5Boperation%5D=union&page=}
+      PARSER_USER_AGENT: ${PARSER_USER_AGENT:-TechMatcherCatalogBot/1.0}
+      PARSER_SCHEDULE_MINUTES: ${PARSER_SCHEDULE_MINUTES:-15}
     depends_on:
       db:
         condition: service_healthy
