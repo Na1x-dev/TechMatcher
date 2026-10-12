@@ -4,7 +4,6 @@ import { useAuth } from "../components/AuthContext";
 
 const STORAGE_KEY = "techmatcher_guest_cart";
 const CartContext = createContext(null);
-
 const readGuestCart = () => {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { return []; }
 };
@@ -21,11 +20,8 @@ export const CartProvider = ({ children }) => {
   const refreshServerCart = useCallback(async () => {
     if (!user) { setServerBasket(null); return null; }
     setLoading(true);
-    try {
-      const basket = await getReq("basket/");
-      setServerBasket(basket);
-      return basket;
-    } finally { setLoading(false); }
+    try { const basket = await getReq("basket/"); setServerBasket(basket); return basket; }
+    finally { setLoading(false); }
   }, [user]);
 
   const syncGuestCart = useCallback(async () => {
@@ -33,12 +29,8 @@ export const CartProvider = ({ children }) => {
     if (!user || !local.length) return;
     setLoading(true);
     try {
-      for (const item of local) {
-        await postReq("basket/", { smartphone_id: item.id, quantity: item.quantity });
-      }
-      localStorage.removeItem(STORAGE_KEY);
-      setGuestItems([]);
-      await refreshServerCart();
+      for (const item of local) await postReq("basket/", { smartphone_id: item.id, quantity: item.quantity });
+      localStorage.removeItem(STORAGE_KEY); setGuestItems([]); await refreshServerCart();
     } finally { setLoading(false); }
   }, [refreshServerCart, user]);
 
@@ -48,10 +40,7 @@ export const CartProvider = ({ children }) => {
     if (user) {
       if (becameAuthenticated && readGuestCart().length) syncGuestCart().catch(() => {});
       else refreshServerCart().catch(() => {});
-    } else {
-      setServerBasket(null);
-      setGuestItems(readGuestCart());
-    }
+    } else { setServerBasket(null); setGuestItems(readGuestCart()); }
   }, [user, refreshServerCart, syncGuestCart]);
 
   const addToCart = async (product, quantity = 1) => {
@@ -71,7 +60,8 @@ export const CartProvider = ({ children }) => {
       const next = readGuestCart().filter((item) => item.id !== id);
       writeGuestCart(next); setGuestItems(next); return;
     }
-    const updated = await deleteReq(`basket/?smartphone_id=${id}`);
+    // DRF receives smartphone_id as a query parameter for DELETE requests.
+    const updated = await deleteReq("basket/", { params: { smartphone_id: id } });
     setServerBasket(updated);
   };
 
@@ -80,11 +70,9 @@ export const CartProvider = ({ children }) => {
     ? Number(serverBasket?.total_price || 0)
     : guestItems.reduce((sum, item) => sum + Number(item.product?.price || 0) * Number(item.quantity || 0), 0);
   const itemCount = countItems(items);
-
   const value = useMemo(() => ({ items, total, itemCount, loading, addToCart, removeFromCart, refresh: refreshServerCart, isGuest: !user }), [items, total, itemCount, loading, user, refreshServerCart]);
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
-
 
 export const useCart = () => {
   const context = useContext(CartContext);
