@@ -264,10 +264,30 @@ def run_catalog_parser():
                         continue
                     source_key = data.pop("source_url")
                     with transaction.atomic():
-                        _, was_created = Smartphone.objects.update_or_create(
-                            source_url=source_key,
-                            defaults=data,
-                        )
+                        product = Smartphone.objects.filter(source_url=source_key).first()
+                        # Link legacy rows only when title, brand and memory configuration
+                        # identify exactly one candidate.
+                        if product is None and (data.get("ram_size") is not None or data.get("rom_size") is not None):
+                            candidates = Smartphone.objects.filter(
+                                title__iexact=data["title"],
+                                brand__iexact=data["brand"],
+                                source_url__isnull=True,
+                            )
+                            if data.get("ram_size") is not None:
+                                candidates = candidates.filter(ram_size=data["ram_size"])
+                            if data.get("rom_size") is not None:
+                                candidates = candidates.filter(rom_size=data["rom_size"])
+                            if candidates.count() == 1:
+                                product = candidates.first()
+
+                        was_created = product is None
+                        if was_created:
+                            product = Smartphone.objects.create(source_url=source_key, **data)
+                        else:
+                            for field, value in data.items():
+                                setattr(product, field, value)
+                            product.source_url = source_key
+                            product.save()
                     created += int(was_created)
                     updated += int(not was_created)
                 except (requests.RequestException, ValueError, TypeError):
