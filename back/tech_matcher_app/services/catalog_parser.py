@@ -152,12 +152,15 @@ def _first_text(soup, selectors):
 
 
 def _image_is_likely_product(url, alt=""):
-    value = f"{url} {alt}".lower()
     if not url or url.startswith("data:"):
         return False
-    if any(token in value for token in ("logo", "onliner", "sprite", "icon", "favicon", "avatar", "banner", "placeholder")):
+    # Onliner hosts its real product photos on its own domain, so inspect the
+    # path and alt text rather than rejecting every URL containing "onliner".
+    path = urlsplit(url).path.lower()
+    label = str(alt).lower()
+    if any(token in path or token in label for token in ("logo", "sprite", "icon", "favicon", "avatar", "banner", "placeholder")):
         return False
-    return bool(re.search(r"\\.(?:jpe?g|png|webp)(?:[?#]|$)", url, re.I)) or "image" in value or "photo" in value
+    return bool(re.search(r"\\.(?:jpe?g|png|webp)(?:$)", path, re.I)) or "image" in label or "photo" in label
 
 
 def _extract_product_image(soup, page_url):
@@ -410,7 +413,7 @@ def run_catalog_parser():
                             # forever when a valid product photo cannot be found.
                             if not data.get("image_url") and product.image_url:
                                 old_image = product.image_url.lower()
-                                if any(token in old_image for token in ("logo", "onliner", "sprite", "favicon", "placeholder")):
+                                if any(token in urlsplit(old_image).path for token in ("logo", "sprite", "favicon", "placeholder")):
                                     product.image_url = None
                             product.source_url = source_key
                             product.save()
