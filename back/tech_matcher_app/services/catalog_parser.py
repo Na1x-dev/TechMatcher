@@ -357,11 +357,12 @@ def parse_product_page(session, url, timeout):
         data["price"] = price
 
     raw_specs = extract_spec_rows(soup)
-    data["specifications"] = raw_specs
+    if raw_specs:
+        data["specifications"] = raw_specs
 
     for label, value in raw_specs.items():
         normalized_label = normalize_spec_label(label)
-        field = COLUMN_MAPPING.get(label) or COLUMN_MAPPING.get(normalized_label)
+        field = COLUMN_MAPPING.get(label) or next((target for source, target in COLUMN_MAPPING.items() if normalize_spec_label(source) == normalized_label), None)
         if not field or not value:
             continue
         if field in {"launch_year", "screen_fps", "ppi", "ram_size", "rom_size",
