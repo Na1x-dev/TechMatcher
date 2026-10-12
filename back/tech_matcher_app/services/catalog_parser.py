@@ -296,7 +296,12 @@ def _extract_product_image(soup, page_url):
             alt = node.get("alt", "") or node.get("title", "")
             # The primary Onliner figure can use image-proxy URLs without file extensions.
             is_primary_figure = node in soup.select("figure.offers-description__figure img")
-            if not is_primary_figure and not _image_is_likely_product(absolute, alt):
+            is_explicit_metadata = node.name == "meta" and (
+                node.get("property") == "og:image"
+                or node.get("name") == "twitter:image"
+            )
+            is_image_property = node.get("itemprop") == "image"
+            if not (is_primary_figure or is_explicit_metadata or is_image_property) and not _image_is_likely_product(absolute, alt):
                 continue
             score = 100 - priority * 5
             cls = " ".join(node.get("class", [])) if isinstance(node.get("class"), list) else str(node.get("class", ""))
@@ -327,25 +332,38 @@ def _extract_price(soup):
         if price is not None and price > 0:
             return price
 
-    # Some catalog pages expose price in JSON-LD rather than visible markup.
+    # Some catalog pages expose the product or its offers inside JSON-LD @graph.
     import json
-    for node in soup.select("script[type='application/ld+json']"):
-        try:
-            payload = json.loads(node.string or node.get_text())
-        except (ValueError, TypeError):
-            continue
-        objects = payload if isinstance(payload, list) else [payload]
-        for obj in objects:
-            if not isinstance(obj, dict):
-                continue
+
+    def find_jsonld_price(obj):
+        if isinstance(obj, list):
+            for item in obj:
+                price = find_jsonld_price(item)
+                if price is not None:
+                    return price
+        elif isinstance(obj, dict):
             offers = obj.get("offers", [])
             if isinstance(offers, dict):
                 offers = [offers]
-            for offer in offers:
+            for offer in offers if isinstance(offers, list) else []:
                 if isinstance(offer, dict):
                     price = clean_decimal(offer.get("price") or offer.get("lowPrice"))
                     if price is not None and price > 0:
                         return price
+            for key in ("@graph", "mainEntity", "itemListElement"):
+                if key in obj:
+                    price = find_jsonld_price(obj[key])
+                    if price is not None:
+                        return price
+        return None
+
+    for node in soup.select("script[type='application/ld+json']"):
+        try:
+            price = find_jsonld_price(json.loads(node.string or node.get_text()))
+        except (ValueError, TypeError):
+            continue
+        if price is not None:
+            return price
     return None
 
 
