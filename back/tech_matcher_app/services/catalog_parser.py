@@ -151,6 +151,32 @@ def extract_spec_rows(soup):
             value = clean_text(value_node.get_text(" ", strip=True))
             if label and value:
                 found[label] = value
+
+    # Some pages expose extra product properties in JSON-LD instead of HTML rows.
+    import json
+    def collect_properties(obj):
+        if isinstance(obj, list):
+            for item in obj:
+                collect_properties(item)
+        elif isinstance(obj, dict):
+            props = obj.get("additionalProperty", [])
+            if isinstance(props, dict):
+                props = [props]
+            for prop in props:
+                if isinstance(prop, dict):
+                    name = clean_text(prop.get("name") or prop.get("propertyID"))
+                    value = clean_text(prop.get("value") or prop.get("description"))
+                    if name and value:
+                        found.setdefault(name, value)
+            for key, value in obj.items():
+                if key in {"@graph", "mainEntity", "subjectOf"}:
+                    collect_properties(value)
+
+    for script in soup.select("script[type='application/ld+json']"):
+        try:
+            collect_properties(json.loads(script.string or script.get_text()))
+        except (ValueError, TypeError):
+            continue
     return found
 
 
