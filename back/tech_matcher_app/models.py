@@ -53,6 +53,7 @@ class Smartphone(models.Model):
     launch_year = models.PositiveIntegerField(null=True, blank=True, db_index=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, db_index=True)
     image_url = models.URLField(max_length=500, null=True, blank=True)
+    source_url = models.URLField(max_length=500, null=True, blank=True, unique=True)
 
     # Технические характеристики
     os_version = models.CharField(max_length=100, blank=True)
