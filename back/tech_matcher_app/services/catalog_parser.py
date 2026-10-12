@@ -52,12 +52,18 @@ COLUMN_MAPPING = {
     "Емкость аккумулятора": "accum_volume",
     "Мощность зарядки": "charging_power",
     "Беспроводная зарядка": "wireless_charging",
+    "Поддержка беспроводной зарядки": "wireless_charging",
+    "Мощность беспроводной зарядки": "wireless_charging_power",
+    "Мощность беспроводной зарядки, Вт": "wireless_charging_power",
     "Bluetooth": "bluetooth",
     "Аудиовыход": "audio_port",
     "Разъём подключения": "charge_port",
     "Wi-Fi": "wifi",
     "NFC": "nfc",
+    "Поддержка NFC": "nfc",
     "5G": "has_5g",
+    "Поддержка 5G": "has_5g",
+    "Поддержка сетей 5G": "has_5g",
     "Количество физических SIM-карт": "sim_count",
     "Формат SIM-карты": "sim_type",
 }
@@ -101,7 +107,51 @@ def clean_decimal(value):
 def clean_bool(value):
     if isinstance(value, bool):
         return value
-    return clean_text(value).lower() in {"есть", "да", "+", "true", "1", "поддерживается"}
+    text = clean_text(value).lower().strip(" .")
+    if text in {"есть", "да", "+", "true", "1", "поддерживается", "поддержка есть", "yes"}:
+        return True
+    if text in {"нет", "не поддерживается", "-", "false", "0", "отсутствует", "no", "не предусмотрена"}:
+        return False
+    return None
+
+
+def normalize_spec_label(label):
+    label = clean_text(label).strip(":").lower().replace("ё", "е")
+    aliases = {
+        "поддержка nfc": "nfc",
+        "поддержка 5g": "5g",
+        "поддержка сетей 5g": "5g",
+        "поддержка беспроводной зарядки": "беспроводная зарядка",
+        "мощность беспроводной зарядки, вт": "мощность беспроводной зарядки",
+    }
+    return aliases.get(label, label)
+
+
+def extract_spec_rows(soup):
+    """Read specification rows from tables and definition lists."""
+    found = {}
+    for row in soup.select("table tr, .product-specs__row, .catalog-specs__row, .offers-description__specs tr, .offers-description__item, [class*='specification'] [class*='row']"):
+        cells = row.find_all(["td", "th"], recursive=False)
+        if len(cells) >= 2:
+            label = clean_text(cells[0].get_text(" ", strip=True)).rstrip(":")
+            value = clean_text(" ".join(cell.get_text(" ", strip=True) for cell in cells[1:]))
+        else:
+            label_node = row.select_one(".product-specs__name, .catalog-specs__name, dt, [class*='label'], [class*='name']")
+            value_node = row.select_one(".product-specs__value, .catalog-specs__value, dd, [class*='value']")
+            if not label_node or not value_node:
+                continue
+            label = clean_text(label_node.get_text(" ", strip=True)).rstrip(":")
+            value = clean_text(value_node.get_text(" ", strip=True))
+        if label and value and label.lower() not in {"характеристики", "параметр", "значение"}:
+            found[label] = value
+    for dl in soup.select("dl"):
+        labels, values = dl.find_all("dt"), dl.find_all("dd")
+        for label_node, value_node in zip(labels, values):
+            label = clean_text(label_node.get_text(" ", strip=True)).rstrip(":")
+            value = clean_text(value_node.get_text(" ", strip=True))
+            if label and value:
+                found[label] = value
+    return found
 
 
 def canonical_url(url):
@@ -306,23 +356,17 @@ def parse_product_page(session, url, timeout):
     if price is not None:
         data["price"] = price
 
-    for row in soup.select("table tr, .product-specs__row, .catalog-specs__row"):
-        cells = row.find_all(["td", "th"], recursive=False)
-        if len(cells) < 2:
-            label_node = row.select_one(".product-specs__name, .catalog-specs__name, dt")
-            value_node = row.select_one(".product-specs__value, .catalog-specs__value, dd")
-            if not label_node or not value_node:
-                continue
-            label = clean_text(label_node.get_text(" ", strip=True)).rstrip(":")
-            value = clean_text(value_node.get_text(" ", strip=True))
-        else:
-            label = clean_text(cells[0].get_text(" ", strip=True)).rstrip(":")
-            value = clean_text(cells[1].get_text(" ", strip=True))
-        field = COLUMN_MAPPING.get(label)
+    raw_specs = extract_spec_rows(soup)
+    data["specifications"] = raw_specs
+
+    for label, value in raw_specs.items():
+        normalized_label = normalize_spec_label(label)
+        field = COLUMN_MAPPING.get(label) or COLUMN_MAPPING.get(normalized_label)
         if not field or not value:
             continue
         if field in {"launch_year", "screen_fps", "ppi", "ram_size", "rom_size",
-                     "camera_count", "accum_volume", "charging_power", "sim_count"}:
+                     "camera_count", "accum_volume", "charging_power",
+                     "wireless_charging_power", "sim_count"}:
             parsed = clean_int(value)
         elif field in {"screen_size", "length", "width", "thickness", "weight"}:
             parsed = clean_float(value)
@@ -332,6 +376,21 @@ def parse_product_page(session, url, timeout):
             parsed = value
         if parsed is not None and parsed != "":
             data[field] = parsed
+
+        key = normalize_spec_label(label)
+        if key in {"nfc", "5g", "беспроводная зарядка"}:
+            target = {"nfc": "nfc", "5g": "has_5g", "беспроводная зарядка": "wireless_charging"}[key]
+            parsed_bool = clean_bool(value)
+            if parsed_bool is not None:
+                data[target] = parsed_bool
+        if "мощност" in key and "беспровод" in key:
+            power = clean_int(value)
+            if power is not None:
+                data["wireless_charging_power"] = power
+        elif key in {"мощность зарядки", "мощность проводной зарядки"}:
+            power = clean_int(value)
+            if power is not None:
+                data["charging_power"] = power
 
     allowed_fields = {field.name for field in Smartphone._meta.fields}
     return {key: value for key, value in data.items() if key in allowed_fields}
