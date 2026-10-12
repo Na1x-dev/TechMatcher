@@ -151,32 +151,107 @@ def _first_text(soup, selectors):
     return ""
 
 
+def _image_is_likely_product(url, alt=""):
+    value = f"{url} {alt}".lower()
+    if not url or url.startswith("data:"):
+        return False
+    if any(token in value for token in ("logo", "onliner", "sprite", "icon", "favicon", "avatar", "banner", "placeholder")):
+        return False
+    return bool(re.search(r"\\.(?:jpe?g|png|webp)(?:[?#]|$)", url, re.I)) or "image" in value or "photo" in value
+
+
+def _extract_product_image(soup, page_url):
+    candidates = []
+    selectors = [
+        ".catalog-masthead__image",
+        ".catalog-masthead__image img",
+        ".product-gallery img",
+        ".product-gallery__image",
+        ".js-gallery img",
+        ".js-gallery-zoom",
+        "img[itemprop='image']",
+        "meta[property='og:image']",
+        "meta[name='twitter:image']",
+    ]
+    for selector in selectors:
+        for node in soup.select(selector):
+            url = node.get("content") or node.get("data-src") or node.get("data-original") or node.get("src") or node.get("href")
+            alt = node.get("alt", "") or node.get("title", "")
+            if not url:
+                continue
+            absolute = urljoin(page_url, url)
+            if _image_is_likely_product(absolute, alt):
+                score = 0
+                cls = " ".join(node.get("class", [])) if isinstance(node.get("class"), list) else str(node.get("class", ""))
+                if "gallery" in cls or "masthead" in cls:
+                    score += 5
+                if "itemprop" in node.attrs or node.get("property") == "og:image":
+                    score += 3
+                if alt and any(word in alt.lower() for word in ("iphone", "samsung", "xiaomi", "смартфон", "телефон")):
+                    score += 2
+                candidates.append((score, absolute))
+        if candidates and selector.startswith(".catalog-masthead"):
+            break
+    if not candidates:
+        return None
+    return max(candidates, key=lambda item: item[0])[1][:500]
+
+
+def _extract_price(soup):
+    # Prefer explicit offer-price nodes; generic page text often contains specs, not prices.
+    for selector in (
+        "[itemprop='price']",
+        "meta[property='product:price:amount']",
+        "meta[itemprop='price']",
+        ".offers-description__price-value",
+        ".offers-description__price",
+        ".offers-list__price",
+        "[data-price]",
+    ):
+        node = soup.select_one(selector)
+        if not node:
+            continue
+        value = node.get("content") or node.get("data-price") or node.get_text(" ", strip=True)
+        price = clean_decimal(value)
+        if price is not None and price > 0:
+            return price
+
+    # Some catalog pages expose price in JSON-LD rather than visible markup.
+    import json
+    for node in soup.select("script[type='application/ld+json']"):
+        try:
+            payload = json.loads(node.string or node.get_text())
+        except (ValueError, TypeError):
+            continue
+        objects = payload if isinstance(payload, list) else [payload]
+        for obj in objects:
+            if not isinstance(obj, dict):
+                continue
+            offers = obj.get("offers", [])
+            if isinstance(offers, dict):
+                offers = [offers]
+            for offer in offers:
+                if isinstance(offer, dict):
+                    price = clean_decimal(offer.get("price") or offer.get("lowPrice"))
+                    if price is not None and price > 0:
+                        return price
+    return None
+
+
 def parse_product_page(session, url, timeout):
     soup = _get(session, url, timeout)
     title = _first_text(soup, [
         "h1.catalog-masthead__title.js-nav-header",
         "h1.catalog-masthead__title",
         "h1",
+        "meta[property='og:title']",
     ])
     if not title:
         logger.warning("Skipping product without title: %s", url)
         return None
 
-    image_node = soup.select_one(".js-gallery-zoom[href], .product-gallery img[src], img[itemprop='image']")
-    image_url = ""
-    if image_node:
-        image_url = image_node.get("href") or image_node.get("src") or image_node.get("data-src") or ""
-    if not image_url:
-        image_node = soup.select_one("img[src]")
-        image_url = image_node.get("src", "") if image_node else ""
-    image_url = urljoin(url, image_url) if image_url else ""
-
-    price_text = _first_text(soup, [
-        "div.offers-description__price a",
-        ".offers-description__price",
-        "[data-price]",
-    ])
-    price = clean_decimal(price_text)
+    image_url = _extract_product_image(soup, url)
+    price = _extract_price(soup)
 
     brand = ""
     breadcrumbs = soup.select("a.breadcrumbs__link")
@@ -189,38 +264,41 @@ def parse_product_page(session, url, timeout):
         "source_url": canonical_url(url),
         "title": title[:255],
         "brand": brand[:100],
-        "image_url": image_url[:500] or None,
-        "price": price,
-        "camera_count": 1,
-        "sim_count": 2,
-        "wireless_charging": False,
-        "nfc": False,
-        "has_5g": False,
     }
+    if image_url:
+        data["image_url"] = image_url
+    if price is not None:
+        data["price"] = price
 
-    for row in soup.select("table tr"):
+    for row in soup.select("table tr, .product-specs__row, .catalog-specs__row"):
         cells = row.find_all(["td", "th"], recursive=False)
         if len(cells) < 2:
-            continue
-        label = clean_text(cells[0].get_text(" ", strip=True)).rstrip(":")
-        value = clean_text(cells[1].get_text(" ", strip=True))
+            label_node = row.select_one(".product-specs__name, .catalog-specs__name, dt")
+            value_node = row.select_one(".product-specs__value, .catalog-specs__value, dd")
+            if not label_node or not value_node:
+                continue
+            label = clean_text(label_node.get_text(" ", strip=True)).rstrip(":")
+            value = clean_text(value_node.get_text(" ", strip=True))
+        else:
+            label = clean_text(cells[0].get_text(" ", strip=True)).rstrip(":")
+            value = clean_text(cells[1].get_text(" ", strip=True))
         field = COLUMN_MAPPING.get(label)
         if not field or not value:
             continue
         if field in {"launch_year", "screen_fps", "ppi", "ram_size", "rom_size",
                      "camera_count", "accum_volume", "charging_power", "sim_count"}:
-            data[field] = clean_int(value)
+            parsed = clean_int(value)
         elif field in {"screen_size", "length", "width", "thickness", "weight"}:
-            data[field] = clean_float(value)
+            parsed = clean_float(value)
         elif field in {"wireless_charging", "nfc", "has_5g"}:
-            data[field] = clean_bool(value)
+            parsed = clean_bool(value)
         else:
-            data[field] = value
+            parsed = value
+        if parsed is not None and parsed != "":
+            data[field] = parsed
 
-    # A year is optional; do not discard a product just because the source changed its format.
     allowed_fields = {field.name for field in Smartphone._meta.fields}
-    data = {key: value for key, value in data.items() if key in allowed_fields}
-    return data
+    return {key: value for key, value in data.items() if key in allowed_fields}
 
 
 def run_catalog_parser():
