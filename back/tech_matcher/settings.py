@@ -162,7 +162,31 @@ if _google_client_id and _google_client_secret:
     }
 
 CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://redis:6379/0")
-CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default="redis://redis:6379/0")
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default="redis://redis:6379/1")
+
+PARSER_ENABLED = env.bool("PARSER_ENABLED", default=True)
+PARSER_SOURCE_URL = env(
+    "PARSER_SOURCE_URL",
+    default="https://catalog.onliner.by/mobile?mobile_type%5B0%5D=smartphone&mobile_type%5Boperation%5D=union&page=",
+)
+PARSER_MIN_PRODUCTS = env.int("PARSER_MIN_PRODUCTS", default=100)
+PARSER_MAX_PAGES = env.int("PARSER_MAX_PAGES", default=10)
+PARSER_PAGE_SIZE = env.int("PARSER_PAGE_SIZE", default=30)
+PARSER_REQUEST_TIMEOUT = env.int("PARSER_REQUEST_TIMEOUT", default=25)
+PARSER_DELAY_MIN = env.float("PARSER_DELAY_MIN", default=0.8)
+PARSER_DELAY_MAX = env.float("PARSER_DELAY_MAX", default=1.8)
+PARSER_USER_AGENT = env(
+    "PARSER_USER_AGENT",
+    default="TechMatcherCatalogBot/1.0 (+https://example.com/contact)",
+)
+PARSER_SCHEDULE_MINUTES = env.int("PARSER_SCHEDULE_MINUTES", default=15)
+
+CELERY_BEAT_SCHEDULE = {
+    "fill-catalog-when-below-threshold": {
+        "task": "tech_matcher_app.tasks.parse_smartphone_catalog",
+        "schedule": max(60, PARSER_SCHEDULE_MINUTES * 60),
+    },
+}
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "TechMatcher API",
