@@ -511,9 +511,6 @@ def run_catalog_parser():
                     logger.exception("Failed to parse product %s", product_url)
                 time.sleep(random.uniform(delay_min, delay_max))
 
-                if Smartphone.objects.count() >= min_products:
-                    logger.info("Catalog reached configured threshold (%s)", min_products)
-                    return {"status": "ok", "created": created, "updated": updated, "pages": pages, "errors": errors}
 
         return {"status": "ok", "created": created, "updated": updated, "pages": pages, "errors": errors}
     finally:
