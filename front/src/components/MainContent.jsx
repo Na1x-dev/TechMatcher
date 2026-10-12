@@ -9,22 +9,14 @@ const MainContent = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [query, setQuery] = useState("");
   const [filters, setFilters] = useState(initialFilters);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
-  useEffect(() => {
-    const t = setTimeout(() => { setQuery(search.trim()); setPage(1); }, 350);
-    return () => clearTimeout(t);
-  }, [search]);
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams({ page: String(page) });
-      if (query) params.set("search", query);
       Object.entries(filters).forEach(([key, value]) => {
         if (value === true) params.set(key, "true");
         else if (value !== false && value !== "") params.set(key, value);
@@ -36,16 +28,16 @@ const MainContent = () => {
     } catch (error) {
       enqueueSnackbar(getApiError(error, "Не удалось загрузить каталог"), { variant: "error" });
     } finally { setLoading(false); }
-  }, [page, query, filters, enqueueSnackbar]);
+  }, [page, filters, enqueueSnackbar]);
 
   useEffect(() => { load(); }, [load]);
   const changeFilter = (key, value) => { setFilters((current) => ({ ...current, [key]: value })); setPage(1); };
-  const resetFilters = () => { setFilters(initialFilters); setSearch(""); setQuery(""); setPage(1); };
+  const resetFilters = () => { setFilters(initialFilters); setPage(1); };
 
   return <main>
     <section className="hero"><div><div className="hero-kicker">TECHMATCHER / CATALOG</div><h1>Техника, которую<br /><em>легко выбрать.</em></h1><p>Сравнивайте характеристики смартфонов и собирайте корзину без лишних шагов.</p></div><div className="hero-orb"><span>01</span><small>SMART<br />CHOICE</small></div></section>
     <section className="catalog-section" id="categories">
-      <div className="section-head"><div><span className="section-kicker">КАТАЛОГ</span><h2>Смартфоны</h2></div><div className="search-box"><span>⌕</span><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Поиск по модели, бренду или процессору…" /></div></div>
+      <div className="section-head"><div><span className="section-kicker">КАТАЛОГ</span><h2>Смартфоны</h2></div></div>
       <div className="catalog-layout">
         <aside className="filter-sidebar">
           <div className="filter-heading"><h3>Фильтры</h3><button onClick={resetFilters}>Сбросить</button></div>
@@ -58,7 +50,7 @@ const MainContent = () => {
           <label className="filter-check"><input type="checkbox" checked={filters.nfc} onChange={(e) => changeFilter("nfc", e.target.checked)} /> NFC</label>
         </aside>
         <div className="catalog-results">
-          {loading ? <Loading /> : products.length ? <><div className="results-caption">Найдено на этой странице: {products.length}</div><div className="product-list">{products.map((p) => <ProductCard key={p.id} product={p} />)}</div>{totalPages > 1 && <div className="pagination"><button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>← Назад</button><span>{page} / {totalPages}</span><button disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Вперёд →</button></div>}</> : <div className="empty-state"><div>⌕</div><h3>Ничего не нашли</h3><p>Попробуйте изменить запрос или сбросить фильтры.</p><button className="button button-outline" onClick={resetFilters}>Сбросить фильтры</button></div>}
+          {loading ? <Loading /> : products.length ? <><div className="results-caption">Найдено на этой странице: {products.length}</div><div className="product-list">{products.map((p) => <ProductCard key={p.id} product={p} />)}</div>{totalPages > 1 && <div className="pagination"><button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>← Назад</button><span>{page} / {totalPages}</span><button disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Вперёд →</button></div>}</> : <div className="empty-state"><div>⌕</div><h3>Ничего не нашли</h3><p>Попробуйте изменить параметры фильтров или сбросить их.</p><button className="button button-outline" onClick={resetFilters}>Сбросить фильтры</button></div>}
         </div>
       </div>
     </section>
