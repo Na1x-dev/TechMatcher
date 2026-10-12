@@ -65,7 +65,7 @@ services:
       PARSER_REQUEST_TIMEOUT: ${PARSER_REQUEST_TIMEOUT:-25}
       PARSER_DELAY_MIN: ${PARSER_DELAY_MIN:-0.8}
       PARSER_DELAY_MAX: ${PARSER_DELAY_MAX:-1.8}
-      PARSER_SOURCE_URL: ${PARSER_SOURCE_URL:-https://catalog.onliner.by/mobile}
+      PARSER_SOURCE_URL: ${PARSER_SOURCE_URL:-https://catalog.onliner.by/mobile?mobile_type%5B0%5D=smartphone&mobile_type%5Boperation%5D=union&page=}
       PARSER_USER_AGENT: ${PARSER_USER_AGENT:-TechMatcherCatalogBot/1.0}
     depends_on:
       db:
@@ -87,6 +87,15 @@ services:
       DEBUG: ${DEBUG:-True}
       SECRET_KEY: ${SECRET_KEY:-django-insecure-techmatcher-dev-key}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,backend}
+      PARSER_ENABLED: ${PARSER_ENABLED:-True}
+      PARSER_MIN_PRODUCTS: ${PARSER_MIN_PRODUCTS:-100}
+      PARSER_MAX_PAGES: ${PARSER_MAX_PAGES:-10}
+      PARSER_PAGE_SIZE: ${PARSER_PAGE_SIZE:-30}
+      PARSER_REQUEST_TIMEOUT: ${PARSER_REQUEST_TIMEOUT:-25}
+      PARSER_DELAY_MIN: ${PARSER_DELAY_MIN:-0.8}
+      PARSER_DELAY_MAX: ${PARSER_DELAY_MAX:-1.8}
+      PARSER_SOURCE_URL: ${PARSER_SOURCE_URL:-https://catalog.onliner.by/mobile?mobile_type%5B0%5D=smartphone&mobile_type%5Boperation%5D=union&page=}
+      PARSER_USER_AGENT: ${PARSER_USER_AGENT:-TechMatcherCatalogBot/1.0}
     depends_on:
       db:
         condition: service_healthy
