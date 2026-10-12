@@ -241,7 +241,12 @@ def run_catalog_parser():
     seen_urls = set()
     try:
         for page_number in range(1, max_pages + 1):
-            current_url = f"{source_url}{'&' if '?' in source_url else '?'}page={page_number}" if "page=" not in source_url else re.sub(r"([?&]page=)\d+", rf"\g<1>{page_number}", source_url)
+            if re.search(r"[?&]page=\d+", source_url):
+                current_url = re.sub(r"([?&]page=)\d+", rf"\g<1>{page_number}", source_url)
+            elif re.search(r"[?&]page=$", source_url):
+                current_url = f"{source_url}{page_number}"
+            else:
+                current_url = f"{source_url}{'&' if '?' in source_url else '?'}page={page_number}"
             try:
                 listing = _get(session, current_url, timeout)
             except requests.RequestException:
