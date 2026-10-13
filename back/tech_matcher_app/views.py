@@ -145,6 +145,23 @@ class BasketView(APIView):
             basket.items.add(basket_item)
         return Response(BasketSerializer(basket).data, status=status.HTTP_201_CREATED)
 
+    def patch(self, request):
+        basket, _ = Basket.objects.get_or_create(user=request.user)
+        smartphone_id = request.data.get("smartphone_id")
+        try:
+            quantity = int(request.data.get("quantity", 0))
+        except (TypeError, ValueError):
+            return Response({"detail": "quantity должен быть целым числом"}, status=status.HTTP_400_BAD_REQUEST)
+        if not smartphone_id or quantity < 1:
+            return Response({"detail": "Нужны smartphone_id и quantity не меньше 1"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            item = basket.items.get(smartphone_id=smartphone_id)
+        except (BasketItem.DoesNotExist, ValueError, TypeError):
+            return Response({"detail": "Товар в корзине не найден"}, status=status.HTTP_404_NOT_FOUND)
+        item.quantity = quantity
+        item.save(update_fields=["quantity"])
+        return Response(BasketSerializer(basket).data, status=status.HTTP_200_OK)
+
     def delete(self, request):
         basket, _ = Basket.objects.get_or_create(user=request.user)
         smartphone_id = request.query_params.get("smartphone_id") or request.data.get("smartphone_id")
