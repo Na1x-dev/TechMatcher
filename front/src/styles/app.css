@@ -355,3 +355,22 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* Product page: clearer specs and explicit cart state */
+.detail-cart-actions { display: flex; align-items: stretch; gap: 10px; max-width: 380px; }
+.detail-cart-main { flex: 1; max-width: none !important; min-height: 54px; font-size: 14px; transition: background-color 260ms ease, color 260ms ease, transform 300ms var(--ease-out), box-shadow 300ms ease; }
+.detail-cart-main.is-in-cart { background: var(--plum); color: var(--accent-strong); box-shadow: 4px 4px 0 var(--accent); }
+.detail-cart-plus { min-width: 62px; min-height: 54px; padding: 0 15px; background: #fff8f7; border-color: var(--plum); color: var(--plum); font-size: 16px; font-weight: 800; }
+.detail-cart-plus:hover:not(:disabled) { background: var(--accent); }
+.spec-card h3 { font-size: 21px; }
+.spec-row { gap: 20px; padding: 14px 0; font-size: 13px; line-height: 1.7; }
+.spec-row span { font-size: 13px; font-weight: 600; }
+.spec-row strong { max-width: 60%; font-size: 14px; font-weight: 800; }
+@media (max-width: 760px) {
+  .detail-cart-actions { max-width: none; }
+  .spec-card h3 { font-size: 19px; }
+  .spec-row { gap: 12px; font-size: 12px; }
+  .spec-row span { font-size: 12px; }
+  .spec-row strong { font-size: 13px; }
+}
