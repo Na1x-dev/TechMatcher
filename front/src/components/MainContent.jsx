@@ -3,6 +3,7 @@ import { getReq, getApiError } from "../Api";
 import { useSnackbar } from "notistack";
 import ProductCard from "./ProductCard";
 import Loading from "./Loading";
+import CatalogFilters from "./CatalogFilters";
 
 const PAGE_SIZE = 12;
 const initialFilters = {
@@ -81,9 +82,6 @@ const MainContent = () => {
     setSearch("");
     setPage(1);
   };
-  const activeFilterCount = Object.entries(filters).filter(
-    ([key, value]) => value !== "" && value !== false,
-  ).length;
 
   return (
     <main>
@@ -136,189 +134,7 @@ const MainContent = () => {
           </label>
         </div>
         <div className="catalog-layout">
-          <aside className="filter-sidebar">
-            <div className="filter-heading">
-              <h3>
-                Фильтры{" "}
-                {activeFilterCount > 0 && (
-                  <span className="filter-count">{activeFilterCount}</span>
-                )}
-              </h3>
-              <button onClick={resetFilters}>Сбросить</button>
-            </div>
-            <div className="filter-field">
-              <span>Цена, ₽</span>
-              <div className="filter-pair">
-                <input
-                  type="number"
-                  min="0"
-                  value={filters.min_price}
-                  onChange={(e) => changeFilter("min_price", e.target.value)}
-                  placeholder="От"
-                />
-                <input
-                  type="number"
-                  min="0"
-                  value={filters.max_price}
-                  onChange={(e) => changeFilter("max_price", e.target.value)}
-                  placeholder="До"
-                />
-              </div>
-            </div>
-            <label className="filter-field">
-              <span>Оперативная память, от</span>
-              <select
-                value={filters.ram_size}
-                onChange={(e) => changeFilter("ram_size", e.target.value)}
-              >
-                <option value="">Любая</option>
-                <option value="4">4 ГБ</option>
-                <option value="6">6 ГБ</option>
-                <option value="8">8 ГБ</option>
-                <option value="12">12 ГБ</option>
-                <option value="16">16 ГБ</option>
-                <option value="24">24 ГБ</option>
-              </select>
-            </label>
-            <label className="filter-field">
-              <span>Встроенная память, от</span>
-              <select
-                value={filters.rom_size}
-                onChange={(e) => changeFilter("rom_size", e.target.value)}
-              >
-                <option value="">Любая</option>
-                <option value="64">64 ГБ</option>
-                <option value="128">128 ГБ</option>
-                <option value="256">256 ГБ</option>
-                <option value="512">512 ГБ</option>
-                <option value="1024">1 ТБ</option>
-              </select>
-            </label>
-            <div className="filter-field">
-              <span>Диагональ экрана, ″</span>
-              <div className="filter-pair">
-                <input
-                  type="number"
-                  step="0.1"
-                  value={filters.min_screen_size}
-                  onChange={(e) =>
-                    changeFilter("min_screen_size", e.target.value)
-                  }
-                  placeholder="От"
-                />
-                <input
-                  type="number"
-                  step="0.1"
-                  value={filters.max_screen_size}
-                  onChange={(e) =>
-                    changeFilter("max_screen_size", e.target.value)
-                  }
-                  placeholder="До"
-                />
-              </div>
-            </div>
-            <div className="filter-field">
-              <span>Частота экрана, Гц</span>
-              <div className="filter-pair">
-                <input
-                  type="number"
-                  min="0"
-                  value={filters.min_screen_fps}
-                  onChange={(e) =>
-                    changeFilter("min_screen_fps", e.target.value)
-                  }
-                  placeholder="От"
-                />
-                <input
-                  type="number"
-                  min="0"
-                  value={filters.max_screen_fps}
-                  onChange={(e) =>
-                    changeFilter("max_screen_fps", e.target.value)
-                  }
-                  placeholder="До"
-                />
-              </div>
-            </div>
-            <label className="filter-field">
-              <span>Год выпуска, от</span>
-              <select
-                value={filters.launch_year}
-                onChange={(e) => changeFilter("launch_year", e.target.value)}
-              >
-                <option value="">Любой</option>
-                {[2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018].map(
-                  (year) => (
-                    <option value={year} key={year}>
-                      {year}
-                    </option>
-                  ),
-                )}
-              </select>
-            </label>
-            <label className="filter-field">
-              <span>Тип экрана</span>
-              <select
-                value={filters.screen_type}
-                onChange={(e) => changeFilter("screen_type", e.target.value)}
-              >
-                <option value="">Любой</option>
-                <option value="AMOLED">AMOLED</option>
-                <option value="OLED">OLED</option>
-                <option value="IPS">IPS</option>
-                <option value="LCD">LCD</option>
-              </select>
-            </label>
-            <label className="filter-field">
-              <span>Операционная система</span>
-              <select
-                value={filters.os_version}
-                onChange={(e) => changeFilter("os_version", e.target.value)}
-              >
-                <option value="">Любая</option>
-                <option value="Android">Android</option>
-                <option value="iOS">iOS</option>
-              </select>
-            </label>
-            <label className="filter-field">
-              <span>Защита корпуса</span>
-              <select
-                value={filters.protection}
-                onChange={(e) => changeFilter("protection", e.target.value)}
-              >
-                <option value="">Любая</option>
-                <option value="IP68">IP68</option>
-                <option value="IP67">IP67</option>
-                <option value="IP54">IP54</option>
-              </select>
-            </label>
-            <label className="filter-check">
-              <input
-                type="checkbox"
-                checked={filters.has_5g}
-                onChange={(e) => changeFilter("has_5g", e.target.checked)}
-              />{" "}
-              Поддержка 5G
-            </label>
-            <label className="filter-check">
-              <input
-                type="checkbox"
-                checked={filters.nfc}
-                onChange={(e) => changeFilter("nfc", e.target.checked)}
-              />{" "}
-              NFC
-            </label>
-            <label className="filter-check">
-              <input
-                type="checkbox"
-                checked={filters.wireless_charging}
-                onChange={(e) =>
-                  changeFilter("wireless_charging", e.target.checked)
-                }
-              />{" "}
-              Беспроводная зарядка
-            </label>
-          </aside>
+          <CatalogFilters filters={filters} changeFilter={changeFilter} resetFilters={resetFilters} />
           <div className="catalog-results">
             {loading ? (
               <Loading />
