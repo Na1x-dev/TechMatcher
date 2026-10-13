@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+  <title id="title">Аватар пользователя по умолчанию</title>
+  <rect width="160" height="160" fill="#e9eef8"/>
+  <path d="M0 124 47 77l31 29 27-24 55 49v29H0Z" fill="#d3def0"/>
+  <circle cx="80" cy="58" r="28" fill="#f4f6fa"/>
+  <path d="M30 148c3-31 23-48 50-48s47 17 50 48" fill="#f4f6fa"/>
+  <circle cx="80" cy="80" r="77" fill="none" stroke="#c3cfe3" stroke-width="2"/>
+  <path d="M18 23h18M27 14v18M125 123h18M134 114v18" stroke="#ff6238" stroke-width="3" stroke-linecap="square"/>
+</svg>
