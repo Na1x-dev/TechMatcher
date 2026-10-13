@@ -64,6 +64,7 @@ const Profile = () => {
       const updated = await putReq(`users/${user.user_id}/`, data);
       setProfile((current) => ({ ...current, image: null }));
       setPreview(resolveMediaUrl(updated.image));
+      window.dispatchEvent(new CustomEvent("profile-updated", { detail: updated }));
       enqueueSnackbar("Профиль сохранён", { variant: "success" });
     } catch (error) {
       enqueueSnackbar(getApiError(error, "Не удалось сохранить профиль"), { variant: "error" });
