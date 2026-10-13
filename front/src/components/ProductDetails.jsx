@@ -65,12 +65,14 @@ const knownLabelPatterns = [
   /^(nfc|поддержка nfc|5g|поддержка 5g|порт зарядки|разъем зарядки|аудиоразъем|аудиоразьем|wi fi|wifi|bluetooth|sim карты|тип sim)$/
 ];
 const ProductDetails = () => {
-  const { id } = useParams(); const navigate = useNavigate(); const { enqueueSnackbar } = useSnackbar(); const { addToCart } = useCart();
+  const { id } = useParams(); const navigate = useNavigate(); const { enqueueSnackbar } = useSnackbar(); const { addToCart, items } = useCart();
   const [product, setProduct] = useState(null); const [loading, setLoading] = useState(true); const [adding, setAdding] = useState(false);
   useEffect(() => { setLoading(true); getReq(`smartphones/${id}/`).then(setProduct).catch((e) => enqueueSnackbar(getApiError(e, "Смартфон не найден"), { variant: "error" })).finally(() => setLoading(false)); }, [id, enqueueSnackbar]);
   if (loading) return <Loading />;
   if (!product) return <div className="state-screen"><h2>Смартфон не найден</h2><button className="button button-primary" onClick={() => navigate("/")}>В каталог</button></div>;
-  const add = async () => { setAdding(true); try { await addToCart(product); enqueueSnackbar("Товар добавлен в корзину", { variant: "success" }); } catch (e) { enqueueSnackbar(getApiError(e, "Не удалось добавить товар"), { variant: "error" }); } finally { setAdding(false); } };
+  const cartItem = items.find((item) => Number((item.smartphone || item.product || item).id) === Number(product.id));
+  const quantityInCart = Number(cartItem?.quantity || 0);
+  const add = async () => { setAdding(true); try { await addToCart(product); enqueueSnackbar("Количество в корзине увеличено", { variant: "success" }); } catch (e) { enqueueSnackbar(getApiError(e, "Не удалось добавить товар"), { variant: "error" }); } finally { setAdding(false); } };
   const rawSpecs = Object.entries(product.specifications || {}).filter(([label, value]) => !absent(value) && !knownLabelPatterns.some((pattern) => pattern.test(normalize(label))));
   const extraGroups = Object.fromEntries(["Основное", "Дисплей", "Процессор", "Камера", "Батарея", "Интерфейсы", "Прочее"].map((name) => [name, []]));
   rawSpecs.forEach(([label, value]) => extraGroups[sectionFor(label)].push([label, value]));
@@ -78,7 +80,12 @@ const ProductDetails = () => {
   const renderExtras = (rows) => rows.map(([label, value]) => <div className="spec-row" key={label}><span>{label}</span><strong>{String(value)}</strong></div>);
   return <main className="product-page"><button className="back-link" onClick={() => navigate(-1)}>← Назад</button><div className="product-layout">
     <div className="detail-visual"><div className="detail-image"><img src={product.image_url || "/default-phone.png"} alt={product.title} /></div><div className="detail-note">TECHMATCHER<br /><span>ORIGINAL CATALOG</span></div></div>
-    <div className="detail-copy"><div className="eyebrow">{product.brand || "SMARTPHONE"}</div><h1>{product.title}</h1><p className="detail-price">{money(product.price)}</p><p className="detail-intro">Подробные характеристики устройства собраны в одном месте — от экрана и процессора до интерфейсов и аккумулятора.</p><button className="button button-primary button-large" onClick={add} disabled={adding}>{adding ? "Добавляем…" : "Добавить в корзину"}</button></div>
+    <div className="detail-copy"><div className="eyebrow">{product.brand || "SMARTPHONE"}</div><h1>{product.title}</h1><p className="detail-price">{money(product.price)}</p><p className="detail-intro">Подробные характеристики устройства собраны в одном месте — от экрана и процессора до интерфейсов и аккумулятора.</p><div className="detail-cart-actions">
+      <button className={`button button-primary button-large detail-cart-main ${quantityInCart ? "is-in-cart" : ""}`} onClick={add} disabled={adding}>
+        {adding ? "Добавляем…" : quantityInCart ? "✓ В корзине" : "Добавить в корзину"}
+      </button>
+      {quantityInCart > 0 && <button className="button detail-cart-plus" onClick={add} disabled={adding} aria-label="Добавить ещё один экземпляр" title="Добавить ещё один экземпляр">+1</button>}
+    </div></div>
   </div><section className="specs"><div className="section-kicker">TECH SPECS</div><h2>Характеристики</h2><div className="spec-grid">{groups.map(([title, rows]) => <div className="spec-card" key={title}><h3>{title}</h3>{renderRows(rows)}{renderExtras(extraGroups[title])}</div>)}</div>{extraGroups["Прочее"].length > 0 && <div className="spec-card spec-card-full"><h3>Прочее</h3>{renderExtras(extraGroups["Прочее"])}</div>}</section>
   </main>;
 };
