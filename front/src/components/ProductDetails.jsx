@@ -82,7 +82,7 @@ const ProductDetails = () => {
     <div className="detail-visual"><div className="detail-image"><img src={product.image_url || "/default-phone.png"} alt={product.title} /></div><div className="detail-note">TECHMATCHER<br /><span>ORIGINAL CATALOG</span></div></div>
     <div className="detail-copy"><div className="eyebrow">{product.brand || "SMARTPHONE"}</div><h1>{product.title}</h1><p className="detail-price">{money(product.price)}</p><p className="detail-intro">Подробные характеристики устройства собраны в одном месте — от экрана и процессора до интерфейсов и аккумулятора.</p><div className="detail-cart-actions">
       <button className={`button button-primary button-large detail-cart-main ${quantityInCart ? "is-in-cart" : ""}`} onClick={add} disabled={adding}>
-        {adding ? "Добавляем…" : quantityInCart ? "✓ В корзине" : "Добавить в корзину"}
+        {adding ? "Добавляем…" : quantityInCart ? `✓ В корзине${quantityInCart >= 2 ? ` · ${quantityInCart} шт.` : ""}` : "Добавить в корзину"}
       </button>
       {quantityInCart > 0 && <button className="button detail-cart-plus" onClick={add} disabled={adding} aria-label="Добавить ещё один экземпляр" title="Добавить ещё один экземпляр">+1</button>}
     </div></div>
