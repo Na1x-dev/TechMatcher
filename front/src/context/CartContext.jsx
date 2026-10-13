@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { deleteReq, getReq, postReq } from "../Api";
+import { deleteReq, getReq, patchReq, postReq } from "../Api";
 import { useAuth } from "../components/AuthContext";
 
 const STORAGE_KEY = "techmatcher_guest_cart";
@@ -55,6 +55,17 @@ export const CartProvider = ({ children }) => {
     await refreshServerCart();
   };
 
+  const changeQuantity = async (id, quantity) => {
+    const targetQuantity = Number(quantity);
+    if (!Number.isInteger(targetQuantity) || targetQuantity < 1) throw new Error("Количество должно быть не меньше одного");
+    if (!user) {
+      const next = readGuestCart().map((item) => item.id === id ? { ...item, quantity: targetQuantity } : item);
+      writeGuestCart(next); setGuestItems(next); return;
+    }
+    const updated = await patchReq("basket/", { smartphone_id: id, quantity: targetQuantity });
+    setServerBasket(updated);
+  };
+
   const removeFromCart = async (id) => {
     if (!user) {
       const next = readGuestCart().filter((item) => item.id !== id);
@@ -70,7 +81,7 @@ export const CartProvider = ({ children }) => {
     ? Number(serverBasket?.total_price || 0)
     : guestItems.reduce((sum, item) => sum + Number(item.product?.price || 0) * Number(item.quantity || 0), 0);
   const itemCount = countItems(items);
-  const value = useMemo(() => ({ items, total, itemCount, loading, addToCart, removeFromCart, refresh: refreshServerCart, isGuest: !user }), [items, total, itemCount, loading, user, refreshServerCart]);
+  const value = useMemo(() => ({ items, total, itemCount, loading, addToCart, changeQuantity, removeFromCart, refresh: refreshServerCart, isGuest: !user }), [items, total, itemCount, loading, user, refreshServerCart]);
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
