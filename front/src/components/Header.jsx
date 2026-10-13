@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { getReq } from "../Api";
+import { getReq, resolveMediaUrl } from "../Api";
 import { useAuth } from "./AuthContext";
 import { useCart } from "../context/CartContext";
 import UserAvatar from "./UserAvatar";
-import { resolveMediaUrl } from "../Api";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -15,7 +14,14 @@ const Header = () => {
 
   useEffect(() => {
     if (!user?.user_id) { setProfile(null); return; }
-    getReq(`users/${user.user_id}/`).then(setProfile).catch(() => setProfile(null));
+    let active = true;
+    getReq(`users/${user.user_id}/`).then((data) => { if (active) setProfile(data); }).catch(() => { if (active) setProfile(null); });
+    const handleProfileUpdate = (event) => setProfile((current) => ({ ...current, ...event.detail }));
+    window.addEventListener("profile-updated", handleProfileUpdate);
+    return () => {
+      active = false;
+      window.removeEventListener("profile-updated", handleProfileUpdate);
+    };
   }, [user]);
 
   const displayName = profile?.first_name
