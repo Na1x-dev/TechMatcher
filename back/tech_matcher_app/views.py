@@ -18,9 +18,9 @@ from .serializers import (
 
 
 class SmartphonePagination(PageNumberPagination):
-    page_size = 24
+    page_size = 12
     page_size_query_param = "page_size"
-    max_page_size = 100
+    max_page_size = 48
 
 
 class SmartphoneListView(generics.ListAPIView):
@@ -40,11 +40,23 @@ class SmartphoneListView(generics.ListAPIView):
                     Q(title__icontains=term)
                     | Q(brand__icontains=term)
                     | Q(cpu__icontains=term)
+                    | Q(os_version__icontains=term)
+                    | Q(screen_type__icontains=term)
                 )
 
-        brand = params.get("brand")
+        brand = params.get("brand", "").strip()
         if brand:
-            qs = qs.filter(brand__iexact=brand)
+            qs = qs.filter(brand__icontains=brand)
+
+        text_filters = {
+            "screen_type": "screen_type__icontains",
+            "os_version": "os_version__icontains",
+            "protection": "protection__icontains",
+        }
+        for key, lookup in text_filters.items():
+            value = params.get(key, "").strip()
+            if value:
+                qs = qs.filter(**{lookup: value})
 
         for key, lookup in (
             ("min_price", "price__gte"),
@@ -53,6 +65,8 @@ class SmartphoneListView(generics.ListAPIView):
             ("rom_size", "rom_size__gte"),
             ("min_screen_size", "screen_size__gte"),
             ("max_screen_size", "screen_size__lte"),
+            ("min_screen_fps", "screen_fps__gte"),
+            ("max_screen_fps", "screen_fps__lte"),
             ("launch_year", "launch_year__gte"),
         ):
             raw = params.get(key)
