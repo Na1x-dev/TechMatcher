@@ -7,7 +7,6 @@ import CatalogFilters from "./CatalogFilters";
 
 const PAGE_SIZE = 12;
 const initialFilters = {
-  brand: "",
   min_price: "",
   max_price: "",
   ram_size: "",
