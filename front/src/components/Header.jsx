@@ -3,6 +3,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { getReq } from "../Api";
 import { useAuth } from "./AuthContext";
 import { useCart } from "../context/CartContext";
+import UserAvatar from "./UserAvatar";
+import { resolveMediaUrl } from "../Api";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -29,7 +31,6 @@ const Header = () => {
         </button>
         <nav className="main-nav">
           <NavLink to="/" end>Смартфоны</NavLink>
-          <a href="#categories" onClick={(e) => { e.preventDefault(); document.getElementById("categories")?.scrollIntoView({ behavior: "smooth" }); }}>Категории</a>
         </nav>
         <div className="header-actions">
           <button className="icon-button cart-button" onClick={() => navigate("/basket")} aria-label="Корзина">
@@ -38,7 +39,7 @@ const Header = () => {
           {user ? (
             <div className="profile-menu-wrap">
               <button className="profile-trigger" onClick={() => setMenuOpen((v) => !v)} aria-expanded={menuOpen}>
-                <span className="avatar">{displayName[0]?.toUpperCase()}</span>
+                <UserAvatar imageUrl={resolveMediaUrl(profile?.image)} label={displayName} size="small" />
                 <span className="profile-name">{displayName}</span><span>⌄</span>
               </button>
               {menuOpen && <>
