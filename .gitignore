@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.py[cod]
+media/*
+staticfiles/*
+.pytest_cache/
+.env
+project_context.pdf
