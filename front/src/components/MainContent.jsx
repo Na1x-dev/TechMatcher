@@ -50,7 +50,7 @@ const MainContent = () => {
     <section className="hero"><div><div className="hero-kicker">TECHMATCHER / CATALOG</div><h1>Техника, которую<br /><em>легко выбрать.</em></h1><p>Сравнивайте характеристики смартфонов и собирайте корзину без лишних шагов.</p></div><div className="hero-orb"><span>01</span><small>SMART<br />CHOICE</small></div></section>
     <section className="catalog-section" id="categories">
       <div className="section-head"><div><span className="section-kicker">КАТАЛОГ</span><h2>Смартфоны</h2></div>
-        <label className="search-box catalog-search"><span aria-hidden="true">⌕</span><input aria-label="Поиск смартфонов" value={search} onChange={(e) => changeSearch(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") load(); }} placeholder="Поиск по названию, бренду или процессору" />{search && <button type="button" className="search-clear" onClick={() => changeSearch("")} aria-label="Очистить поиск">×</button>}</label>
+        <label className="search-box catalog-search"><span aria-hidden="true">⌕</span><input aria-label="Поиск смартфонов" value={search} onChange={(e) => changeSearch(e.target.value)} placeholder="Поиск по названию, бренду или процессору" />{search && <button type="button" className="search-clear" onClick={() => changeSearch("")} aria-label="Очистить поиск">×</button>}</label>
       </div>
       <div className="catalog-layout">
         <aside className="filter-sidebar">
