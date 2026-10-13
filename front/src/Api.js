@@ -15,6 +15,7 @@ apiClient.interceptors.request.use((config) => {
 
 export const getReq = async (endpoint, config = {}) => (await apiClient.get(endpoint, config)).data;
 export const postReq = async (endpoint, data, config = {}) => (await apiClient.post(endpoint, data, config)).data;
+export const patchReq = async (endpoint, data, config = {}) => (await apiClient.patch(endpoint, data, config)).data;
 export const putReq = async (endpoint, data, config = {}) => {
   const headers = { ...(config.headers || {}) };
   if (typeof FormData !== "undefined" && data instanceof FormData) {
