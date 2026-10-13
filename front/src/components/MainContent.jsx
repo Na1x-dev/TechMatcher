@@ -78,6 +78,10 @@ const MainContent = () => {
   };
   const resetFilters = () => {
     setFilters(initialFilters);
+    setPage(1);
+  };
+  const resetAll = () => {
+    setFilters(initialFilters);
     setSearch("");
     setPage(1);
   };
@@ -177,7 +181,7 @@ const MainContent = () => {
                 </p>
                 <button
                   className="button button-outline"
-                  onClick={resetFilters}
+                  onClick={resetAll}
                 >
                   Сбросить поиск и фильтры
                 </button>
