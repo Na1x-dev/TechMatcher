@@ -33,10 +33,6 @@ const CatalogFilters = ({ filters, changeFilter, resetFilters }) => {
         <div><span className="filter-kicker">ПОДБОР</span><h3>Фильтры {activeCount > 0 && <span className="filter-count">{activeCount}</span>}</h3></div>
         <button type="button" onClick={resetFilters}>Сбросить</button>
       </div>
-      <label className="filter-field">
-        <span>Бренд</span>
-        <input value={filters.brand} onChange={(event) => changeFilter("brand", event.target.value)} placeholder="Например, Samsung" />
-      </label>
       {range("min_price", "max_price", "Цена, ₽", "₽")}
       {select("ram_size", "Оперативная память, от")}
       {select("rom_size", "Встроенная память, от")}
