@@ -27,7 +27,7 @@ export const putReq = async (endpoint, data, config = {}) => {
 export const resolveMediaUrl = (value) => {
   if (!value) return "";
   if (/^(https?:|data:|blob:)/i.test(value)) return value;
-  const apiRoot = baseURL.replace(/\\/api\\/?$/, "");
+  const apiRoot = baseURL.replace(/\/api\/?$/, "");
   try { return new URL(value, `${apiRoot}/`).toString(); }
   catch { return value; }
 };
