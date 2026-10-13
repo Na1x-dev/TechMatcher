@@ -19,7 +19,6 @@ const Header = () => {
   const displayName = profile?.first_name
     ? `${profile.first_name}${profile.last_name ? ` ${profile.last_name[0]}.` : ""}`
     : user?.email || "Пользователь";
-
   const doLogout = () => { setMenuOpen(false); logout(); navigate("/"); };
 
   return (
@@ -38,7 +37,7 @@ const Header = () => {
           </button>
           {user ? (
             <div className="profile-menu-wrap">
-              <button className="profile-trigger" onClick={() => setMenuOpen((v) => !v)}>
+              <button className="profile-trigger" onClick={() => setMenuOpen((v) => !v)} aria-expanded={menuOpen}>
                 <span className="avatar">{displayName[0]?.toUpperCase()}</span>
                 <span className="profile-name">{displayName}</span><span>⌄</span>
               </button>
@@ -46,7 +45,6 @@ const Header = () => {
                 <button className="menu-backdrop" aria-label="Закрыть меню" onClick={() => setMenuOpen(false)} />
                 <div className="profile-menu">
                   <button onClick={() => { navigate("/profile"); setMenuOpen(false); }}>Профиль</button>
-                  <button onClick={() => { navigate("/basket"); setMenuOpen(false); }}>Корзина</button>
                   <button onClick={doLogout}>Выйти</button>
                 </div>
               </>}
