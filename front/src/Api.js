@@ -4,7 +4,6 @@ export const baseURL = process.env.REACT_APP_API_URL || "http://localhost:8000/a
 
 const apiClient = axios.create({
   baseURL: baseURL.replace(/\/$/, ""),
-  headers: { "Content-Type": "application/json" },
 });
 
 apiClient.interceptors.request.use((config) => {
@@ -16,7 +15,22 @@ apiClient.interceptors.request.use((config) => {
 
 export const getReq = async (endpoint, config = {}) => (await apiClient.get(endpoint, config)).data;
 export const postReq = async (endpoint, data, config = {}) => (await apiClient.post(endpoint, data, config)).data;
-export const putReq = async (endpoint, data, config = {}) => (await apiClient.put(endpoint, data, config)).data;
+export const putReq = async (endpoint, data, config = {}) => {
+  const headers = { ...(config.headers || {}) };
+  if (typeof FormData !== "undefined" && data instanceof FormData) {
+    delete headers["Content-Type"];
+    delete headers["content-type"];
+  }
+  return (await apiClient.put(endpoint, data, { ...config, headers })).data;
+};
+
+export const resolveMediaUrl = (value) => {
+  if (!value) return "";
+  if (/^(https?:|data:|blob:)/i.test(value)) return value;
+  const apiRoot = baseURL.replace(/\\/api\\/?$/, "");
+  try { return new URL(value, `${apiRoot}/`).toString(); }
+  catch { return value; }
+};
 export const deleteReq = async (endpoint, config = {}) => (await apiClient.delete(endpoint, config)).data;
 
 export const getApiError = (error, fallback = "Произошла ошибка. Попробуйте ещё раз.") => {
