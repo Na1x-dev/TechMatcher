@@ -1414,6 +1414,6 @@ button:disabled { box-shadow: 2px 2px 0 rgba(64, 27, 75, .12); }
 
 /* Keep the basket close to the sticky header instead of vertically centering it. */
 .cart-page {
-  margin: 0 auto;
+  margin: 16px auto 0;
   padding-top: 8px;
 }
