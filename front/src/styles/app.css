@@ -1147,3 +1147,104 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
   .auth-art { opacity: .55; }
   .product-list .product-image-wrap { background: #fff8f7; }
 }
+
+
+/* Final consistency pass: every actionable control has a resting shadow. */
+button,
+a.button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.animated-select-trigger,
+.search-clear,
+.filter-heading button,
+.profile-menu button,
+.remove,
+.guest-banner button,
+.auth-switch,
+.compare-remove {
+  box-shadow: 3px 3px 0 rgba(64, 27, 75, .18);
+  transition: transform 240ms var(--ease-out), box-shadow 240ms ease, background-color 220ms ease, color 220ms ease, border-color 220ms ease;
+}
+button:hover:not(:disabled),
+a.button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+.animated-select-trigger:hover,
+.search-clear:hover,
+.filter-heading button:hover,
+.profile-menu button:hover,
+.remove:hover,
+.guest-banner button:hover,
+.auth-switch:hover {
+  box-shadow: 5px 5px 0 rgba(64, 27, 75, .25);
+}
+button:disabled { box-shadow: 2px 2px 0 rgba(64, 27, 75, .12); }
+.brand,
+.menu-backdrop,
+.filter-check,
+.filter-check-box,
+.animated-select-option,
+.cart-product,
+.remove,
+.guest-banner button,
+.auth-switch,
+.filter-heading button,
+.profile-menu button {
+  box-shadow: none;
+}
+.brand:hover,
+.cart-product:hover,
+.filter-check:hover,
+.animated-select-option:hover,
+.profile-menu button:hover,
+.filter-heading button:hover,
+.guest-banner button:hover,
+.auth-switch:hover {
+  box-shadow: none;
+}
+.compare-remove {
+  z-index: 5;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  font-size: 23px;
+  position: absolute;
+  pointer-events: auto;
+  touch-action: manipulation;
+  transform: none;
+  box-shadow: 4px 4px 0 rgba(64, 27, 75, .22);
+}
+.compare-remove:hover,
+.compare-remove:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #a92b54;
+}
+.compare-product-top img,
+.compare-product-top h2,
+.compare-product-top > strong {
+  pointer-events: none;
+}
+.search-clear,
+.animated-select-trigger,
+.compare-remove {
+  position: relative;
+  z-index: 4;
+}
+.compare-product-top .compare-remove {
+  position: absolute;
+}
+.product-list .product-image-wrap {
+  background: #fff8f7;
+}
+@media (prefers-reduced-motion: reduce) {
+  button, a.button { transition: none; }
+}
