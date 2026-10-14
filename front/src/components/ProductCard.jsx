@@ -8,7 +8,7 @@ const money = (value) => value == null || value === "" ? "Цена не указ
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { addToCart, items, changeQuantity } = useCart();
+  const { addToCart, items, changeQuantity, removeFromCart } = useCart();
   const { isCompared, toggleCompare } = useCompare();
   const [adding, setAdding] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
@@ -39,7 +39,7 @@ const ProductCard = ({ product }) => {
         {product.launch_year && <span>{product.launch_year} г.</span>}
         {product.ram_size && product.rom_size && <span>{product.ram_size}/{product.rom_size} ГБ</span>}
       </div>
-      <div className="product-card-bottom"><strong>{money(product.price)}</strong><div className="product-card-actions"><div className="catalog-cart-actions"><button className={`button general-button ${quantity ? "is-in-cart" : ""}`} onClick={add} disabled={adding}>{adding ? "Добавляем…" : quantity ? `✓ В корзине${quantity >= 2 ? ` · ${quantity} шт.` : ""}` : "Добавить в корзину"}</button>{quantity >= 1 && <button className="button catalog-quantity-minus" title="Уменьшить количество" aria-label="Уменьшить количество на один" onClick={(e) => { e.stopPropagation(); changeQuantity(product.id, quantity - 1).catch(() => enqueueSnackbar("Не удалось изменить количество", { variant: "error" })); }}>−1</button>}</div><button className="button button-outline compare-toggle" onClick={(e) => { e.stopPropagation(); if (compared) navigate("/compare"); else toggleCompare(product); }} aria-label={compared ? "Перейти к сравнению" : "Добавить к сравнению"}>{compared ? "Перейти к сравнению" : "Добавить к сравнению"}</button></div></div>
+      <div className="product-card-bottom"><strong>{money(product.price)}</strong><div className="product-card-actions"><div className="catalog-cart-actions"><button className={`button general-button ${quantity ? "is-in-cart" : ""}`} onClick={add} disabled={adding}>{adding ? "Добавляем…" : quantity ? `✓ В корзине${quantity >= 2 ? ` · ${quantity} шт.` : ""}` : "Добавить в корзину"}</button>{quantity >= 1 && <button className="button catalog-quantity-minus" title="Уменьшить количество" aria-label="Уменьшить количество на один" onClick={async (e) => { e.stopPropagation(); try { if (quantity <= 1) await removeFromCart(product.id); else await changeQuantity(product.id, quantity - 1); } catch { enqueueSnackbar("Не удалось изменить количество", { variant: "error" }); } }}>−1</button>}</div><button className="button button-outline compare-toggle" onClick={(e) => { e.stopPropagation(); if (compared) navigate("/compare"); else toggleCompare(product); }} aria-label={compared ? "Перейти к сравнению" : "Добавить к сравнению"}>{compared ? "Перейти к сравнению" : "Добавить к сравнению"}</button></div></div>
     </div>
   </article>;
 };
