@@ -4,11 +4,13 @@ import { getReq, resolveMediaUrl } from "../Api";
 import { useAuth } from "./AuthContext";
 import { useCart } from "../context/CartContext";
 import UserAvatar from "./UserAvatar";
+import { useCompare } from "../context/CompareContext";
 
 const Header = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { itemCount } = useCart();
+  const { ids } = useCompare();
   const [profile, setProfile] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -36,7 +38,7 @@ const Header = () => {
           <span className="brand-mark">T</span><span>TechMatcher</span>
         </button>
         <nav className="main-nav">
-          <NavLink to="/" end>Смартфоны</NavLink>
+          <NavLink to="/" end>Смартфоны</NavLink><NavLink to="/compare">Сравнение{ids.length ? ` · ${ids.length}` : ""}</NavLink>
         </nav>
         <div className="header-actions">
           <button className="icon-button cart-button" onClick={() => navigate("/basket")} aria-label="Корзина">
