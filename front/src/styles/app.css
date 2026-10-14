@@ -617,3 +617,94 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
     flex-basis: 140px;
   }
 }
+
+
+/* Refined yellow-and-plum buttons: crisp contrast, no muddy shadows */
+.button,
+.button-primary,
+.product-list .product-card-bottom .button {
+  border: 0;
+  border-radius: 0;
+  background: var(--accent);
+  color: var(--plum);
+  box-shadow: 3px 3px 0 var(--plum);
+  transition:
+    transform 240ms var(--ease-out),
+    box-shadow 240ms ease,
+    background-color 220ms ease,
+    color 220ms ease;
+}
+
+.button:hover:not(:disabled),
+.button-primary:hover:not(:disabled),
+.product-list .product-card-bottom .button:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  background: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--plum);
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+  box-shadow: 2px 2px 0 rgba(64, 27, 75, .35);
+}
+
+.button.is-in-cart,
+.detail-cart-main.is-in-cart,
+.product-list .product-card-bottom .button.is-in-cart {
+  background: var(--plum);
+  color: #fff8f7;
+  box-shadow: 3px 3px 0 var(--accent);
+}
+
+.button.is-in-cart:hover:not(:disabled),
+.detail-cart-main.is-in-cart:hover:not(:disabled),
+.product-list .product-card-bottom .button.is-in-cart:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+
+/* Catalog compare action matches the quieter product-detail button */
+.product-list .compare-toggle,
+.detail-compare-button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 0;
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .22);
+}
+
+.product-list .compare-toggle:hover:not(:disabled),
+.detail-compare-button:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  background: #f0d0de;
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+
+/* Quantity decrement controls use a contrasting yellow shadow */
+.catalog-quantity-minus,
+.detail-cart-plus {
+  border: 0;
+  border-radius: 0;
+  background: var(--plum);
+  color: #fff8f7;
+  box-shadow: 3px 3px 0 var(--accent);
+}
+
+.catalog-quantity-minus:hover:not(:disabled),
+.detail-cart-plus:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
