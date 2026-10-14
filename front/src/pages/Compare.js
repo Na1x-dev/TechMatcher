@@ -4,6 +4,7 @@ import { getReq, getApiError } from "../Api";
 import { useSnackbar } from "notistack";
 import { useCompare } from "../context/CompareContext";
 import Loading from "../components/Loading";
+import Header from "../components/Header";
 
 const fields = [
   { section: "Цена", label: "Цена", key: "price", direction: "lower", weight: 3, suffix: " ₽" },
@@ -121,14 +122,19 @@ const Compare = () => {
 
   if (loading) {
     return (
-      <main className="compare-page">
-        <Loading />
-      </main>
+      <div className="app-shell">
+        <Header />
+        <main className="compare-page">
+          <Loading />
+        </main>
+      </div>
     );
   }
 
   return (
-    <main className="compare-page">
+    <div className="app-shell">
+      <Header />
+      <main className="compare-page">
       <div className="compare-heading">
         <div>
           <div className="section-kicker">TECHMATCHER / COMPARE</div>
@@ -140,11 +146,11 @@ const Compare = () => {
         </div>
 
         <div className="compare-heading-actions">
-          <button className="button button-outline" onClick={() => navigate("/")}>
+          <button className="button general-button" onClick={() => navigate("/")}>
             ← Назад в каталог
           </button>
           {products.length > 0 && (
-            <button className="button button-outline" onClick={clearCompare}>
+            <button className="button general-button" onClick={clearCompare}>
               Очистить сравнение
             </button>
           )}
@@ -158,7 +164,7 @@ const Compare = () => {
           <p>
             Добавьте смартфоны в сравнение с карточки товара или из каталога.
           </p>
-          <button className="button button-outline" onClick={() => navigate("/")}>
+          <button className="button general-button" onClick={() => navigate("/")}>
             Перейти в каталог
           </button>
         </div>
@@ -190,7 +196,7 @@ const Compare = () => {
                 </strong>
 
                 <button
-                  className="button button-outline compare-open"
+                  className="button general-button compare-open"
                   onClick={() => navigate(`/smartphones/${product.id}`)}
                 >
                   Открыть товар
@@ -216,7 +222,8 @@ const Compare = () => {
           ))}
         </div>
       )}
-    </main>
+      </main>
+    </div>
   );
 };
 
