@@ -2,17 +2,22 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useCart } from "../context/CartContext";
+import { useCompare } from "../context/CompareContext";
 
 const money = (value) => value == null || value === "" ? "Цена не указана" : `${Number(value).toLocaleString("ru-RU")} ₽`;
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { addToCart } = useCart();
+  const { addToCart, items, changeQuantity } = useCart();
+  const { isCompared, toggleCompare } = useCompare();
   const [adding, setAdding] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
+  const cartItem = items.find((item) => Number((item.smartphone || item.product || item).id) === Number(product.id));
+  const quantity = Number(cartItem?.quantity || 0);
+  const compared = isCompared(product.id);
   const add = async (e) => {
     e.stopPropagation(); setAdding(true);
-    try { await addToCart(product); enqueueSnackbar("Товар добавлен в корзину", { variant: "success" }); }
+    try { await addToCart(product); enqueueSnackbar("Количество в корзине увеличено", { variant: "success" }); }
     catch { enqueueSnackbar("Не удалось добавить товар", { variant: "error" }); }
     finally { setAdding(false); }
   };
@@ -34,7 +39,7 @@ const ProductCard = ({ product }) => {
         {product.launch_year && <span>{product.launch_year} г.</span>}
         {product.ram_size && product.rom_size && <span>{product.ram_size}/{product.rom_size} ГБ</span>}
       </div>
-      <div className="product-card-bottom"><strong>{money(product.price)}</strong><button className="button button-primary" onClick={add} disabled={adding}>{adding ? "Добавляем…" : "В корзину"}</button></div>
+      <div className="product-card-bottom"><strong>{money(product.price)}</strong><div className="product-card-actions"><div className="catalog-cart-actions"><button className={`button button-primary ${quantity ? "is-in-cart" : ""}`} onClick={add} disabled={adding}>{adding ? "Добавляем…" : quantity ? `✓ В корзине${quantity >= 2 ? ` · ${quantity} шт.` : ""}` : "Добавить в корзину"}</button>{quantity > 0 && <button className="button catalog-quantity-minus" title="Уменьшить количество" aria-label="Уменьшить количество на один" onClick={(e) => { e.stopPropagation(); changeQuantity(product.id, quantity - 1).catch(() => enqueueSnackbar("Не удалось изменить количество", { variant: "error" })); }}>−1</button>}</div><button className="button button-outline compare-toggle" onClick={(e) => { e.stopPropagation(); toggleCompare(product); }} aria-label={compared ? "Перейти к сравнению" : "Добавить к сравнению"}>{compared ? "Перейти к сравнению" : "Добавить к сравнению"}</button>{compared && <button className="button button-outline compare-link-small" onClick={(e) => { e.stopPropagation(); navigate("/compare"); }}>Сравнить →</button>}</div></div>
     </div>
   </article>;
 };
