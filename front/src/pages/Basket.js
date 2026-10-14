@@ -53,7 +53,7 @@ const Basket = () => {
           <h2>Корзина пока пустая</h2>
           <p>Добавьте смартфоны из каталога — они появятся здесь.</p>
           <button
-            className="button button-primary"
+            className="button general-button"
             onClick={() => navigate("/")}
           >
             Перейти в каталог
@@ -164,7 +164,7 @@ const Basket = () => {
               <strong>{money(total)}</strong>
             </div>
             <button
-              className="button button-primary button-large"
+              className="button button-outline button-large"
               onClick={() =>
                 enqueueSnackbar(
                   "Оформление заказа пока не подключено к API бэкенда",
