@@ -187,7 +187,7 @@ const ProductDetails = () => {
     return (
       <div className="state-screen">
         <h2>Смартфон не найден</h2>
-        <button className="button button-primary" onClick={() => navigate("/")}>
+        <button className="button button-outline" onClick={() => navigate("/")}>
           В каталог
         </button>
       </div>
@@ -282,7 +282,7 @@ const ProductDetails = () => {
 
           <div className="detail-cart-actions">
             <button
-              className={`button button-primary button-large detail-cart-main ${
+              className={`button general-button button-large detail-cart-main ${
                 quantityInCart ? "is-in-cart" : ""
               }`}
               onClick={add}
@@ -299,7 +299,7 @@ const ProductDetails = () => {
 
             {quantityInCart >= 2 && (
               <button
-                className="button detail-cart-plus"
+                className="button button-outline detail-cart-plus"
                 onClick={() =>
                   changeQuantity(product.id, quantityInCart - 1).catch((e) =>
                     enqueueSnackbar(
