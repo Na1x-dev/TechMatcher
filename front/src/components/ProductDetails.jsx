@@ -4,7 +4,6 @@ import { getApiError, getReq } from "../Api";
 import { useSnackbar } from "notistack";
 import { useCart } from "../context/CartContext";
 import { useCompare } from "../context/CompareContext";
-import { useCompare } from "../context/CompareContext";
 import Loading from "./Loading";
 
 const money = (value) => value == null || value === "" ? "Цена не указана" : `${Number(value).toLocaleString("ru-RU")} ₽`;
