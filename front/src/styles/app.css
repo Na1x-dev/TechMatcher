@@ -1412,7 +1412,8 @@ button:disabled { box-shadow: 2px 2px 0 rgba(64, 27, 75, .12); }
 }
 
 
-/* Reduce the gap between the header and basket content only. */
+/* Keep the basket close to the sticky header instead of vertically centering it. */
 .cart-page {
-  padding-top: 18px;
+  margin: 0 auto;
+  padding-top: 8px;
 }
