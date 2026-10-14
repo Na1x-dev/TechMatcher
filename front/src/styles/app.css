@@ -37,9 +37,10 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
 .brand { display: flex; align-items: center; gap: 10px; padding: 0; border: 0; background: none; color: var(--ink); font-size: 18px; font-weight: 800; letter-spacing: -.045em; white-space: nowrap; }
 .brand-mark { width: 36px; height: 36px; display: grid; place-items: center; background: var(--plum); color: var(--accent-strong); border-radius: 2px; transition: transform 420ms var(--ease-out), background-color 280ms ease, color 280ms ease; }
 .brand:hover .brand-mark { transform: rotate(-7deg) translateY(-2px); background: var(--accent); color: var(--ink); }
-.main-nav { display: flex; align-items: stretch; gap: 0; margin-left: auto; background: var(--accent); padding: 0 5px; }
-.main-nav a { position: relative; padding: 13px 18px; color: var(--ink); font-size: 12px; font-weight: 700; transition: background-color 280ms ease, color 280ms ease; }
-.main-nav a.active, .main-nav a:hover { background: var(--plum); color: var(--accent-strong); }
+.main-nav { display: flex; align-items: stretch; gap: 10px; margin-left: auto; background: transparent; padding: 0; }
+.main-nav a { position: relative; padding: 13px 8px; color: var(--ink); font-size: 12px; font-weight: 700; transition: color 280ms ease; }
+.main-nav a.active, .main-nav a:hover { color: var(--plum); }
+.main-nav a.active::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: 5px; height: 2px; background: var(--plum); }
 .header-actions { display: flex; align-items: center; gap: 10px; margin-left: 8px; }
 .icon-button, .profile-trigger { height: 42px; border: 1px solid #e4c5d0; background: #fff8f7; color: var(--ink); border-radius: 3px; transition: transform 280ms var(--ease-out), background-color 260ms ease, border-color 260ms ease, box-shadow 280ms ease; }
 .icon-button { width: 44px; position: relative; }
@@ -708,3 +709,16 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
   color: var(--plum);
   box-shadow: 4px 4px 0 var(--plum);
 }
+
+
+/* Shared button geometry; variants control color only. */
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-align: center; text-decoration: none; }
+.button.general-button, .button-primary { background: var(--accent); color: var(--ink); border-color: var(--accent); box-shadow: 4px 4px 0 var(--plum); }
+.button.general-button:hover:not(:disabled), .button-primary:hover:not(:disabled) { background: var(--accent-strong); color: var(--ink); border-color: var(--plum); box-shadow: 5px 6px 0 var(--plum); }
+.button.button-outline, .button.button-ghost { background: #fff; border-color: #d7b7c8; color: var(--ink); box-shadow: none; }
+.button.button-outline:hover:not(:disabled), .button.button-ghost:hover:not(:disabled) { background: #fff8f7; border-color: var(--plum); color: var(--plum); box-shadow: 3px 3px 0 rgba(128,62,108,.12); }
+.cart-image { background: #fff; }
+.cart-quantity-controls button, .catalog-quantity-minus, .detail-cart-plus { background: #fff; border-color: #d7b7c8; color: var(--ink); box-shadow: none; }
+.cart-quantity-controls button:hover:not(:disabled), .catalog-quantity-minus:hover:not(:disabled), .detail-cart-plus:hover:not(:disabled) { background: #fff8f7; border-color: var(--plum); color: var(--plum); }
+.auth-form > .button { background: #fff; border-color: #d7b7c8; color: var(--ink); box-shadow: none; }
+.auth-form > .button:hover:not(:disabled) { background: #fff8f7; border-color: var(--plum); color: var(--plum); box-shadow: 3px 3px 0 rgba(128,62,108,.12); }
