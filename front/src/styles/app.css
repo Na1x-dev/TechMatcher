@@ -742,3 +742,61 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
 .compare-heading-actions .button.general-button, .compare-open.general-button, .empty-state .button.general-button { background: var(--accent); border-color: var(--accent); color: var(--ink); box-shadow: 4px 4px 0 var(--plum); }
 .compare-heading-actions .button.general-button:hover:not(:disabled), .compare-open.general-button:hover:not(:disabled), .empty-state .button.general-button:hover:not(:disabled) { background: var(--accent-strong); border-color: var(--plum); color: var(--ink); box-shadow: 5px 6px 0 var(--plum); }
 @media (max-width: 560px) { .product-list .product-card-bottom .product-card-actions { flex: 1 1 auto; width: 100%; } }
+
+
+/* High-contrast action buttons on colored surfaces and auth pages */
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button {
+  background: #fff;
+  border: 2px solid var(--plum);
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button:hover:not(:disabled) {
+  background: #fff8f7;
+  border-color: var(--plum);
+  color: var(--plum);
+  box-shadow: 5px 5px 0 var(--accent);
+  transform: translate(-1px, -1px);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button.is-in-cart {
+  background: var(--plum);
+  border-color: #fff;
+  color: #fff;
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .catalog-quantity-minus {
+  background: #fff;
+  border: 2px solid var(--plum);
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .catalog-quantity-minus:hover:not(:disabled) {
+  background: #fff8f7;
+  border-color: var(--plum);
+  color: var(--plum);
+  box-shadow: 5px 5px 0 var(--accent);
+}
+.auth-form > .button.general-button {
+  border: 2px solid var(--plum);
+  box-shadow: 5px 5px 0 var(--plum);
+}
+.auth-form > .button.general-button:hover:not(:disabled) {
+  box-shadow: 6px 6px 0 var(--plum);
+  transform: translate(-1px, -1px);
+}
+/* Back uses the same neutral, outlined treatment as the catalog −1 control. */
+.back-link.button {
+  padding: 10px 16px;
+  border: 2px solid #d7b7c8;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.back-link.button:hover:not(:disabled) {
+  padding: 10px 16px;
+  border-color: var(--plum);
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: 5px 5px 0 var(--accent);
+  transform: translate(-1px, -1px);
+}
