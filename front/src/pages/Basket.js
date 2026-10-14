@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useCart } from "../context/CartContext";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import Loading from "../components/Loading";
 
 const money = (v) => `${Number(v || 0).toLocaleString("ru-RU")} ₽`;
@@ -18,9 +20,19 @@ const Basket = () => {
     removeFromCart,
     isGuest,
   } = useCart();
-  if (loading) return <Loading />;
+  if (loading) {
+    return (
+      <div className="app-shell">
+        <Header />
+        <Loading />
+        <Footer />
+      </div>
+    );
+  }
   return (
-    <main className="cart-page">
+    <div className="app-shell">
+      <Header />
+      <main className="cart-page">
       <div className="cart-head">
         <div>
           <div className="section-kicker">YOUR CART</div>
@@ -177,7 +189,9 @@ const Basket = () => {
           </aside>
         </div>
       )}
-    </main>
+      </main>
+      <Footer />
+    </div>
   );
 };
 export default Basket;
