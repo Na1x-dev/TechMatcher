@@ -400,7 +400,7 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
 
 
 /* Smartphone comparison and catalog actions */
-.button-primary:hover:not(:disabled), .button-primary:focus-visible { color: #fff8f7; background: var(--plum); border-color: var(--plum); }
+.button-primary:hover:not(:disabled), .button-primary:focus-visible { color: var(--plum); background: var(--accent-strong); border-color: var(--plum); }
 .button-primary:hover:not(:disabled) { box-shadow: 5px 6px 0 var(--accent); }
 .product-card-actions { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .catalog-cart-actions { display: flex; gap: 6px; }
