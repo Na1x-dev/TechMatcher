@@ -623,7 +623,7 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
 /* Refined yellow-and-plum buttons: crisp contrast, no muddy shadows */
 .button,
 .button-primary,
-.product-list .product-card-bottom .button {
+.product-list .product-card-bottom .button:not(.button-outline):not(.button-ghost) {
   border: 0;
   border-radius: 0;
   background: var(--accent);
@@ -638,7 +638,7 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
 
 .button:hover:not(:disabled),
 .button-primary:hover:not(:disabled),
-.product-list .product-card-bottom .button:hover:not(:disabled) {
+.product-list .product-card-bottom .button:not(.button-outline):not(.button-ghost):hover:not(:disabled) {
   transform: translate(-1px, -1px);
   background: var(--plum);
   color: var(--accent-strong);
