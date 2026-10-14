@@ -58,7 +58,7 @@ const Header = () => {
                 </div>
               </>}
             </div>
-          ) : <button className="button button-outline" onClick={() => navigate("/login")}>Войти</button>}
+          ) : <button className="header-login-button" onClick={() => navigate("/login")}>Войти</button>}
         </div>
       </div>
     </header>
