@@ -141,7 +141,7 @@ const Compare = () => {
 
         <div className="compare-heading-actions">
           <button className="button button-outline" onClick={() => navigate("/")}>
-            Добавить смартфон
+            ← Назад в каталог
           </button>
           {products.length > 0 && (
             <button className="button button-outline" onClick={clearCompare}>
