@@ -1417,3 +1417,80 @@ button:disabled { box-shadow: 2px 2px 0 rgba(64, 27, 75, .12); }
   margin: 16px auto 0;
   padding-top: 8px;
 }
+
+
+/* Active cart navigation state. */
+.cart-button.is-active {
+  background: var(--accent);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--plum);
+  outline: 2px solid rgba(128, 62, 108, .18);
+  outline-offset: 2px;
+}
+.cart-button.is-active:hover,
+.cart-button.is-active:focus-visible {
+  background: #ffd34a;
+  box-shadow: 6px 6px 0 var(--plum);
+}
+
+/* Keep the continue-shopping action tactile and visually connected to the theme. */
+.cart-head-actions .button-outline {
+  border: 0;
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: 4px 4px 0 rgba(128, 62, 108, .22);
+}
+.cart-head-actions .button-outline:hover:not(:disabled),
+.cart-head-actions .button-outline:focus-visible {
+  background: #f0d0de;
+  color: var(--plum);
+  box-shadow: 6px 6px 0 var(--plum);
+  transform: translate(-2px, -2px);
+}
+
+/* Custom scrollbar in the site's cream, pink, and plum palette. */
+html {
+  scrollbar-color: var(--plum-light) #fff0e7;
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #fff0e7;
+  border-left: 1px solid rgba(128, 62, 108, .1);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--plum-light);
+  border: 3px solid #fff0e7;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--plum);
+}
+
+/* Subtle raised fields and custom filter checkbox states. */
+.filter-sidebar input:not([type="checkbox"]) {
+  box-shadow: 3px 3px 0 rgba(64, 27, 75, .13);
+  transition: box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease;
+}
+.filter-sidebar input:not([type="checkbox"]):focus {
+  outline: none;
+  border-color: var(--plum-light);
+  box-shadow: 4px 4px 0 rgba(128, 62, 108, .24);
+}
+.filter-check-box {
+  box-shadow: 2px 2px 0 rgba(64, 27, 75, .18);
+  transition: box-shadow 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+.filter-check:hover .filter-check-box {
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .24);
+}
+.filter-check input:checked + .filter-check-box {
+  box-shadow: 3px 3px 0 var(--accent);
+}
+.filter-check input:focus-visible + .filter-check-box {
+  outline: 2px solid var(--plum);
+  outline-offset: 3px;
+}
