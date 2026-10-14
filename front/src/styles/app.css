@@ -800,3 +800,86 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
   box-shadow: 5px 5px 0 var(--accent);
   transform: translate(-1px, -1px);
 }
+
+
+/* Color-only button refinement: yellow and plum, no decorative borders. */
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button {
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button:hover:not(:disabled) {
+  background: #ad6b91;
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+  transform: translateY(-1px);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button.is-in-cart {
+  background: var(--accent);
+  color: var(--ink);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--plum-light);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .catalog-quantity-minus {
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .catalog-quantity-minus:hover:not(:disabled) {
+  background: #ad6b91;
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+}
+
+/* Auth actions use plum against the yellow page accent for separation. */
+.auth-form > .button.general-button {
+  background: var(--plum);
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.auth-form > .button.general-button:hover:not(:disabled) {
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+  transform: translateY(-1px);
+}
+
+/* Keep the compare close control's hit area fixed; no rotation on hover. */
+.compare-remove {
+  border: 0;
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  box-shadow: 2px 2px 0 var(--accent);
+  transform: none;
+  transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+.compare-remove:hover,
+.compare-remove:focus-visible {
+  background: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 2px 2px 0 var(--accent);
+  transform: none;
+}
+
+/* On the product page, Back matches the −1 quantity control exactly. */
+.product-page .back-link.button {
+  padding: 10px 16px;
+  border: 0;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: none;
+}
+.product-page .back-link.button:hover:not(:disabled) {
+  padding: 10px 16px;
+  border: 0;
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: none;
+  transform: none;
+}
