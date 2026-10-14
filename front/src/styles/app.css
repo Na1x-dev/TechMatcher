@@ -1410,3 +1410,9 @@ button:disabled { box-shadow: 2px 2px 0 rgba(64, 27, 75, .12); }
   color: var(--ink);
   box-shadow: 5px 5px 0 rgba(128, 62, 108, .22);
 }
+
+
+/* Reduce the gap between the header and basket content only. */
+.cart-page {
+  padding-top: 18px;
+}
