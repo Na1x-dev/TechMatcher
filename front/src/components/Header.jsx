@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { getReq, resolveMediaUrl } from "../Api";
 import { useAuth } from "./AuthContext";
 import { useCart } from "../context/CartContext";
@@ -8,6 +8,7 @@ import { useCompare } from "../context/CompareContext";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { user, logout } = useAuth();
   const { itemCount } = useCart();
   const { ids } = useCompare();
@@ -41,7 +42,7 @@ const Header = () => {
           <NavLink to="/" end>Смартфоны</NavLink><NavLink to="/compare">Сравнение{ids.length ? ` · ${ids.length}` : ""}</NavLink>
         </nav>
         <div className="header-actions">
-          <button className="icon-button cart-button" onClick={() => navigate("/basket")} aria-label="Корзина">
+          <button className={`icon-button cart-button${pathname === "/basket" ? " is-active" : ""}`} onClick={() => navigate("/basket")} aria-label="Корзина" aria-current={pathname === "/basket" ? "page" : undefined}>
             <span>🛒</span>{itemCount > 0 && <b>{itemCount}</b>}
           </button>
           {user ? (
