@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getApiError, getReq } from "../Api";
 import { useSnackbar } from "notistack";
 import { useCart } from "../context/CartContext";
+import { useCompare } from "../context/CompareContext";
 import Loading from "./Loading";
 
 const money = (value) => value == null || value === "" ? "Цена не указана" : `${Number(value).toLocaleString("ru-RU")} ₽`;
@@ -65,13 +66,13 @@ const knownLabelPatterns = [
   /^(nfc|поддержка nfc|5g|поддержка 5g|порт зарядки|разъем зарядки|аудиоразъем|аудиоразьем|wi fi|wifi|bluetooth|sim карты|тип sim)$/
 ];
 const ProductDetails = () => {
-  const { id } = useParams(); const navigate = useNavigate(); const { enqueueSnackbar } = useSnackbar(); const { addToCart, items } = useCart();
+  const { id } = useParams(); const navigate = useNavigate(); const { enqueueSnackbar } = useSnackbar(); const { addToCart, changeQuantity, items } = useCart(); const { isCompared, toggleCompare } = useCompare();
   const [product, setProduct] = useState(null); const [loading, setLoading] = useState(true); const [adding, setAdding] = useState(false);
   useEffect(() => { setLoading(true); getReq(`smartphones/${id}/`).then(setProduct).catch((e) => enqueueSnackbar(getApiError(e, "Смартфон не найден"), { variant: "error" })).finally(() => setLoading(false)); }, [id, enqueueSnackbar]);
   if (loading) return <Loading />;
   if (!product) return <div className="state-screen"><h2>Смартфон не найден</h2><button className="button button-primary" onClick={() => navigate("/")}>В каталог</button></div>;
   const cartItem = items.find((item) => Number((item.smartphone || item.product || item).id) === Number(product.id));
-  const quantityInCart = Number(cartItem?.quantity || 0);
+  const quantityInCart = Number(cartItem?.quantity || 0);\n  const compared = isCompared(product.id);
   const add = async () => { setAdding(true); try { await addToCart(product); enqueueSnackbar("Количество в корзине увеличено", { variant: "success" }); } catch (e) { enqueueSnackbar(getApiError(e, "Не удалось добавить товар"), { variant: "error" }); } finally { setAdding(false); } };
   const rawSpecs = Object.entries(product.specifications || {}).filter(([label, value]) => !absent(value) && !knownLabelPatterns.some((pattern) => pattern.test(normalize(label))));
   const extraGroups = Object.fromEntries(["Основное", "Дисплей", "Процессор", "Камера", "Батарея", "Интерфейсы", "Прочее"].map((name) => [name, []]));
@@ -84,7 +85,7 @@ const ProductDetails = () => {
       <button className={`button button-primary button-large detail-cart-main ${quantityInCart ? "is-in-cart" : ""}`} onClick={add} disabled={adding}>
         {adding ? "Добавляем…" : quantityInCart ? `✓ В корзине${quantityInCart >= 2 ? ` · ${quantityInCart} шт.` : ""}` : "Добавить в корзину"}
       </button>
-      {quantityInCart > 0 && <button className="button detail-cart-plus" onClick={add} disabled={adding} aria-label="Добавить ещё один экземпляр" title="Добавить ещё один экземпляр">+1</button>}
+      {quantityInCart > 0 && <button className="button detail-cart-plus" onClick={() => changeQuantity(product.id, quantityInCart - 1).catch((e) => enqueueSnackbar(getApiError(e, "Не удалось изменить количество"), { variant: "error" }))} disabled={quantityInCart < 2} aria-label="Уменьшить количество на один" title="Уменьшить количество на один">−1</button>}
     </div></div>
   </div><section className="specs"><div className="section-kicker">TECH SPECS</div><h2>Характеристики</h2><div className="spec-grid">{groups.map(([title, rows]) => <div className="spec-card" key={title}><h3>{title}</h3>{renderRows(rows)}{renderExtras(extraGroups[title])}</div>)}</div>{extraGroups["Прочее"].length > 0 && <div className="spec-card spec-card-full"><h3>Прочее</h3>{renderExtras(extraGroups["Прочее"])}</div>}</section>
   </main>;
