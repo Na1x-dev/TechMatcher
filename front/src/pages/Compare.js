@@ -158,7 +158,7 @@ const Compare = () => {
           <p>
             Добавьте смартфоны в сравнение с карточки товара или из каталога.
           </p>
-          <button className="button button-primary" onClick={() => navigate("/")}>
+          <button className="button button-outline" onClick={() => navigate("/")}>
             Перейти в каталог
           </button>
         </div>
