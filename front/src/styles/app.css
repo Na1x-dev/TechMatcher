@@ -1307,3 +1307,60 @@ button:disabled { box-shadow: 2px 2px 0 rgba(64, 27, 75, .12); }
   background: transparent;
   color: inherit;
 }
+
+
+/* Cart content is navigational, not a raised action: keep it visually quiet. */
+.cart-item {
+  transition: none;
+}
+.cart-item:hover {
+  transform: none;
+  box-shadow: var(--surface-shadow);
+}
+.cart-product,
+.cart-product:hover,
+.cart-product:focus-visible {
+  box-shadow: none !important;
+  transform: none !important;
+  background: transparent;
+}
+.cart-product .cart-image img,
+.cart-product:hover .cart-image img {
+  transform: none;
+  transition: none;
+}
+.remove,
+.remove:hover,
+.remove:focus-visible {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* The basket sign-in action follows the same tactile style as primary cart actions. */
+.guest-banner button {
+  border: 0;
+  border-radius: 0;
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  box-shadow: 3px 3px 0 var(--accent);
+}
+.guest-banner button:hover:not(:disabled),
+.guest-banner button:focus-visible {
+  background: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 4px 4px 0 var(--accent);
+  transform: translate(-1px, -1px);
+}
+
+/* Keep logo and inline auth switch free of global button hover effects. */
+.brand,
+.brand:hover,
+.brand:focus-visible,
+.auth-switch,
+.auth-switch:hover,
+.auth-switch:focus-visible,
+.auth-switch strong {
+  box-shadow: none !important;
+  transform: none !important;
+  text-shadow: none;
+}
