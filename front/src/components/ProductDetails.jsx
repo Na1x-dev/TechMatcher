@@ -165,7 +165,7 @@ const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { addToCart, changeQuantity, items } = useCart();
+  const { addToCart, changeQuantity, removeFromCart, items } = useCart();
   const { isCompared, toggleCompare } = useCompare();
 
   const [product, setProduct] = useState(null);
@@ -297,18 +297,21 @@ const ProductDetails = () => {
                   : "Добавить в корзину"}
             </button>
 
-            {quantityInCart >= 2 && (
+            {quantityInCart >= 1 && (
               <button
                 className="button button-outline detail-cart-plus"
                 onClick={() =>
-                  changeQuantity(product.id, quantityInCart - 1).catch((e) =>
+                  (quantityInCart === 1
+                    ? removeFromCart(product.id)
+                    : changeQuantity(product.id, quantityInCart - 1)
+                  ).catch((e) =>
                     enqueueSnackbar(
                       getApiError(e, "Не удалось изменить количество"),
                       { variant: "error" },
                     ),
                   )
                 }
-                disabled={quantityInCart < 2}
+                disabled={quantityInCart < 1}
                 aria-label="Уменьшить количество на один"
                 title="Уменьшить количество на один"
               >
