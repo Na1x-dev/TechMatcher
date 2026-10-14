@@ -1248,3 +1248,62 @@ button:disabled { box-shadow: 2px 2px 0 rgba(64, 27, 75, .12); }
 @media (prefers-reduced-motion: reduce) {
   button, a.button { transition: none; }
 }
+
+
+/* Keep hover effects on deliberate actions only; content and text stay still. */
+.product-list .product-card:hover {
+  transform: none;
+  box-shadow: 5px 5px 0 rgba(64, 27, 75, .16);
+}
+.product-list .product-image-wrap,
+.product-list .product-image-wrap img,
+.product-list .product-card-body,
+.product-list .product-card h3,
+.product-list .product-description,
+.product-list .product-tags,
+.product-list .product-tags span,
+.product-list .product-card-bottom strong {
+  transform: none;
+  box-shadow: none;
+}
+.product-list .product-image-wrap img,
+.product-list .product-card h3,
+.product-list .product-description,
+.product-list .product-tags span {
+  transition: none;
+}
+.product-list .product-card:hover .product-image-wrap img,
+.product-list .product-card:hover .product-card-body,
+.product-list .product-card:hover h3,
+.product-list .product-card:hover .product-description,
+.product-list .product-card:hover .product-tags span,
+.product-list .product-card:hover .product-card-bottom strong {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Branding and the inline registration switch are text/navigation, not raised controls. */
+.brand,
+.brand:hover,
+.brand:focus-visible,
+.auth-switch,
+.auth-switch:hover,
+.auth-switch:focus-visible,
+.auth-switch strong {
+  box-shadow: none !important;
+  transform: none !important;
+  text-shadow: none;
+}
+.brand {
+  transition: color 180ms ease, background-color 180ms ease;
+}
+.auth-switch {
+  background: transparent;
+  border: 0;
+  padding: 8px 0;
+}
+.auth-switch:hover,
+.auth-switch:focus-visible {
+  background: transparent;
+  color: inherit;
+}
