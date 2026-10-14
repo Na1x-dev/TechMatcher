@@ -249,7 +249,7 @@ const ProductDetails = () => {
   return (
     <main className="product-page">
       <button className="button button-outline back-link" onClick={() => navigate(-1)}>
-        ← Назад
+        Назад
       </button>
 
       <div className="product-layout">
