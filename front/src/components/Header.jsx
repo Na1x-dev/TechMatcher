@@ -48,7 +48,7 @@ const Header = () => {
             <div className="profile-menu-wrap">
               <button className="profile-trigger" onClick={() => setMenuOpen((v) => !v)} aria-expanded={menuOpen}>
                 <UserAvatar imageUrl={resolveMediaUrl(profile?.image)} label={displayName} size="small" />
-                <span className="profile-name">{displayName}</span><span>⌄</span>
+                <span className="profile-name">{displayName}</span>
               </button>
               {menuOpen && <>
                 <button className="menu-backdrop" aria-label="Закрыть меню" onClick={() => setMenuOpen(false)} />
