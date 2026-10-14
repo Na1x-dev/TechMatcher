@@ -722,3 +722,23 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
 .cart-quantity-controls button:hover:not(:disabled), .catalog-quantity-minus:hover:not(:disabled), .detail-cart-plus:hover:not(:disabled) { background: #fff8f7; border-color: var(--plum); color: var(--plum); }
 .auth-form > .button { background: #fff; border-color: #d7b7c8; color: var(--ink); box-shadow: none; }
 .auth-form > .button:hover:not(:disabled) { background: #fff8f7; border-color: var(--plum); color: var(--plum); box-shadow: 3px 3px 0 rgba(128,62,108,.12); }
+
+
+/* Follow-up polish: keep catalog actions compact and secondary. */
+.back-link.button { display: inline-flex; align-items: center; justify-content: center; padding: 11px 18px; border: 1px solid #d7b7c8; background: #fff; color: var(--ink); box-shadow: none; }
+.back-link.button:hover:not(:disabled) { padding: 11px 18px; border-color: var(--plum); background: #fff8f7; color: var(--plum); box-shadow: 3px 3px 0 rgba(128,62,108,.12); }
+.product-list .product-card-bottom .product-card-actions { flex: 0 0 230px; width: 230px; }
+.product-list .product-card-bottom .catalog-cart-actions { display: flex; align-items: stretch; gap: 6px; width: 100%; }
+.product-list .product-card-bottom .catalog-cart-actions > .button { flex: 1 1 auto; min-width: 0; white-space: normal; }
+.product-list .product-card-bottom .catalog-cart-actions > .catalog-quantity-minus { flex: 0 0 48px; }
+.product-list .product-card-bottom .button,
+.product-list .product-card-bottom .button.is-in-cart,
+.product-list .product-card-bottom .compare-toggle { background: #fff; border: 1px solid #d7b7c8; color: var(--ink); box-shadow: none; }
+.product-list .product-card-bottom .button:hover:not(:disabled),
+.product-list .product-card-bottom .button.is-in-cart:hover:not(:disabled),
+.product-list .product-card-bottom .compare-toggle:hover:not(:disabled) { background: #fff8f7; border-color: var(--plum); color: var(--plum); box-shadow: 3px 3px 0 rgba(128,62,108,.12); }
+.auth-form > .button.general-button { background: var(--accent); border-color: var(--accent); color: var(--ink); box-shadow: 4px 4px 0 var(--plum); }
+.auth-form > .button.general-button:hover:not(:disabled) { background: var(--accent-strong); border-color: var(--plum); color: var(--ink); box-shadow: 5px 6px 0 var(--plum); }
+.compare-heading-actions .button.general-button, .compare-open.general-button, .empty-state .button.general-button { background: var(--accent); border-color: var(--accent); color: var(--ink); box-shadow: 4px 4px 0 var(--plum); }
+.compare-heading-actions .button.general-button:hover:not(:disabled), .compare-open.general-button:hover:not(:disabled), .empty-state .button.general-button:hover:not(:disabled) { background: var(--accent-strong); border-color: var(--plum); color: var(--ink); box-shadow: 5px 6px 0 var(--plum); }
+@media (max-width: 560px) { .product-list .product-card-bottom .product-card-actions { flex: 1 1 auto; width: 100%; } }
