@@ -1419,18 +1419,20 @@ button:disabled { box-shadow: 2px 2px 0 rgba(64, 27, 75, .12); }
 }
 
 
-/* Active cart navigation state. */
+/* Active cart navigation: plum surface, yellow icon and offset shadow. */
 .cart-button.is-active {
-  background: var(--accent);
-  color: var(--ink);
-  box-shadow: 4px 4px 0 var(--plum);
-  outline: 2px solid rgba(128, 62, 108, .18);
-  outline-offset: 2px;
+  background: var(--plum);
+  color: var(--accent);
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  box-shadow: 4px 4px 0 var(--accent);
 }
 .cart-button.is-active:hover,
 .cart-button.is-active:focus-visible {
-  background: #ffd34a;
-  box-shadow: 6px 6px 0 var(--plum);
+  background: #6b315d;
+  color: var(--accent);
+  box-shadow: 6px 6px 0 var(--accent);
 }
 
 /* Keep the continue-shopping action tactile and visually connected to the theme. */
@@ -1488,7 +1490,7 @@ html {
   box-shadow: 3px 3px 0 rgba(128, 62, 108, .24);
 }
 .filter-check input:checked + .filter-check-box {
-  box-shadow: 3px 3px 0 var(--accent);
+  box-shadow: 2px 2px 0 rgba(64, 27, 75, .18);
 }
 .filter-check input:focus-visible + .filter-check-box {
   outline: 2px solid var(--plum);
