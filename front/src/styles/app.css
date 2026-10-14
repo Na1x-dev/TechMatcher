@@ -16,7 +16,7 @@
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background-color: var(--bg); background-image: repeating-linear-gradient(135deg, transparent 0 18px, rgba(128, 62, 108, .055) 18px 20px); color: var(--ink); font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: antialiased; }
 button, input, select, textarea { font: inherit; -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; opacity: .55; }
@@ -1363,4 +1363,50 @@ button:disabled { box-shadow: 2px 2px 0 rgba(64, 27, 75, .12); }
   box-shadow: none !important;
   transform: none !important;
   text-shadow: none;
+}
+
+
+/* Login actions share the same restrained surface in the header and basket. */
+.header-login-button {
+  min-height: 42px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e4c5d0;
+  border-radius: 3px;
+  background: #fff8f7;
+  color: var(--ink);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .16);
+  font-size: 12px;
+  font-weight: 700;
+}
+.header-login-button:hover:not(:disabled),
+.header-login-button:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--plum-light);
+  background: #fff8f7;
+  color: var(--ink);
+  box-shadow: 5px 5px 0 rgba(128, 62, 108, .22);
+}
+
+/* Basket guest banner: a clear, compact action rather than a loud filled block. */
+.guest-banner button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid #e4c5d0;
+  border-radius: 3px;
+  background: #fff8f7;
+  color: var(--ink);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .16);
+  font-size: 12px;
+  font-weight: 800;
+}
+.guest-banner button:hover:not(:disabled),
+.guest-banner button:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--plum-light);
+  background: #f8e6ee;
+  color: var(--ink);
+  box-shadow: 5px 5px 0 rgba(128, 62, 108, .22);
 }
