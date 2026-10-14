@@ -6,6 +6,7 @@ import Basket from "./pages/Basket";
 import Product from "./pages/Product";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import Compare from "./pages/Compare";
 import ProtectedRoute from "./ProtectedRoute";
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
   <Route path="/" element={<Home />} />
   <Route path="/login" element={<Login />} />
   <Route path="/basket" element={<Basket />} />
+  <Route path="/compare" element={<Compare />} />
   <Route path="/smartphones/:id" element={<Product />} />
   <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
   <Route path="/headphones" element={<Navigate to="/" replace />} />
