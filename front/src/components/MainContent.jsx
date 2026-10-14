@@ -137,7 +137,11 @@ const MainContent = () => {
           </label>
         </div>
         <div className="catalog-layout">
-          <CatalogFilters filters={filters} changeFilter={changeFilter} resetFilters={resetFilters} />
+          <CatalogFilters
+            filters={filters}
+            changeFilter={changeFilter}
+            resetFilters={resetFilters}
+          />
           <div className="catalog-results">
             {loading ? (
               <Loading />
@@ -158,7 +162,7 @@ const MainContent = () => {
                       disabled={page === 1}
                       onClick={() => setPage((p) => p - 1)}
                     >
-                      ← Назад
+                      Назад
                     </button>
                     <span>
                       {page} / {totalPages}
@@ -167,7 +171,7 @@ const MainContent = () => {
                       disabled={page >= totalPages}
                       onClick={() => setPage((p) => p + 1)}
                     >
-                      Вперёд →
+                      Вперёд
                     </button>
                   </div>
                 )}
@@ -179,10 +183,7 @@ const MainContent = () => {
                 <p>
                   Попробуйте изменить поисковый запрос или параметры фильтров.
                 </p>
-                <button
-                  className="button button-outline"
-                  onClick={resetAll}
-                >
+                <button className="button button-outline" onClick={resetAll}>
                   Сбросить поиск и фильтры
                 </button>
               </div>
