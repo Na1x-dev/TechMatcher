@@ -1419,20 +1419,28 @@ button:disabled { box-shadow: 2px 2px 0 rgba(64, 27, 75, .12); }
 }
 
 
-/* Active cart navigation: plum surface, yellow icon and offset shadow. */
+/* Active cart stays white; the yellow offset shadow marks the current page. */
+.cart-button {
+  display: inline-grid;
+  place-items: center;
+}
+.cart-button > svg {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
 .cart-button.is-active {
-  background: var(--plum);
-  color: var(--accent);
-  border: 0;
-  border-radius: 0;
-  outline: none;
+  background: #fff;
+  color: var(--plum);
+  border-color: var(--plum-light);
   box-shadow: 4px 4px 0 var(--accent);
 }
 .cart-button.is-active:hover,
 .cart-button.is-active:focus-visible {
-  background: #6b315d;
-  color: var(--accent);
-  box-shadow: 6px 6px 0 var(--accent);
+  background: #fff;
+  color: var(--plum);
+  border-color: var(--plum-light);
+  box-shadow: 5px 5px 0 var(--accent);
 }
 
 /* Keep the continue-shopping action tactile and visually connected to the theme. */
