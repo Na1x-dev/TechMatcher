@@ -883,3 +883,34 @@ button, a, input, select, textarea { transition-timing-function: var(--ease); }
   box-shadow: none;
   transform: none;
 }
+
+
+/* Match catalog actions and Back to the product-page compare button. */
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button,
+.product-list .product-card-bottom .compare-toggle,
+.product-page .back-link.button {
+  border: 0;
+  border-radius: 0;
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .22);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button:hover:not(:disabled),
+.product-list .product-card-bottom .compare-toggle:hover:not(:disabled),
+.product-page .back-link.button:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  border: 0;
+  background: #f0d0de;
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button.is-in-cart {
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .22);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button.is-in-cart:hover:not(:disabled) {
+  background: #f0d0de;
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
