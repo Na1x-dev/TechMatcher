@@ -43,7 +43,11 @@ const Header = () => {
         </nav>
         <div className="header-actions">
           <button className={`icon-button cart-button${pathname === "/basket" ? " is-active" : ""}`} onClick={() => navigate("/basket")} aria-label="Корзина" aria-current={pathname === "/basket" ? "page" : undefined}>
-            <span>🛒</span>{itemCount > 0 && <b>{itemCount}</b>}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6" />
+              <circle cx="10" cy="20" r="1" />
+              <circle cx="18" cy="20" r="1" />
+            </svg>{itemCount > 0 && <b>{itemCount}</b>}
           </button>
           {user ? (
             <div className="profile-menu-wrap">
