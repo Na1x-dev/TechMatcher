@@ -8,6 +8,7 @@ const GoogleLoginButton = ({ onLogin }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    console.log("Google Client ID:", GOOGLE_CLIENT_ID);
     if (!GOOGLE_CLIENT_ID) {
       setError("Не задан GOOGLE_CLIENT_ID");
       return undefined;
@@ -62,7 +63,7 @@ const GoogleLoginButton = ({ onLogin }) => {
   if (error)
     return (
       <p className="auth-google-hint">
-        {error}. Добавьте этот ключ во frontend .env и перезапустите сборку.
+        {error}. Добавьте GOOGLE_CLIENT_ID в корневой .env и пересоздайте frontend-контейнер.
       </p>
     );
   return (
