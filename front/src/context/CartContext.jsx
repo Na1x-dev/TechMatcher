@@ -43,7 +43,7 @@ export const CartProvider = ({ children }) => {
     } else { setServerBasket(null); setGuestItems(readGuestCart()); }
   }, [user, refreshServerCart, syncGuestCart]);
 
-  const addToCart = async (product, quantity = 1) => {
+  const addToCart = useCallback(async (product, quantity = 1) => {
     if (!user) {
       const current = readGuestCart();
       const index = current.findIndex((item) => item.id === product.id);
@@ -53,9 +53,9 @@ export const CartProvider = ({ children }) => {
     }
     await postReq("basket/", { smartphone_id: product.id, quantity });
     await refreshServerCart();
-  };
+  }, [user, refreshServerCart]);
 
-  const changeQuantity = async (id, quantity) => {
+  const changeQuantity = useCallback(async (id, quantity) => {
     const targetQuantity = Number(quantity);
     if (!Number.isInteger(targetQuantity) || targetQuantity < 1) throw new Error("Количество должно быть не меньше одного");
     if (!user) {
@@ -64,9 +64,9 @@ export const CartProvider = ({ children }) => {
     }
     const updated = await patchReq("basket/", { smartphone_id: id, quantity: targetQuantity });
     setServerBasket(updated);
-  };
+  }, [user]);
 
-  const removeFromCart = async (id) => {
+  const removeFromCart = useCallback(async (id) => {
     if (!user) {
       const next = readGuestCart().filter((item) => item.id !== id);
       writeGuestCart(next); setGuestItems(next); return;
@@ -74,14 +74,14 @@ export const CartProvider = ({ children }) => {
     // DRF receives smartphone_id as a query parameter for DELETE requests.
     const updated = await deleteReq("basket/", { params: { smartphone_id: id } });
     setServerBasket(updated);
-  };
+  }, [user]);
 
   const items = user ? (serverBasket?.items || []) : guestItems;
   const total = user
     ? Number(serverBasket?.total_price || 0)
     : guestItems.reduce((sum, item) => sum + Number(item.product?.price || 0) * Number(item.quantity || 0), 0);
   const itemCount = countItems(items);
-  const value = useMemo(() => ({ items, total, itemCount, loading, addToCart, changeQuantity, removeFromCart, refresh: refreshServerCart, isGuest: !user }), [items, total, itemCount, loading, user, refreshServerCart]);
+  const value = useMemo(() => ({ items, total, itemCount, loading, addToCart, changeQuantity, removeFromCart, refresh: refreshServerCart, isGuest: !user }), [items, total, itemCount, loading, user, refreshServerCart, addToCart, changeQuantity, removeFromCart]);
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
