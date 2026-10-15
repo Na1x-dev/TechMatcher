@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { postReq, getApiError } from "../Api";
 import { useSnackbar } from "notistack";
 
-const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
 
 const GoogleLoginButton = ({ onLogin }) => {
   const containerRef = useRef(null);
@@ -11,13 +11,15 @@ const GoogleLoginButton = ({ onLogin }) => {
 
   useEffect(() => {
     if (!GOOGLE_CLIENT_ID) {
-      setError("Не задан REACT_APP_GOOGLE_CLIENT_ID");
+      setError("Не задан GOOGLE_CLIENT_ID");
       return undefined;
     }
 
+    console.log(GOOGLE_CLIENT_ID);
     let cancelled = false;
     const initialize = () => {
-      if (cancelled || !window.google?.accounts?.id || !containerRef.current) return;
+      if (cancelled || !window.google?.accounts?.id || !containerRef.current)
+        return;
       window.google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
         callback: async (response) => {
@@ -41,7 +43,9 @@ const GoogleLoginButton = ({ onLogin }) => {
       setReady(true);
     };
 
-    let script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+    let script = document.querySelector(
+      'script[src="https://accounts.google.com/gsi/client"]',
+    );
     if (!script) {
       script = document.createElement("script");
       script.src = "https://accounts.google.com/gsi/client";
@@ -58,8 +62,18 @@ const GoogleLoginButton = ({ onLogin }) => {
     };
   }, [onLogin]);
 
-  if (error) return <p className="auth-google-hint">{error}. Добавьте этот ключ во frontend .env и перезапустите сборку.</p>;
-  return <div className="auth-google-wrap"><div ref={containerRef} />{!ready && <span className="auth-google-hint">Загрузка Google…</span>}</div>;
+  if (error)
+    return (
+      <p className="auth-google-hint">
+        {error}. Добавьте этот ключ во frontend .env и перезапустите сборку.
+      </p>
+    );
+  return (
+    <div className="auth-google-wrap">
+      <div ref={containerRef} />
+      {!ready && <span className="auth-google-hint">Загрузка Google…</span>}
+    </div>
+  );
 };
 
 export default GoogleLoginButton;
