@@ -1530,17 +1530,17 @@ html {
 }
 
 
-/* Keep login and registration submit actions consistently plum with a pink shadow. */
+/* Keep login and registration submit actions consistently plum with a darker plum shadow. */
 .auth-form > .button.general-button {
   background: var(--plum);
   border-color: var(--plum);
   color: var(--accent-strong);
-  box-shadow: 4px 4px 0 #f3a6c4;
+  box-shadow: 4px 4px 0 #4b1d40;
 }
 .auth-form > .button.general-button:hover:not(:disabled),
 .auth-form > .button.general-button:focus-visible {
   background: #6b315d;
   border-color: var(--plum);
   color: var(--accent-strong);
-  box-shadow: 5px 5px 0 #f3a6c4;
+  box-shadow: 5px 5px 0 #4b1d40;
 }
