@@ -99,7 +99,7 @@ const LoginForm = ({ onToggleRegister }) => {
         />
       </label>
 
-      <button className="button button-outline button-large" disabled={loading}>
+      <button className="button general-button button-large" disabled={loading}>
         {loading ? "Входим…" : "Войти"}
       </button>
 
