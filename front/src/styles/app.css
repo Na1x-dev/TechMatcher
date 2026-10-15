@@ -1528,3 +1528,19 @@ html {
   box-shadow: 5px 5px 0 var(--accent);
   transform: translate(-2px, -2px);
 }
+
+
+/* Keep login and registration submit actions consistently plum with an accent shadow. */
+.auth-form > .button.general-button {
+  background: var(--plum);
+  border-color: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.auth-form > .button.general-button:hover:not(:disabled),
+.auth-form > .button.general-button:focus-visible {
+  background: #6b315d;
+  border-color: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 5px 5px 0 var(--accent);
+}
