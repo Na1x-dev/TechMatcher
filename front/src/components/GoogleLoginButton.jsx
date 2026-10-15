@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { postReq, getApiError } from "../Api";
-import { useSnackbar } from "notistack";
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
 
 const GoogleLoginButton = ({ onLogin }) => {
   const containerRef = useRef(null);
@@ -15,7 +13,6 @@ const GoogleLoginButton = ({ onLogin }) => {
       return undefined;
     }
 
-    console.log(GOOGLE_CLIENT_ID);
     let cancelled = false;
     const initialize = () => {
       if (cancelled || !window.google?.accounts?.id || !containerRef.current)
