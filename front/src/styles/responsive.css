@@ -239,3 +239,26 @@ button, a, input, select, textarea { max-width: 100%; }
   .compare-column { flex-basis: 86vw; }
   .compare-page { padding-left: 10px; padding-right: 10px; }
 }
+
+
+/* Catalog hero: keep the intro and Smart Choice orb in one row on mobile. */
+@media (max-width: 800px) {
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(100px, 28%); align-items: center; gap: 14px; }
+  .hero-orb { width: 100%; height: auto; aspect-ratio: 1; justify-self: stretch; margin: 0 8px 8px 0; padding: 14px; }
+  .hero-orb span { font-size: clamp(30px, 6vw, 44px); }
+  .hero-orb small { font-size: clamp(7px, 1.5vw, 9px); }
+  .hero h1 { font-size: clamp(27px, 6.8vw, 48px); }
+}
+@media (max-width: 560px) {
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(88px, 29%); gap: 10px; }
+  .hero h1 { font-size: clamp(25px, 7.1vw, 38px); letter-spacing: -.065em; }
+  .hero p { font-size: 11px; line-height: 1.6; }
+  .hero-orb { padding: 10px; margin-right: 5px; margin-bottom: 5px; box-shadow: 6px 6px 0 var(--accent); }
+  .hero-orb span { font-size: clamp(26px, 7vw, 36px); }
+  .hero-orb small { font-size: 7px; letter-spacing: .12em; }
+}
+@media (max-width: 360px) {
+  .hero { grid-template-columns: minmax(0, 1fr) 84px; gap: 8px; padding-left: 10px; padding-right: 10px; }
+  .hero h1 { font-size: 25px; }
+  .hero-orb { padding: 8px; }
+}
