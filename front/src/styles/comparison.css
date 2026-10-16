@@ -1,0 +1,32 @@
+/* Product comparison cards and actions */
+.compare-product-top {
+  min-height: 350px;
+  padding: 22px 16px 18px;
+  background: linear-gradient(180deg, #fff8f7 0%, #fff1ed 100%);
+}
+.compare-product-top img {
+  height: 160px;
+  flex: 0 0 160px;
+  margin: 8px 0 14px;
+  transition: transform 320ms var(--ease-out);
+}
+.compare-column:hover .compare-product-top img { transform: translateY(-3px) scale(1.025); }
+.compare-product-top h2 {
+  display: -webkit-box;
+  width: 100%;
+  min-height: 2.8em;
+  max-height: 2.8em;
+  margin: 0 0 12px;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.4;
+}
+.compare-product-top > strong { min-height: 1.4em; }
+.compare-heading-actions .button, .compare-open { box-shadow: 3px 3px 0 rgba(128, 62, 108, .2); }
+.compare-heading-actions .button:hover:not(:disabled), .compare-open:hover:not(:disabled) { box-shadow: 4px 4px 0 var(--plum); }
+@media (max-width: 560px) {
+  .compare-product-top { min-height: 0; padding: 18px 12px 14px; }
+  .compare-product-top img { height: 120px; flex-basis: 120px; }
+}
