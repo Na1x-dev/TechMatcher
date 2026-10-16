@@ -1,0 +1,16 @@
+/* Keep the compare close control's hit area fixed; no rotation on hover. */
+.compare-remove {
+  border: 0;
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  box-shadow: 2px 2px 0 var(--accent);
+  transform: none;
+  transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+.compare-remove:hover,
+.compare-remove:focus-visible {
+  background: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 2px 2px 0 var(--accent);
+  transform: none;
+}
