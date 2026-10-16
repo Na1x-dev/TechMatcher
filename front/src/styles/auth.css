@@ -1,0 +1,72 @@
+/* Authentication form */
+.auth-form { display: flex; flex-direction: column; gap: 18px; }
+.auth-title h1 { margin: 8px 0 10px; }
+.auth-title p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+
+.auth-form > .button.general-button {
+  background: var(--plum);
+  border-color: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 4px 4px 0 #e9a8c1;
+  transition: transform 180ms var(--ease-out), box-shadow 180ms ease, background-color 180ms ease, filter 180ms ease;
+}
+.auth-form > .button.general-button:hover:not(:disabled),
+.auth-form > .button.general-button:focus-visible {
+  background: #6b315d;
+  border-color: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 5px 5px 0 var(--plum);
+  transform: translate(-1px, -1px);
+  filter: brightness(1.04);
+}
+.auth-form > .button.general-button:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--plum);
+}
+.auth-form > .button.general-button:disabled { transform: none; }
+
+.auth-switch {
+  align-self: center;
+  background: transparent;
+  border: 0;
+  padding: 8px 0;
+  color: var(--muted);
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+.auth-switch:hover,
+.auth-switch:focus-visible {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.auth-google-button {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid #d8d8d8;
+  border-radius: 0;
+  color: #202124;
+  box-shadow: 4px 4px 0 rgba(20, 20, 20, .16);
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+.auth-google-button:hover:not(:disabled),
+.auth-google-button:focus-visible:not(:disabled) {
+  background: #f3f4f6;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 rgba(20, 20, 20, .22);
+}
+.auth-google-button:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 rgba(20, 20, 20, .16);
+}
+.auth-google-button:disabled { cursor: wait; opacity: .6; }
+.auth-google-hint { color: var(--muted); font-size: 12px; line-height: 1.6; }
