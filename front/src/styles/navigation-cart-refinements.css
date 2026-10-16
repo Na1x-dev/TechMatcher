@@ -67,19 +67,6 @@
   transform: translate(-1px, -1px);
 }
 
-/* Keep logo and inline auth switch free of global button hover effects. */
-.brand,
-.brand:hover,
-.brand:focus-visible,
-.auth-switch,
-.auth-switch:hover,
-.auth-switch:focus-visible,
-.auth-switch strong {
-  box-shadow: none !important;
-  transform: none !important;
-  text-shadow: none;
-}
-
 /* Login actions share the same restrained surface in the header and basket. */
 .header-login-button {
   min-height: 42px;
