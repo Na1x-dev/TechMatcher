@@ -82,7 +82,7 @@ class GoogleLogin(APIView):
         # CustomUser requires first_name and last_name. Google may omit either,
         # so use non-empty fallbacks and let the user edit their profile later.
         given_name = (given_name or "Google user")[:50]
-        family_name = (family_name or " ")[:50]
+        family_name = (family_name or "User")[:50]
 
         try:
             with transaction.atomic():
