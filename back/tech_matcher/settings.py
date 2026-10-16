@@ -151,11 +151,13 @@ _google_client_secret = env("GOOGLE_CLIENT_SECRET", default="")
 if _google_client_id and _google_client_secret:
     SOCIALACCOUNT_PROVIDERS = {
         "google": {
-            "APP": {
-                "client_id": _google_client_id,
-                "secret": _google_client_secret,
-                "key": "",
-            },
+            "APPS": [
+                {
+                    "client_id": _google_client_id,
+                    "secret": _google_client_secret,
+                    "key": "",
+                }
+            ],
             "SCOPE": ["profile", "email"],
             "AUTH_PARAMS": {"access_type": "online"},
         }
