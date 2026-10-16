@@ -72,7 +72,27 @@ const RegistrationForm = ({ onToggleLogin }) => {
         </label>
       ))}
 
-      <button className="button general-button button-large" disabled={loading}>
+      <button className="button general-button button-large" disabled={loading}
+        onMouseEnter={(event) => {
+          if (loading) return;
+          event.currentTarget.style.transform = "translate(-1px, -1px)";
+          event.currentTarget.style.boxShadow = "5px 5px 0 rgba(20, 20, 20, 0.22)";
+          event.currentTarget.style.filter = "brightness(1.06)";
+        }}
+        onMouseLeave={(event) => {
+          event.currentTarget.style.transform = "translate(0, 0)";
+          event.currentTarget.style.boxShadow = "";
+          event.currentTarget.style.filter = "";
+        }}
+        onMouseDown={(event) => {
+          if (loading) return;
+          event.currentTarget.style.transform = "translate(2px, 2px)";
+          event.currentTarget.style.boxShadow = "1px 1px 0 rgba(20, 20, 20, 0.18)";
+        }}
+        onMouseUp={(event) => {
+          event.currentTarget.style.transform = "translate(-1px, -1px)";
+          event.currentTarget.style.boxShadow = "5px 5px 0 rgba(20, 20, 20, 0.22)";
+        }}>
         {loading ? "Создаём…" : "Зарегистрироваться"}
       </button>
 
@@ -80,6 +100,16 @@ const RegistrationForm = ({ onToggleLogin }) => {
         type="button"
         className="auth-switch"
         onClick={onToggleLogin}
+        onMouseEnter={(event) => {
+          event.currentTarget.style.color = "#2563eb";
+          event.currentTarget.style.textDecoration = "underline";
+          event.currentTarget.style.textUnderlineOffset = "4px";
+        }}
+        onMouseLeave={(event) => {
+          event.currentTarget.style.color = "";
+          event.currentTarget.style.textDecoration = "";
+          event.currentTarget.style.textUnderlineOffset = "";
+        }
       >
         Уже есть аккаунт? <strong>Войти</strong>
       </button>
