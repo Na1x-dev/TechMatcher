@@ -122,6 +122,7 @@ const GoogleLoginButton = ({ onLogin }) => {
         minHeight: 48,
         padding: "12px 16px",
         background: "#fff",
+        borderColor: "#202124",
         color: "#202124",
         border: "1px solid #d8d8d8",
         borderRadius: 0,
@@ -130,7 +131,13 @@ const GoogleLoginButton = ({ onLogin }) => {
         fontWeight: 600,
         cursor: ready ? "pointer" : "wait",
         opacity: ready ? 1 : 0.6,
-        transition: "box-shadow 160ms ease, transform 160ms ease",
+        transition: "background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease",
+      }}
+      onMouseEnter={(event) => {
+        if (!ready) return;
+        event.currentTarget.style.background = "#f3f4f6";
+        event.currentTarget.style.transform = "translate(-1px, -1px)";
+        event.currentTarget.style.boxShadow = "5px 5px 0 rgba(20, 20, 20, 0.22)";
       }}
       onMouseDown={(event) => {
         event.currentTarget.style.transform = "translate(2px, 2px)";
@@ -141,6 +148,7 @@ const GoogleLoginButton = ({ onLogin }) => {
         event.currentTarget.style.boxShadow = "4px 4px 0 rgba(20, 20, 20, 0.16)";
       }}
       onMouseLeave={(event) => {
+        event.currentTarget.style.background = "#fff";
         event.currentTarget.style.transform = "translate(0, 0)";
         event.currentTarget.style.boxShadow = "4px 4px 0 rgba(20, 20, 20, 0.16)";
       }}
