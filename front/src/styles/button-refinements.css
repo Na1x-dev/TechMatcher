@@ -131,16 +131,7 @@
 }
 
 @media (max-width: 560px) {
-  .compare-product-top {
-    min-height: 330px;
-    padding: 18px 12px 14px;
   }
-
-  .compare-product-top img {
-    height: 140px;
-    flex-basis: 140px;
-  }
-}
 
 /* Refined yellow-and-plum buttons: crisp contrast, no muddy shadows */
 .button,
