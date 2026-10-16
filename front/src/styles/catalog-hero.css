@@ -19,3 +19,37 @@
 .catalog-search:focus-within { border-color: var(--plum); box-shadow: 4px 4px 0 rgba(255,157,0,.28); background: #fff; }
 .search-clear { width: 24px; height: 24px; flex: 0 0 24px; border: 0; background: #f4dce4; color: var(--ink); font-size: 18px; line-height: 1; transition: transform 240ms var(--ease-out), background-color 240ms ease; }
 .search-clear:hover { transform: rotate(90deg); background: #efc9d7; }
+
+
+/* Keep the catalog headline and Smart Choice orb together on narrow screens. */
+@media (max-width: 800px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(100px, 28%);
+    align-items: center;
+    gap: 14px;
+  }
+  .hero-orb {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    justify-self: stretch;
+    margin: 0 8px 8px 0;
+    padding: 14px;
+  }
+  .hero-orb span { font-size: clamp(30px, 6vw, 44px); }
+  .hero-orb small { font-size: clamp(7px, 1.5vw, 9px); }
+  .hero h1 { font-size: clamp(27px, 6.8vw, 48px); }
+}
+@media (max-width: 560px) {
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(88px, 29%); gap: 10px; }
+  .hero h1 { font-size: clamp(25px, 7.1vw, 38px); letter-spacing: -.065em; }
+  .hero p { font-size: 11px; line-height: 1.6; }
+  .hero-orb { padding: 10px; margin-right: 5px; margin-bottom: 5px; box-shadow: 6px 6px 0 var(--accent); }
+  .hero-orb span { font-size: clamp(26px, 7vw, 36px); }
+  .hero-orb small { font-size: 7px; letter-spacing: .12em; }
+}
+@media (max-width: 360px) {
+  .hero { grid-template-columns: minmax(0, 1fr) 84px; gap: 8px; padding-left: 10px; padding-right: 10px; }
+  .hero h1 { font-size: 25px; }
+  .hero-orb { padding: 8px; }
+}
