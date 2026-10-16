@@ -112,46 +112,6 @@ const GoogleLoginButton = ({ onLogin }) => {
       className="auth-google-button"
       onClick={handleClick}
       disabled={!ready}
-      style={{
-        boxSizing: "border-box",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 12,
-        width: "100%",
-        minHeight: 48,
-        padding: "12px 16px",
-        background: "#fff",
-        borderColor: "#202124",
-        color: "#202124",
-        border: "1px solid #d8d8d8",
-        borderRadius: 0,
-        boxShadow: "4px 4px 0 rgba(20, 20, 20, 0.16)",
-        fontSize: 14,
-        fontWeight: 600,
-        cursor: ready ? "pointer" : "wait",
-        opacity: ready ? 1 : 0.6,
-        transition: "background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease",
-      }}
-      onMouseEnter={(event) => {
-        if (!ready) return;
-        event.currentTarget.style.background = "#f3f4f6";
-        event.currentTarget.style.transform = "translate(-1px, -1px)";
-        event.currentTarget.style.boxShadow = "5px 5px 0 rgba(20, 20, 20, 0.22)";
-      }}
-      onMouseDown={(event) => {
-        event.currentTarget.style.transform = "translate(2px, 2px)";
-        event.currentTarget.style.boxShadow = "2px 2px 0 rgba(20, 20, 20, 0.16)";
-      }}
-      onMouseUp={(event) => {
-        event.currentTarget.style.transform = "translate(0, 0)";
-        event.currentTarget.style.boxShadow = "4px 4px 0 rgba(20, 20, 20, 0.16)";
-      }}
-      onMouseLeave={(event) => {
-        event.currentTarget.style.background = "#fff";
-        event.currentTarget.style.transform = "translate(0, 0)";
-        event.currentTarget.style.boxShadow = "4px 4px 0 rgba(20, 20, 20, 0.16)";
-      }}
     >
       <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
         <path fill="#EA4335" d="M5.266 9.765A7.077 7.077 0 0 1 12 4.909c1.69 0 3.218.6 4.418 1.582l3.51-3.51C17.642 1.054 14.982 0 12 0 7.354 0 3.307 2.67 1.242 6.554l4.024 3.211z" />
