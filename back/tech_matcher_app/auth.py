@@ -1,5 +1,4 @@
-import os
-
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction
 from google.auth.exceptions import GoogleAuthError, TransportError
@@ -30,7 +29,7 @@ class GoogleLogin(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        client_id = os.getenv("GOOGLE_CLIENT_ID", "").strip()
+        client_id = settings.GOOGLE_CLIENT_ID.strip()
         if not client_id:
             return Response(
                 {"detail": "Google authentication is not configured on the server."},
@@ -67,9 +66,13 @@ class GoogleLogin(APIView):
 
         email = email.strip().lower()
         User = get_user_model()
-        full_name = claims.get("name", "").strip()
-        given_name = claims.get("given_name", "").strip()
-        family_name = claims.get("family_name", "").strip()
+        def claim_text(key):
+            value = claims.get(key, "")
+            return value.strip() if isinstance(value, str) else ""
+
+        full_name = claim_text("name")
+        given_name = claim_text("given_name")
+        family_name = claim_text("family_name")
         if not given_name and full_name:
             parts = full_name.split(maxsplit=1)
             given_name = parts[0]
