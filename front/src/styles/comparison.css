@@ -26,7 +26,5 @@
 .compare-product-top > strong { min-height: 1.4em; }
 .compare-heading-actions .button, .compare-open { box-shadow: 3px 3px 0 rgba(128, 62, 108, .2); }
 .compare-heading-actions .button:hover:not(:disabled), .compare-open:hover:not(:disabled) { box-shadow: 4px 4px 0 var(--plum); }
-@media (max-width: 560px) {
-  .compare-product-top { min-height: 0; padding: 18px 12px 14px; }
-  .compare-product-top img { height: 120px; flex-basis: 120px; }
-}
+
+/* Small screens use the page-level horizontal comparison rail. */
