@@ -1,0 +1,24 @@
+/* Subtle raised fields and custom filter checkbox states. */
+.filter-sidebar input:not([type="checkbox"]) {
+  box-shadow: 3px 3px 0 rgba(64, 27, 75, .13);
+  transition: box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease;
+}
+.filter-sidebar input:not([type="checkbox"]):focus {
+  outline: none;
+  border-color: var(--plum-light);
+  box-shadow: 4px 4px 0 rgba(128, 62, 108, .24);
+}
+.filter-check-box {
+  box-shadow: 2px 2px 0 rgba(64, 27, 75, .18);
+  transition: box-shadow 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+.filter-check:hover .filter-check-box {
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .24);
+}
+.filter-check input:checked + .filter-check-box {
+  box-shadow: 2px 2px 0 rgba(64, 27, 75, .18);
+}
+.filter-check input:focus-visible + .filter-check-box {
+  outline: 2px solid var(--plum);
+  outline-offset: 3px;
+}

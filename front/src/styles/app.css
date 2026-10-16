@@ -4,5 +4,11 @@
 @import "./catalog.css";
 @import "./product-account-cart.css";
 @import "./layout-responsive.css";
-@import "./design-refinements.css";
+@import "./product-cart-actions.css";
+@import "./button-refinements.css";
+@import "./catalog-card-refinements.css";
+@import "./navigation-cart-refinements.css";
+@import "./scrollbar.css";
+@import "./form-controls.css";
+@import "./auth-checkout-refinements.css";
 @import "./auth.css";

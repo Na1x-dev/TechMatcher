@@ -1,0 +1,171 @@
+/* Branding and the inline registration switch are text/navigation, not raised controls. */
+.brand,
+.brand:hover,
+.brand:focus-visible,
+.auth-switch,
+.auth-switch:hover,
+.auth-switch:focus-visible,
+.auth-switch strong {
+  box-shadow: none !important;
+  transform: none !important;
+  text-shadow: none;
+}
+.brand {
+  transition: color 180ms ease, background-color 180ms ease;
+}
+.auth-switch {
+  background: transparent;
+  border: 0;
+  padding: 8px 0;
+}
+.auth-switch:hover,
+.auth-switch:focus-visible {
+  background: transparent;
+  color: inherit;
+}
+
+/* Cart content is navigational, not a raised action: keep it visually quiet. */
+.cart-item {
+  transition: none;
+}
+.cart-item:hover {
+  transform: none;
+  box-shadow: var(--surface-shadow);
+}
+.cart-product,
+.cart-product:hover,
+.cart-product:focus-visible {
+  box-shadow: none !important;
+  transform: none !important;
+  background: transparent;
+}
+.cart-product .cart-image img,
+.cart-product:hover .cart-image img {
+  transform: none;
+  transition: none;
+}
+.remove,
+.remove:hover,
+.remove:focus-visible {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* The basket sign-in action follows the same tactile style as primary cart actions. */
+.guest-banner button {
+  border: 0;
+  border-radius: 0;
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  box-shadow: 3px 3px 0 var(--accent);
+}
+.guest-banner button:hover:not(:disabled),
+.guest-banner button:focus-visible {
+  background: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 4px 4px 0 var(--accent);
+  transform: translate(-1px, -1px);
+}
+
+/* Keep logo and inline auth switch free of global button hover effects. */
+.brand,
+.brand:hover,
+.brand:focus-visible,
+.auth-switch,
+.auth-switch:hover,
+.auth-switch:focus-visible,
+.auth-switch strong {
+  box-shadow: none !important;
+  transform: none !important;
+  text-shadow: none;
+}
+
+/* Login actions share the same restrained surface in the header and basket. */
+.header-login-button {
+  min-height: 42px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e4c5d0;
+  border-radius: 3px;
+  background: #fff8f7;
+  color: var(--ink);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .16);
+  font-size: 12px;
+  font-weight: 700;
+}
+.header-login-button:hover:not(:disabled),
+.header-login-button:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--plum-light);
+  background: #fff8f7;
+  color: var(--ink);
+  box-shadow: 5px 5px 0 rgba(128, 62, 108, .22);
+}
+
+/* Basket guest banner: a clear, compact action rather than a loud filled block. */
+.guest-banner button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid #e4c5d0;
+  border-radius: 3px;
+  background: #fff8f7;
+  color: var(--ink);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .16);
+  font-size: 12px;
+  font-weight: 800;
+}
+.guest-banner button:hover:not(:disabled),
+.guest-banner button:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--plum-light);
+  background: #f8e6ee;
+  color: var(--ink);
+  box-shadow: 5px 5px 0 rgba(128, 62, 108, .22);
+}
+
+/* Keep the basket close to the sticky header instead of vertically centering it. */
+.cart-page {
+  margin: 16px auto 0;
+  padding-top: 8px;
+}
+
+/* Active cart stays white; the yellow offset shadow marks the current page. */
+.cart-button {
+  display: inline-grid;
+  place-items: center;
+}
+.cart-button > svg {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
+.cart-button.is-active {
+  background: #fff;
+  color: var(--plum);
+  border-color: var(--plum-light);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.cart-button.is-active:hover,
+.cart-button.is-active:focus-visible {
+  background: #fff;
+  color: var(--plum);
+  border-color: var(--plum-light);
+  box-shadow: 5px 5px 0 var(--accent);
+}
+
+/* Keep the continue-shopping action tactile and visually connected to the theme. */
+.cart-head-actions .button-outline {
+  border: 0;
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: 4px 4px 0 rgba(128, 62, 108, .22);
+}
+.cart-head-actions .button-outline:hover:not(:disabled),
+.cart-head-actions .button-outline:focus-visible {
+  background: #f0d0de;
+  color: var(--plum);
+  box-shadow: 6px 6px 0 var(--plum);
+  transform: translate(-2px, -2px);
+}

@@ -1,0 +1,464 @@
+/* Sharp, high-contrast button system */
+.button {
+  border: 0;
+  border-radius: 0;
+  background: var(--accent);
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+
+.button:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  background: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 6px 6px 0 var(--plum);
+}
+
+.button-primary {
+  background: var(--accent);
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+
+.button-primary:hover:not(:disabled),
+.button-primary:focus-visible {
+  border: 0;
+  background: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 6px 6px 0 var(--plum);
+}
+
+.button-dark {
+  border: 0;
+  border-radius: 0;
+  background: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+
+.button-outline,
+.button-ghost {
+  border: 0;
+  border-radius: 0;
+  background: #f8e8ed;
+  color: var(--plum);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .22);
+}
+
+.button-outline:hover:not(:disabled),
+.button-ghost:hover:not(:disabled) {
+  background: #f0d0de;
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+
+.detail-compare-button,
+.compare-toggle {
+  background: #f8e8ed;
+  color: var(--plum);
+  box-shadow: 2px 2px 0 rgba(128, 62, 108, .2);
+}
+
+.detail-compare-button:hover:not(:disabled),
+.compare-toggle:hover:not(:disabled) {
+  background: #f0d0de;
+  color: var(--plum);
+  box-shadow: 3px 3px 0 var(--plum);
+}
+
+.compare-product-top {
+  min-height: 350px;
+  padding: 22px 16px 18px;
+  background: linear-gradient(180deg, #fff8f7 0%, #fff1ed 100%);
+}
+
+.compare-product-top img {
+  height: 160px;
+  flex: 0 0 160px;
+  margin: 8px 0 14px;
+  transition: transform 320ms var(--ease-out);
+}
+
+.compare-column:hover .compare-product-top img {
+  transform: translateY(-3px) scale(1.025);
+}
+
+.compare-product-top h2 {
+  display: -webkit-box;
+  width: 100%;
+  min-height: 2.8em;
+  max-height: 2.8em;
+  margin: 0 0 12px;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.4;
+}
+
+.compare-product-top > strong {
+  min-height: 1.4em;
+}
+
+.compare-remove {
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  background: #f8e8ed;
+  color: var(--plum);
+  box-shadow: 2px 2px 0 rgba(128, 62, 108, .18);
+  transition: background-color 220ms ease, color 220ms ease, transform 220ms var(--ease-out), box-shadow 220ms ease;
+}
+
+.compare-remove:hover {
+  transform: rotate(8deg) scale(1.06);
+  background: #e94f78;
+  color: #fff;
+  box-shadow: 3px 3px 0 #a92b54;
+}
+
+.catalog-quantity-minus,
+.detail-cart-plus {
+  border: 0;
+  border-radius: 0;
+  background: var(--plum);
+  color: #fff8f7;
+  box-shadow: 3px 3px 0 rgba(64, 27, 75, .22);
+  transition: background-color 220ms ease, color 220ms ease, transform 220ms var(--ease-out), box-shadow 220ms ease;
+}
+
+.catalog-quantity-minus:hover:not(:disabled),
+.detail-cart-plus:hover:not(:disabled) {
+  background: #f1c7d8;
+  color: var(--plum);
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+
+.compare-heading-actions .button,
+.compare-open {
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .2);
+}
+
+.compare-heading-actions .button:hover:not(:disabled),
+.compare-open:hover:not(:disabled) {
+  box-shadow: 4px 4px 0 var(--plum);
+}
+
+.cart-quantity-controls button,
+.pagination button {
+  border: 0;
+  border-radius: 0;
+  box-shadow: 2px 2px 0 rgba(128, 62, 108, .16);
+}
+
+.cart-quantity-controls button:hover:not(:disabled),
+.pagination button:hover:not(:disabled) {
+  background: #f1c7d8;
+  color: var(--plum);
+  box-shadow: 3px 3px 0 var(--plum);
+}
+
+@media (max-width: 560px) {
+  .compare-product-top {
+    min-height: 330px;
+    padding: 18px 12px 14px;
+  }
+
+  .compare-product-top img {
+    height: 140px;
+    flex-basis: 140px;
+  }
+}
+
+/* Refined yellow-and-plum buttons: crisp contrast, no muddy shadows */
+.button,
+.button-primary,
+.product-list .product-card-bottom .button:not(.button-outline):not(.button-ghost) {
+  border: 0;
+  border-radius: 0;
+  background: var(--accent);
+  color: var(--plum);
+  box-shadow: 3px 3px 0 var(--plum);
+  transition:
+    transform 240ms var(--ease-out),
+    box-shadow 240ms ease,
+    background-color 220ms ease,
+    color 220ms ease;
+}
+
+.button:hover:not(:disabled),
+.button-primary:hover:not(:disabled),
+.product-list .product-card-bottom .button:not(.button-outline):not(.button-ghost):hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  background: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--plum);
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+  box-shadow: 2px 2px 0 rgba(64, 27, 75, .35);
+}
+
+.button.is-in-cart,
+.detail-cart-main.is-in-cart,
+.product-list .product-card-bottom .button.is-in-cart {
+  background: var(--plum);
+  color: #fff8f7;
+  box-shadow: 3px 3px 0 var(--accent);
+}
+
+.button.is-in-cart:hover:not(:disabled),
+.detail-cart-main.is-in-cart:hover:not(:disabled),
+.product-list .product-card-bottom .button.is-in-cart:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+
+/* Catalog compare action matches the quieter product-detail button */
+.product-list .compare-toggle,
+.detail-compare-button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 0;
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .22);
+}
+
+.product-list .compare-toggle:hover:not(:disabled),
+.detail-compare-button:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  background: #f0d0de;
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+
+/* Quantity decrement controls use a contrasting yellow shadow */
+.catalog-quantity-minus,
+.detail-cart-plus {
+  border: 0;
+  border-radius: 0;
+  background: var(--plum);
+  color: #fff8f7;
+  box-shadow: 3px 3px 0 var(--accent);
+}
+
+.catalog-quantity-minus:hover:not(:disabled),
+.detail-cart-plus:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+
+/* Shared button geometry; variants control color only. */
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-align: center; text-decoration: none; }
+.button.general-button, .button-primary { background: var(--accent); color: var(--ink); border-color: var(--accent); box-shadow: 4px 4px 0 var(--plum); }
+.button.general-button:hover:not(:disabled), .button-primary:hover:not(:disabled) { background: var(--accent-strong); color: var(--ink); border-color: var(--plum); box-shadow: 5px 6px 0 var(--plum); }
+.button.button-outline, .button.button-ghost { background: #fff; border-color: #d7b7c8; color: var(--ink); box-shadow: none; }
+.button.button-outline:hover:not(:disabled), .button.button-ghost:hover:not(:disabled) { background: #fff8f7; border-color: var(--plum); color: var(--plum); box-shadow: 3px 3px 0 rgba(128,62,108,.12); }
+.cart-image { background: #fff; }
+.cart-quantity-controls button, .catalog-quantity-minus, .detail-cart-plus { background: #fff; border-color: #d7b7c8; color: var(--ink); box-shadow: none; }
+.cart-quantity-controls button:hover:not(:disabled), .catalog-quantity-minus:hover:not(:disabled), .detail-cart-plus:hover:not(:disabled) { background: #fff8f7; border-color: var(--plum); color: var(--plum); }
+.auth-form > .button { background: #fff; border-color: #d7b7c8; color: var(--ink); box-shadow: none; }
+.auth-form > .button:hover:not(:disabled) { background: #fff8f7; border-color: var(--plum); color: var(--plum); box-shadow: 3px 3px 0 rgba(128,62,108,.12); }
+
+/* Follow-up polish: keep catalog actions compact and secondary. */
+.back-link.button { display: inline-flex; align-items: center; justify-content: center; padding: 11px 18px; border: 1px solid #d7b7c8; background: #fff; color: var(--ink); box-shadow: none; }
+.back-link.button:hover:not(:disabled) { padding: 11px 18px; border-color: var(--plum); background: #fff8f7; color: var(--plum); box-shadow: 3px 3px 0 rgba(128,62,108,.12); }
+.product-list .product-card-bottom .product-card-actions { flex: 0 0 230px; width: 230px; }
+.product-list .product-card-bottom .catalog-cart-actions { display: flex; align-items: stretch; gap: 6px; width: 100%; }
+.product-list .product-card-bottom .catalog-cart-actions > .button { flex: 1 1 auto; min-width: 0; white-space: normal; }
+.product-list .product-card-bottom .catalog-cart-actions > .catalog-quantity-minus { flex: 0 0 48px; }
+.product-list .product-card-bottom .button,
+.product-list .product-card-bottom .button.is-in-cart,
+.product-list .product-card-bottom .compare-toggle { background: #fff; border: 1px solid #d7b7c8; color: var(--ink); box-shadow: none; }
+.product-list .product-card-bottom .button:hover:not(:disabled),
+.product-list .product-card-bottom .button.is-in-cart:hover:not(:disabled),
+.product-list .product-card-bottom .compare-toggle:hover:not(:disabled) { background: #fff8f7; border-color: var(--plum); color: var(--plum); box-shadow: 3px 3px 0 rgba(128,62,108,.12); }
+.auth-form > .button.general-button { background: var(--accent); border-color: var(--accent); color: var(--ink); box-shadow: 4px 4px 0 var(--plum); }
+.auth-form > .button.general-button:hover:not(:disabled) { background: var(--accent-strong); border-color: var(--plum); color: var(--ink); box-shadow: 5px 6px 0 var(--plum); }
+.compare-heading-actions .button.general-button, .compare-open.general-button, .empty-state .button.general-button { background: var(--accent); border-color: var(--accent); color: var(--ink); box-shadow: 4px 4px 0 var(--plum); }
+.compare-heading-actions .button.general-button:hover:not(:disabled), .compare-open.general-button:hover:not(:disabled), .empty-state .button.general-button:hover:not(:disabled) { background: var(--accent-strong); border-color: var(--plum); color: var(--ink); box-shadow: 5px 6px 0 var(--plum); }
+@media (max-width: 560px) { .product-list .product-card-bottom .product-card-actions { flex: 1 1 auto; width: 100%; } }
+
+/* High-contrast action buttons on colored surfaces and auth pages */
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button {
+  background: #fff;
+  border: 2px solid var(--plum);
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button:hover:not(:disabled) {
+  background: #fff8f7;
+  border-color: var(--plum);
+  color: var(--plum);
+  box-shadow: 5px 5px 0 var(--accent);
+  transform: translate(-1px, -1px);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button.is-in-cart {
+  background: var(--plum);
+  border-color: #fff;
+  color: #fff;
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .catalog-quantity-minus {
+  background: #fff;
+  border: 2px solid var(--plum);
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .catalog-quantity-minus:hover:not(:disabled) {
+  background: #fff8f7;
+  border-color: var(--plum);
+  color: var(--plum);
+  box-shadow: 5px 5px 0 var(--accent);
+}
+.auth-form > .button.general-button {
+  border: 2px solid var(--plum);
+  box-shadow: 5px 5px 0 var(--plum);
+}
+.auth-form > .button.general-button:hover:not(:disabled) {
+  box-shadow: 6px 6px 0 var(--plum);
+  transform: translate(-1px, -1px);
+}
+
+/* Back uses the same neutral, outlined treatment as the catalog −1 control. */
+.back-link.button {
+  padding: 10px 16px;
+  border: 2px solid #d7b7c8;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.back-link.button:hover:not(:disabled) {
+  padding: 10px 16px;
+  border-color: var(--plum);
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: 5px 5px 0 var(--accent);
+  transform: translate(-1px, -1px);
+}
+
+/* Color-only button refinement: yellow and plum, no decorative borders. */
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button {
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button:hover:not(:disabled) {
+  background: #ad6b91;
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+  transform: translateY(-1px);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button.is-in-cart {
+  background: var(--accent);
+  color: var(--ink);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--plum-light);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .catalog-quantity-minus {
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .catalog-quantity-minus:hover:not(:disabled) {
+  background: #ad6b91;
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+}
+
+/* Auth actions use plum against the yellow page accent for separation. */
+.auth-form > .button.general-button {
+  background: var(--plum);
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.auth-form > .button.general-button:hover:not(:disabled) {
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  border: 0;
+  box-shadow: 4px 4px 0 var(--accent);
+  transform: translateY(-1px);
+}
+
+/* Keep the compare close control's hit area fixed; no rotation on hover. */
+.compare-remove {
+  border: 0;
+  background: var(--plum-light);
+  color: var(--accent-strong);
+  box-shadow: 2px 2px 0 var(--accent);
+  transform: none;
+  transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+.compare-remove:hover,
+.compare-remove:focus-visible {
+  background: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 2px 2px 0 var(--accent);
+  transform: none;
+}
+
+/* On the product page, Back matches the −1 quantity control exactly. */
+.product-page .back-link.button {
+  padding: 10px 16px;
+  border: 0;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: none;
+}
+.product-page .back-link.button:hover:not(:disabled) {
+  padding: 10px 16px;
+  border: 0;
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: none;
+  transform: none;
+}
+
+/* Match catalog actions and Back to the product-page compare button. */
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button,
+.product-list .product-card-bottom .compare-toggle,
+.product-page .back-link.button {
+  border: 0;
+  border-radius: 0;
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .22);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button:hover:not(:disabled),
+.product-list .product-card-bottom .compare-toggle:hover:not(:disabled),
+.product-page .back-link.button:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  border: 0;
+  background: #f0d0de;
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button.is-in-cart {
+  background: #fff8f7;
+  color: var(--plum);
+  box-shadow: 3px 3px 0 rgba(128, 62, 108, .22);
+}
+.product-list .product-card-bottom .catalog-cart-actions > .button.general-button.is-in-cart:hover:not(:disabled) {
+  background: #f0d0de;
+  color: var(--plum);
+  box-shadow: 4px 4px 0 var(--plum);
+}

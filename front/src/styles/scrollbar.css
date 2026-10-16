@@ -1,0 +1,21 @@
+/* Custom scrollbar in the site's cream, pink, and plum palette. */
+html {
+  scrollbar-color: var(--plum-light) #fff0e7;
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #fff0e7;
+  border-left: 1px solid rgba(128, 62, 108, .1);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--plum-light);
+  border: 3px solid #fff0e7;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--plum);
+}

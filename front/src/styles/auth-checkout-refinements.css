@@ -1,0 +1,37 @@
+/* Match the login submit button to registration and give checkout a clear raised action. */
+.auth-form > .button.general-button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--plum);
+}
+.auth-form > .button.general-button:hover:not(:disabled) {
+  background: var(--accent-strong);
+  border-color: var(--plum);
+  color: var(--ink);
+  box-shadow: 5px 6px 0 var(--plum);
+}
+.cart-summary > .button-outline {
+  box-shadow: 4px 4px 0 var(--plum);
+  transition: transform 260ms var(--ease-out), box-shadow 260ms ease, background-color 240ms ease, border-color 240ms ease;
+}
+.cart-summary > .button-outline:hover:not(:disabled),
+.cart-summary > .button-outline:focus-visible {
+  box-shadow: 5px 5px 0 var(--accent);
+  transform: translate(-2px, -2px);
+}
+
+/* Keep login and registration submit actions consistently plum with a darker plum shadow. */
+.auth-form > .button.general-button {
+  background: var(--plum);
+  border-color: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 4px 4px 0 #4b1d40;
+}
+.auth-form > .button.general-button:hover:not(:disabled),
+.auth-form > .button.general-button:focus-visible {
+  background: #6b315d;
+  border-color: var(--plum);
+  color: var(--accent-strong);
+  box-shadow: 5px 5px 0 #4b1d40;
+}
