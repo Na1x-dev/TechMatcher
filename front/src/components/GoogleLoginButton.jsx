@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
 
 const GoogleLoginButton = ({ onLogin }) => {
   const containerRef = useRef(null);
@@ -8,13 +8,11 @@ const GoogleLoginButton = ({ onLogin }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    console.log(GOOGLE_CLIENT_ID);
-
+    console.log("Google Client ID:", GOOGLE_CLIENT_ID);
     if (!GOOGLE_CLIENT_ID) {
       setError("Не задан GOOGLE_CLIENT_ID");
       return undefined;
     }
-    console.log(GOOGLE_CLIENT_ID);
 
     let cancelled = false;
     const initialize = () => {
@@ -65,8 +63,7 @@ const GoogleLoginButton = ({ onLogin }) => {
   if (error)
     return (
       <p className="auth-google-hint">
-        {error}. Добавьте GOOGLE_CLIENT_ID в корневой .env и пересоздайте
-        frontend-контейнер.
+        {error}. Добавьте GOOGLE_CLIENT_ID в корневой .env и пересоздайте frontend-контейнер.
       </p>
     );
   return (
