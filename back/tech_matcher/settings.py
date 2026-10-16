@@ -146,22 +146,10 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 
-_google_client_id = env("GOOGLE_CLIENT_ID", default="")
-_google_client_secret = env("GOOGLE_CLIENT_SECRET", default="")
-if _google_client_id and _google_client_secret:
-    SOCIALACCOUNT_PROVIDERS = {
-        "google": {
-            "APPS": [
-                {
-                    "client_id": _google_client_id,
-                    "secret": _google_client_secret,
-                    "key": "",
-                }
-            ],
-            "SCOPE": ["profile", "email"],
-            "AUTH_PARAMS": {"access_type": "online"},
-        }
-    }
+# Google Identity Services sends an ID token to our API. The backend verifies
+# it against this web client ID; a Google client secret is not needed for this
+# credential-verification flow.
+GOOGLE_CLIENT_ID = env("GOOGLE_CLIENT_ID", default="")
 
 CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://redis:6379/0")
 CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default="redis://redis:6379/1")
