@@ -8,7 +8,6 @@ const GoogleLoginButton = ({ onLogin }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    console.log("Google Client ID:", GOOGLE_CLIENT_ID);
     if (!GOOGLE_CLIENT_ID) {
       setError("Не задан GOOGLE_CLIENT_ID");
       return undefined;
@@ -67,8 +66,23 @@ const GoogleLoginButton = ({ onLogin }) => {
       </p>
     );
   return (
-    <div className="auth-google-wrap">
-      <div ref={containerRef} />
+    <div
+      className="auth-google-wrap"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        width: "100%",
+        maxWidth: 320,
+        margin: "0 auto",
+        padding: 0,
+        background: "#ffffff",
+        border: "1px solid #d8d8d8",
+        borderRadius: 0,
+        boxShadow: "4px 4px 0 rgba(20, 20, 20, 0.16)",
+        transition: "box-shadow 160ms ease, transform 160ms ease",
+      }}
+    >
+      <div ref={containerRef} style={{ width: 320, maxWidth: "100%" }} />
       {!ready && <span className="auth-google-hint">Загрузка Google…</span>}
     </div>
   );
