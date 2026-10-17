@@ -1,10 +1,9 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { deleteReq, getReq, postReq } from "../Api";
+import { deleteReq, getReq, patchReq, postReq } from "../Api";
 import { useAuth } from "../components/AuthContext";
 
 const STORAGE_KEY = "techmatcher_guest_cart";
 const CartContext = createContext(null);
-
 const readGuestCart = () => {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { return []; }
 };
@@ -21,11 +20,8 @@ export const CartProvider = ({ children }) => {
   const refreshServerCart = useCallback(async () => {
     if (!user) { setServerBasket(null); return null; }
     setLoading(true);
-    try {
-      const basket = await getReq("basket/");
-      setServerBasket(basket);
-      return basket;
-    } finally { setLoading(false); }
+    try { const basket = await getReq("basket/"); setServerBasket(basket); return basket; }
+    finally { setLoading(false); }
   }, [user]);
 
   const syncGuestCart = useCallback(async () => {
@@ -33,12 +29,8 @@ export const CartProvider = ({ children }) => {
     if (!user || !local.length) return;
     setLoading(true);
     try {
-      for (const item of local) {
-        await postReq("basket/", { smartphone_id: item.id, quantity: item.quantity });
-      }
-      localStorage.removeItem(STORAGE_KEY);
-      setGuestItems([]);
-      await refreshServerCart();
+      for (const item of local) await postReq("basket/", { smartphone_id: item.id, quantity: item.quantity });
+      localStorage.removeItem(STORAGE_KEY); setGuestItems([]); await refreshServerCart();
     } finally { setLoading(false); }
   }, [refreshServerCart, user]);
 
@@ -48,13 +40,10 @@ export const CartProvider = ({ children }) => {
     if (user) {
       if (becameAuthenticated && readGuestCart().length) syncGuestCart().catch(() => {});
       else refreshServerCart().catch(() => {});
-    } else {
-      setServerBasket(null);
-      setGuestItems(readGuestCart());
-    }
+    } else { setServerBasket(null); setGuestItems(readGuestCart()); }
   }, [user, refreshServerCart, syncGuestCart]);
 
-  const addToCart = async (product, quantity = 1) => {
+  const addToCart = useCallback(async (product, quantity = 1) => {
     if (!user) {
       const current = readGuestCart();
       const index = current.findIndex((item) => item.id === product.id);
@@ -64,27 +53,37 @@ export const CartProvider = ({ children }) => {
     }
     await postReq("basket/", { smartphone_id: product.id, quantity });
     await refreshServerCart();
-  };
+  }, [user, refreshServerCart]);
 
-  const removeFromCart = async (id) => {
+  const changeQuantity = useCallback(async (id, quantity) => {
+    const targetQuantity = Number(quantity);
+    if (!Number.isInteger(targetQuantity) || targetQuantity < 1) throw new Error("Количество должно быть не меньше одного");
+    if (!user) {
+      const next = readGuestCart().map((item) => item.id === id ? { ...item, quantity: targetQuantity } : item);
+      writeGuestCart(next); setGuestItems(next); return;
+    }
+    const updated = await patchReq("basket/", { smartphone_id: id, quantity: targetQuantity });
+    setServerBasket(updated);
+  }, [user]);
+
+  const removeFromCart = useCallback(async (id) => {
     if (!user) {
       const next = readGuestCart().filter((item) => item.id !== id);
       writeGuestCart(next); setGuestItems(next); return;
     }
-    const updated = await deleteReq(`basket/?smartphone_id=${id}`);
+    // DRF receives smartphone_id as a query parameter for DELETE requests.
+    const updated = await deleteReq("basket/", { params: { smartphone_id: id } });
     setServerBasket(updated);
-  };
+  }, [user]);
 
   const items = user ? (serverBasket?.items || []) : guestItems;
   const total = user
     ? Number(serverBasket?.total_price || 0)
     : guestItems.reduce((sum, item) => sum + Number(item.product?.price || 0) * Number(item.quantity || 0), 0);
   const itemCount = countItems(items);
-
-  const value = useMemo(() => ({ items, total, itemCount, loading, addToCart, removeFromCart, refresh: refreshServerCart, isGuest: !user }), [items, total, itemCount, loading, user, refreshServerCart]);
+  const value = useMemo(() => ({ items, total, itemCount, loading, addToCart, changeQuantity, removeFromCart, refresh: refreshServerCart, isGuest: !user }), [items, total, itemCount, loading, user, refreshServerCart, addToCart, changeQuantity, removeFromCart]);
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
-
 
 export const useCart = () => {
   const context = useContext(CartContext);

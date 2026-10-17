@@ -53,6 +53,8 @@ class Smartphone(models.Model):
     launch_year = models.PositiveIntegerField(null=True, blank=True, db_index=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, db_index=True)
     image_url = models.URLField(max_length=500, null=True, blank=True)
+    source_url = models.URLField(max_length=500, null=True, blank=True, unique=True)
+    specifications = models.JSONField(default=dict, blank=True)
 
     # Технические характеристики
     os_version = models.CharField(max_length=100, blank=True)
@@ -99,15 +101,16 @@ class Smartphone(models.Model):
     accum_type = models.CharField(max_length=50, blank=True)
     accum_volume = models.PositiveIntegerField(verbose_name="Емкость батареи (mAh)", null=True, blank=True)
     charging_power = models.PositiveIntegerField(null=True, blank=True)
-    wireless_charging = models.BooleanField(default=False)
+    wireless_charging = models.BooleanField(null=True, blank=True, default=None)
+    wireless_charging_power = models.PositiveIntegerField(null=True, blank=True, help_text="Мощность беспроводной зарядки, Вт")
 
     # Интерфейсы и связь
     bluetooth = models.CharField(max_length=50, blank=True)
     audio_port = models.CharField(max_length=50, blank=True)
     charge_port = models.CharField(max_length=50, blank=True)
     wifi = models.CharField(max_length=100, blank=True)
-    nfc = models.BooleanField(default=False)
-    has_5g = models.BooleanField(default=False)
+    nfc = models.BooleanField(null=True, blank=True, default=None)
+    has_5g = models.BooleanField(null=True, blank=True, default=None)
     sim_count = models.PositiveIntegerField(default=2)
     sim_type = models.CharField(max_length=50, blank=True)
 

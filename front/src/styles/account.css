@@ -1,0 +1,14 @@
+/* Account and avatar */
+.account-head, .cart-head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 28px; }
+.profile-card { display: grid; grid-template-columns: 230px minmax(0,1fr); gap: 38px; padding: 30px; border: 1px solid #e9cbd2; background: #fff8f7; box-shadow: 6px 6px 0 rgba(128,62,108,.08); }
+.profile-aside { display: flex; align-items: center; flex-direction: column; padding-right: 28px; border-right: 1px solid var(--line); }
+.user-avatar { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; overflow: hidden; background: #f9e7eb; border: 1px solid #d6c1d6; }
+.user-avatar img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.user-avatar--small { width: 32px; height: 32px; border-radius: 50%; }
+.user-avatar--large { width: 150px; height: 150px; border-radius: 0; }
+.profile-avatar { margin-bottom: 18px; box-shadow: 6px 6px 0 var(--accent); }
+.avatar-upload-button { position: relative; overflow: hidden; }
+.profile-aside .muted { margin-top: 9px; color: #98748b; font-size: 9px; }
+.avatar-pending { margin-top: 8px; color: #b84627; font-size: 10px; font-weight: 700; text-align: center; }
+.form-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
+.form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 5px; }

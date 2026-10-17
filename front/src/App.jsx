@@ -1,22 +1,27 @@
 import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Basket from "./pages/Basket";
 import Product from "./pages/Product";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import Compare from "./pages/Compare";
 import ProtectedRoute from "./ProtectedRoute";
 
-const App = () => <Routes>
+const App = () => {
+  const location = useLocation();
+  return <div className="route-transition" key={location.pathname}><Routes location={location}>
   <Route path="/" element={<Home />} />
   <Route path="/login" element={<Login />} />
   <Route path="/basket" element={<Basket />} />
+  <Route path="/compare" element={<Compare />} />
   <Route path="/smartphones/:id" element={<Product />} />
   <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
   <Route path="/headphones" element={<Navigate to="/" replace />} />
   <Route path="/fitness-bracelets" element={<Navigate to="/" replace />} />
   <Route path="/chargers" element={<Navigate to="/" replace />} />
   <Route path="*" element={<NotFound />} />
-</Routes>;
+</Routes></div>;
+};
 export default App;
